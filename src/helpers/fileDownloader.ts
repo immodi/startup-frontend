@@ -1,22 +1,18 @@
 import axios from "axios";
-import getAllTemplates from "./getTemplates";
 
 export default async function fileDownloader(
     topic: string,
     templateString: string,
     data: Map<string, string>,
+    token: string,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
     try {
-        // Making a POST request
-        const templatesObject = getAllTemplates();
-        const token: string = import.meta.env.VITE_USER_TOKEN;
-
         const response = await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/api/generate`,
             {
                 topic: topic,
-                template: templatesObject.get(templateString),
+                template: templateString,
                 data: Object.fromEntries(data),
             },
             {
