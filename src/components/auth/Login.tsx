@@ -1,7 +1,11 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 
-export const LoginPage: React.FC<AuthPageProps> = (AuthPageProps) => {
+export const LoginPage: React.FC<AuthPageProps> = ({
+    setHasAccount,
+    isDarkMode,
+    setIsDarkMode,
+}) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -17,43 +21,61 @@ export const LoginPage: React.FC<AuthPageProps> = (AuthPageProps) => {
         console.log("Google Sign In");
     };
 
+    const toggleDarkMode = () => {
+        setIsDarkMode((prevMode) => !prevMode);
+    };
+
     return (
-        <div className="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+        <div
+            className="
+        flex
+        bg-gray-100 dark:bg-gray-800 transition-colors duration-300
+        flex-grow items-center justify-center p-5
+        "
+        >
+            <div
+                className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
+            >
+                <h2 className="text-2xl text-[#4A00E0] dark:text-white font-semibold text-center mb-6">
                     Welcome Back!
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4 text-[#4A00E0] dark:text-white"
+                >
                     <div>
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium"
                         >
                             Email
                         </label>
                         <input
                             type="email"
+                            placeholder="Enter your email"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div>
                         <label
                             htmlFor="password"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium"
                         >
                             Password
                         </label>
                         <input
                             type="password"
                             id="password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div className="flex justify-between items-center">
@@ -66,20 +88,20 @@ export const LoginPage: React.FC<AuthPageProps> = (AuthPageProps) => {
                                 }
                                 className="form-checkbox text-purple-500"
                             />
-                            <span className="ml-2 text-sm text-gray-700">
-                                Remember me
+                            <span className="ml-2 text-sm">
+                                {isDarkMode ? "Remember me" : "Remember me"}
                             </span>
                         </label>
                         <a
                             href="#"
-                            className="text-sm text-purple-500 hover:underline"
+                            className="text-sm text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
                         >
                             Forgot Password?
                         </a>
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                     >
                         Sign In
                     </button>
@@ -87,14 +109,14 @@ export const LoginPage: React.FC<AuthPageProps> = (AuthPageProps) => {
 
                 <div className="relative text-center my-4">
                     <span className="absolute inset-x-0 top-1/2 border-t border-gray-300"></span>
-                    <span className="relative bg-white px-3 text-sm text-gray-600">
-                        Or sign in with
+                    <span className="relative text-[#000000] dark:text-white bg-white dark:bg-gray-800 px-3 text-sm ">
+                        Or sign up with
                     </span>
                 </div>
 
                 <button
                     onClick={handleGoogleSignIn}
-                    className="w-full bg-white border border-gray-300 text-gray-600 py-2 px-4 rounded-md flex items-center justify-center hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} py-2 px-4 rounded-md flex items-center justify-center`}
                 >
                     <svg
                         className="right-2 relative"
@@ -122,17 +144,17 @@ export const LoginPage: React.FC<AuthPageProps> = (AuthPageProps) => {
                             d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
                         ></path>
                     </svg>
-                    Sign in with Google
+                    Sign up with Google
                 </button>
 
-                <p className="text-sm text-center text-gray-600 mt-4">
+                <p className="text-sm text-center mt-4">
                     Don't have an account?{" "}
                     <a
                         href="#"
-                        className="text-purple-500 hover:underline"
+                        className="text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
                         onClick={(e: FormEvent) => {
                             e.preventDefault();
-                            AuthPageProps.setHasAccount?.(false);
+                            setHasAccount?.(false);
                         }}
                     >
                         Sign up

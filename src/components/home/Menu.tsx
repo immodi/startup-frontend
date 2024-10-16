@@ -1,19 +1,65 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import HomeIcon from "../ui/menu-icons/HomeIcon";
+import DesignerIcon from "../ui/menu-icons/DesignerIcon";
+import UserProfileIcon from "../ui/menu-icons/UserIcon";
+import BillingIcon from "../ui/menu-icons/BillingIcon";
 
 interface MenuProps {
+    isDarkMode: boolean;
     isMenuOpen: boolean;
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface MenuItemProps {
-    name: string;
-    onClick: () => void;
+    index: number;
+    label: string;
+    isActive: boolean;
+    IconComponent: React.FC<{
+        size?: number;
+        color?: string;
+        onClick?: () => void;
+    }>;
 }
 
-const SideBar: React.FC<MenuProps> = ({ isMenuOpen, setIsMenuOpen }) => {
-    const menuRef = useRef<HTMLDivElement | null>(null);
+const menuItems: MenuItemProps[] = [
+    {
+        index: 0,
+        label: "Home",
+        isActive: true,
+        IconComponent: HomeIcon,
+    },
+    {
+        index: 1,
+        label: "Designer",
+        isActive: false,
+        IconComponent: DesignerIcon,
+    },
+    {
+        index: 2,
+        label: "Profile",
+        isActive: false,
+        IconComponent: UserProfileIcon,
+    },
+    {
+        index: 3,
+        label: "Billing",
+        isActive: false,
+        IconComponent: BillingIcon,
+    },
+];
 
-    // Handle click outside the menu to close it
+const Menu: React.FC<MenuProps> = ({
+    isDarkMode,
+    isMenuOpen,
+    setIsMenuOpen,
+}) => {
+    const [menuState, setMenuState] = useState<Array<boolean>>([
+        true,
+        false,
+        false,
+        false,
+    ]);
+    const menuRef = useRef<HTMLDivElement | null>(null);
     const handleClickOutside = (event: MouseEvent) => {
         if (
             menuRef.current &&
@@ -34,58 +80,93 @@ const SideBar: React.FC<MenuProps> = ({ isMenuOpen, setIsMenuOpen }) => {
     return (
         <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-64 bg-gray-200 dark:bg-gray-900 shadow-lg transform z-10 ${
+            className={`fixed top-0 left-0 h-full w-24 bg-gray-200 dark:bg-gray-900 shadow-lg transform z-10 ${
                 isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } transition-transform duration-300 ease-in-out`}
         >
-            <div className="p-4 flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-700 dark:text-white">
-                    Menu
-                </h2>
-                {/* Close Button */}
-                <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="text-gray-700 dark:text-white focus:outline-none"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-            </div>
-            <ul className="space-y-2">
-                <MenuItem name="Home" onClick={() => setIsMenuOpen(false)} />
-                <MenuItem
-                    name="Designer"
-                    onClick={() => setIsMenuOpen(false)}
-                />
-                <MenuItem name="Profile" onClick={() => setIsMenuOpen(false)} />
+            <ul className="h-full space-y-4 pt-4 flex flex-col justify-start items-center">
+                {menuItems.map(({ index, label, IconComponent }) => (
+                    <MenuItem
+                        key={index}
+                        isActive={menuState[index]}
+                        onClick={() => {
+                            handleItemClick(
+                                index,
+                                menuState,
+                                setIsMenuOpen,
+                                setMenuState,
+                            );
+
+                            switch (index) {
+                                case 0:
+                                    break;
+
+                                case 1:
+                                    break;
+
+                                case 2:
+                                    break;
+
+                                case 3:
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }}
+                        element={
+                            <IconComponent
+                                size={30}
+                                color={isDarkMode ? "white" : "currentColor"}
+                            />
+                        }
+                        label={label}
+                    />
+                ))}
             </ul>
         </div>
     );
 };
-
-const MenuItem: React.FC<MenuItemProps> = ({ name, onClick }) => {
+const MenuItem: React.FC<{
+    isActive: boolean;
+    element: JSX.Element;
+    label: string;
+    onClick: () => void;
+}> = ({ isActive, element, label, onClick }) => {
     return (
-        <li>
+        <li className="relative">
             <button
                 onClick={onClick}
-                className="block text-gray-700 ml-2 w-2/6 text-start dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+                className={`flex flex-col items-center p-2 rounded-md transition-colors duration-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#4A00E0] ${isActive ? "bg-gray-300 dark:bg-gray-700" : ""}`}
+                aria-label={label}
             >
-                {name}
+                {element}
+                <span className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {label}
+                </span>
             </button>
+            {isActive && (
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 w-1 rounded-full" />
+            )}
         </li>
     );
 };
 
-export default SideBar;
+function handleItemClick(
+    elementIndex: number,
+    menuState: Array<boolean>,
+    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setMenuState: React.Dispatch<React.SetStateAction<Array<boolean>>>,
+) {
+    setIsMenuOpen(false);
+    setMenuState(
+        menuState.map((_, index) => {
+            if (index == elementIndex) {
+                return true;
+            }
+            return false;
+        }),
+    );
+}
+
+export default Menu;

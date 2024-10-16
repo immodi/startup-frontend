@@ -24,20 +24,29 @@ const Main: React.FC<MainProps> = ({ token, isDarkMode }) => {
     }, [token]);
 
     return (
-        <div className="flex-grow flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-900 p-10 rounded-lg shadow-lg max-w-2xl w-full transition-all duration-300 transform md:scale-110">
-                <h2 className="text-3xl font-semibold text-gray-700 dark:text-white mb-6 transition-colors duration-300">
+        <div
+            className="
+            flex
+            bg-gray-100 dark:bg-gray-800 transition-colors duration-300
+            flex-grow items-center justify-center p-5
+            "
+        >
+            <div
+                className={`bg-white relative bottom-8 dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
+            >
+                <h2
+                    className={`text-2xl font-semibold ${isDarkMode ? "text-white" : "text-[#4A00E0]"} mb-4 text-center`}
+                >
                     Download a Document
                 </h2>
                 <form
-                    action="post"
                     className="flex flex-col"
                     onSubmit={(e) => {
                         e.preventDefault();
                         setIsLoading(true);
 
-                        let topic: string = e.currentTarget.topic.value;
-                        let template: string = e.currentTarget.template.value;
+                        const topic: string = e.currentTarget.topic.value;
+                        const template: string = e.currentTarget.template.value;
 
                         fileDownloader(
                             topic,
@@ -58,39 +67,40 @@ const Main: React.FC<MainProps> = ({ token, isDarkMode }) => {
                     }}
                 >
                     {/* Topic Input */}
-                    <div className="mb-5">
+                    <div className="mb-4">
                         <label
                             htmlFor="topic"
-                            className="block text-gray-600 dark:text-gray-300 font-medium mb-2 transition-colors duration-300"
+                            className={`block font-medium mb-1 ${isDarkMode ? "text-white" : "text-[#4A00E0]"}`}
                         >
                             Topic
                         </label>
                         <input
                             type="text"
                             id="topic"
-                            className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white transition-colors duration-300"
+                            className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
                             placeholder="Enter a topic (e.g., FPS Games)"
                             required
                         />
                     </div>
 
                     {/* Template Select */}
-                    <div className="mb-5">
+                    <div className="mb-4">
                         <label
                             htmlFor="template"
-                            className="block text-gray-600 dark:text-gray-300 font-medium mb-2 transition-colors duration-300"
+                            className={`block font-medium mb-1 ${isDarkMode ? "text-white" : "text-[#4A00E0]"}`}
                         >
                             Template
                         </label>
                         <select
                             name="template"
                             id="template"
-                            className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white transition-colors duration-300"
+                            className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
                         >
                             {templates.map((template, index) => (
                                 <option
                                     key={index}
                                     value={template.toLowerCase()}
+                                    className={`${isDarkMode ? "dark:text-white dark:bg-gray-700" : ""}`}
                                 >
                                     {capitalizeFirstChar(template)}
                                 </option>
@@ -99,11 +109,11 @@ const Main: React.FC<MainProps> = ({ token, isDarkMode }) => {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="w-full flex justify-center mt-6">
+                    <div className="w-full flex justify-center mt-4">
                         {!isLoading ? (
                             <button
                                 type="submit"
-                                className="bg-purple-600 text-white font-bold py-3 px-6 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-300"
+                                className={`font-bold py-2 px-5 rounded-md focus:outline-none focus:ring-2 transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"}`}
                             >
                                 Download
                             </button>

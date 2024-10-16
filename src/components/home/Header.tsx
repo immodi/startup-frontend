@@ -15,12 +15,15 @@ const Header: React.FC<HeaderProps> = ({
     darkMode,
 }) => {
     return (
-        <header className="w-full bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center transition-colors duration-300">
+        <header
+            className={`w-full bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center transition-colors duration-300`}
+        >
             <div>
                 {/* Menu Button */}
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-gray-700 dark:text-white focus:outline-none"
+                    className="text-gray-700 relative dark:text-white focus:outline-none"
+                    style={{ top: "0.2rem" }}
                 >
                     {/* Menu Icon */}
                     <svg
