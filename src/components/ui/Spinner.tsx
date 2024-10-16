@@ -2,10 +2,12 @@ import { cn } from "@/lib/utils";
 
 interface LoadingSpinnerProps {
     className?: string;
+    isDarkMode?: boolean;
 }
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     className,
+    isDarkMode,
 }) => {
     return (
         <svg
@@ -14,7 +16,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
             height="24"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="currentColor"
+            stroke={isDarkMode ? "white" : "currentColor"}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

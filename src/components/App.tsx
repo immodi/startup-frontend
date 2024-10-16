@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "../styles/app.css";
-import MainComponent from "./Main";
-import { AuthPage } from "./Auth/Auth";
+// import MainComponent from "./home/Home";
+import { AuthPage } from "./auth/Auth";
+import Home from "./home/Home";
 
 function App() {
-    const [authed, setAuthed] = useState(false);
+    const [authed, setAuthed] = useState(true);
 
-    return authed ? <MainComponent /> : <AuthPage setAuthed={setAuthed} />;
+    return authed ? <Home /> : <AuthPage setAuthed={setAuthed} />;
 }
 
 export default App;
