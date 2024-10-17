@@ -8,6 +8,7 @@ interface MenuProps {
     isDarkMode: boolean;
     isMenuOpen: boolean;
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface MenuItemProps {
@@ -52,6 +53,7 @@ const Menu: React.FC<MenuProps> = ({
     isDarkMode,
     isMenuOpen,
     setIsMenuOpen,
+    setCurrentPageName,
 }) => {
     const [menuState, setMenuState] = useState<Array<boolean>>([
         true,
@@ -99,15 +101,23 @@ const Menu: React.FC<MenuProps> = ({
 
                             switch (index) {
                                 case 0:
+                                    //Home
+                                    setCurrentPageName("main");
                                     break;
 
                                 case 1:
+                                    //Designer
+                                    setCurrentPageName("designer");
                                     break;
 
                                 case 2:
+                                    //Profile
+                                    setCurrentPageName("profile");
                                     break;
 
                                 case 3:
+                                    //Billing
+                                    setCurrentPageName("billing");
                                     break;
 
                                 default:

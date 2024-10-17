@@ -2,18 +2,14 @@ import fileDownloader from "@/helpers/fileDownloader";
 import { capitalizeFirstChar, getAllTemplates } from "@/helpers/getTemplates";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../ui/Spinner";
+import { PageProps } from "@/interfaces/pageProp";
 
-interface MainProps {
-    token: string;
-    isDarkMode: boolean;
-}
-
-const Main: React.FC<MainProps> = ({ token, isDarkMode }) => {
+const Main: React.FC<PageProps> = ({ token, isDarkMode }) => {
     const [templates, setTemplates] = useState<Array<string>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        getAllTemplates(token)
+        getAllTemplates(token || "")
             .then((res) => {
                 setTemplates(res);
             })
@@ -52,7 +48,7 @@ const Main: React.FC<MainProps> = ({ token, isDarkMode }) => {
                             topic,
                             template,
                             new Map([]),
-                            token,
+                            token || "",
                             setIsLoading,
                         )
                             .then((res) => {

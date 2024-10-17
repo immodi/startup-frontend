@@ -22,7 +22,7 @@ const SignupPage: React.FC<AuthPageProps> = ({
     };
 
     const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
+        setIsDarkMode?.(!isDarkMode);
     };
 
     return (
@@ -173,7 +173,7 @@ const SignupPage: React.FC<AuthPageProps> = ({
                     </svg>
                     Sign up with Google
                 </button>
-                <p className="text-sm text-center mt-4">
+                <p className="text-sm text-black dark:text-white text-center mt-4">
                     Already have an account?{" "}
                     <a
                         href="#"

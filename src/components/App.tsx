@@ -1,16 +1,15 @@
 import { useState } from "react";
 import "../styles/app.css";
-// import MainComponent from "./home/Home";
-import { AuthPage } from "./auth/Auth";
 import Header from "./home/Header";
 import Menu from "./home/Menu";
 import Footer from "./home/Footer";
-import Main from "./home/Main";
+import Router from "./pages/Router";
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
     const [authed, setAuthed] = useState(true);
+    const [currentPageName, setCurrentPageName] = useState<string>("main");
     const [token, setToken] = useState<string>(import.meta.env.VITE_USER_TOKEN);
 
     return (
@@ -23,21 +22,20 @@ function App() {
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
             />
+
             <Menu
                 isDarkMode={darkMode}
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
+                setCurrentPageName={setCurrentPageName}
             />
 
-            {authed ? (
-                <Main token={token} isDarkMode={darkMode} />
-            ) : (
-                <AuthPage
-                    isDarkMode={darkMode}
-                    setIsDarkMode={setDarkMode}
-                    setAuthed={setAuthed}
-                />
-            )}
+            <Router
+                isDarkMode={darkMode}
+                pageName={currentPageName}
+                token={token}
+                setCurrentPageName={setCurrentPageName}
+            />
 
             <Footer />
         </div>

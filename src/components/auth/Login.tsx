@@ -22,7 +22,7 @@ export const LoginPage: React.FC<AuthPageProps> = ({
     };
 
     const toggleDarkMode = () => {
-        setIsDarkMode((prevMode) => !prevMode);
+        setIsDarkMode?.((prevMode) => !prevMode);
     };
 
     return (
@@ -147,7 +147,7 @@ export const LoginPage: React.FC<AuthPageProps> = ({
                     Sign up with Google
                 </button>
 
-                <p className="text-sm text-center mt-4">
+                <p className="text-sm text-black dark:text-white text-center mt-4">
                     Don't have an account?{" "}
                     <a
                         href="#"
