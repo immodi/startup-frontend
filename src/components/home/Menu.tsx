@@ -66,7 +66,7 @@ const Menu: React.FC<MenuProps> = ({
         if (
             menuRef.current &&
             isMenuOpen &&
-            !menuRef.current.contains(event.target as Node)
+            menuRef.current.contains(event.target as Node)
         ) {
             setIsMenuOpen(false);
         }

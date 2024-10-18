@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
 
-const Main: React.FC<PageProps> = ({ token, isDarkMode }) => {
+const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [templates, setTemplates] = useState<Array<string>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -21,11 +21,11 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode }) => {
 
     return (
         <div
-            className="
-            flex
-            bg-gray-100 dark:bg-gray-800 transition-colors duration-300
+            className={`
+            flex ${isMenuOpen && "translate-x-24"}
+            bg-gray-100 dark:bg-gray-800 transition-all duration-300
             flex-grow items-center justify-center p-5
-            "
+            `}
         >
             <div
                 className={`bg-white relative bottom-8 dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}

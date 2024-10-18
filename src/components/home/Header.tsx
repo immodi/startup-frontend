@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
     return (
         <header
-            className={`w-full bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center transition-colors duration-300`}
+            className={`w-full bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center transition-all ${isMenuOpen && "translate-x-24"} duration-300`}
         >
             <div>
                 {/* Menu Button */}

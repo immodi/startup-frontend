@@ -1,19 +1,19 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 
-export const LoginPage: React.FC<AuthPageProps> = ({
-    setHasAccount,
-    isDarkMode,
-    setIsDarkMode,
-}) => {
-    const [email, setEmail] = useState<string>("");
+export const LoginPage: React.FC<
+    AuthPageProps & {
+        setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
+    }
+> = ({ setHasAccount, isDarkMode, isMenuOpen }) => {
+    const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         // Handle login logic here (e.g., API call)
-        console.log({ email, password, rememberMe });
+        console.log({ username, password, rememberMe });
     };
 
     const handleGoogleSignIn = () => {
@@ -21,17 +21,13 @@ export const LoginPage: React.FC<AuthPageProps> = ({
         console.log("Google Sign In");
     };
 
-    const toggleDarkMode = () => {
-        setIsDarkMode?.((prevMode) => !prevMode);
-    };
-
     return (
         <div
-            className="
-        flex
-        bg-gray-100 dark:bg-gray-800 transition-colors duration-300
+            className={`
+        flex ${isMenuOpen && "translate-x-24"}
+        bg-gray-100 dark:bg-gray-800 transition-all duration-300
         flex-grow items-center justify-center p-5
-        "
+        `}
         >
             <div
                 className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
@@ -46,17 +42,17 @@ export const LoginPage: React.FC<AuthPageProps> = ({
                 >
                     <div>
                         <label
-                            htmlFor="email"
+                            htmlFor="username"
                             className="block text-sm font-medium"
                         >
-                            Email
+                            Username
                         </label>
                         <input
-                            type="email"
-                            placeholder="Enter your email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="username"
+                            placeholder="Enter your username"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUserName(e.target.value)}
                             required
                             className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />

@@ -9,12 +9,12 @@ function App() {
     const [darkMode, setDarkMode] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
     const [authed, setAuthed] = useState(true);
-    const [currentPageName, setCurrentPageName] = useState<string>("main");
+    const [currentPageName, setCurrentPageName] = useState("main");
     const [token, setToken] = useState<string>(import.meta.env.VITE_USER_TOKEN);
 
     return (
         <div
-            className={`${darkMode && "dark"} flex w-screen h-screen flex-col`}
+            className={`${darkMode && "dark"} overflow-x-hidden flex w-screen h-screen flex-col`}
         >
             <Header
                 setDarkMode={setDarkMode}
@@ -31,13 +31,16 @@ function App() {
             />
 
             <Router
+                isMenuOpen={isMenuOpen}
+                authed={authed}
+                setAuthed={setAuthed}
                 isDarkMode={darkMode}
                 pageName={currentPageName}
                 token={token}
                 setCurrentPageName={setCurrentPageName}
             />
 
-            <Footer />
+            <Footer isDarkMode={darkMode} isMenuOpen={isMenuOpen} />
         </div>
     );
 }

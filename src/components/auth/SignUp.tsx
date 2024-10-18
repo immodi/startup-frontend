@@ -1,11 +1,11 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 
-const SignupPage: React.FC<AuthPageProps> = ({
-    isDarkMode,
-    setIsDarkMode,
-    setHasAccount,
-}) => {
+const SignupPage: React.FC<
+    AuthPageProps & {
+        setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
+    }
+> = ({ isDarkMode, setHasAccount, isMenuOpen }) => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -21,17 +21,13 @@ const SignupPage: React.FC<AuthPageProps> = ({
         console.log("Google Sign Up");
     };
 
-    const toggleTheme = () => {
-        setIsDarkMode?.(!isDarkMode);
-    };
-
     return (
         <div
-            className="
-            flex
-            bg-gray-100 dark:bg-gray-800 transition-colors duration-300
+            className={`
+            flex ${isMenuOpen && "translate-x-24"}
+            bg-gray-100 dark:bg-gray-800 transition-all duration-300
             flex-grow items-center justify-center p-5
-            "
+            `}
         >
             <div
                 className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
