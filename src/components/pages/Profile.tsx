@@ -1,22 +1,64 @@
 import React, { useState } from "react";
-import { LoadingSpinner } from "../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
-import { File, LogOut, Settings, User } from "lucide-react";
+import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
+import {
+    ComponentsProps,
+    UserProp,
+} from "./profile_components/profileInterfaces";
+import ProfileComponent from "./profile_components/MainProfile";
+import FilesComponent from "./profile_components/Files";
+import SettingsComponent from "./profile_components/Settings";
+import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
 
-interface User {
-    name: string;
-    email: string;
-    joinDate: Date;
-}
+type IconType = Map<
+    number,
+    [
+        React.ForwardRefExoticComponent<
+            Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+        >,
+        () => void,
+    ]
+>;
 
 const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
-    const user: User = {
+    const [isSigningOut, setIsSigningOut] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentComponent, setCurrentComponent] = useState(0);
+    const [selectedIcon, setSelectedIcon] = useState(0);
+    const iconsMap: IconType = new Map([
+        [0, [User, () => console.log("User")]],
+        [1, [File, () => console.log("File")]],
+        [2, [Settings, () => console.log("Settings")]],
+    ]);
+
+    const components: Array<React.FC<ComponentsProps>> = [
+        ProfileComponent,
+        FilesComponent,
+        SettingsComponent,
+    ];
+
+    const user: UserProp = {
         name: "modi",
         email: "test@test.com",
         joinDate: new Date(2024),
+        recentActivities: ["Testing", "Testing2", "Testing3"],
     };
 
-    const token = "user-auth-token"; // Placeholder for your token
+    const componentsProps: PageProps & { user: UserProp } = {
+        user: user,
+        isDarkMode: isDarkMode,
+        isMenuOpen: isMenuOpen,
+    };
+
+    const signOutModalProps: SignOutModalProps = {
+        isDarkMode: isDarkMode,
+        isLoading: isLoading,
+        isOpen: isSigningOut,
+        onClose: () => setIsSigningOut(false),
+        onSignOut: () => {},
+    };
+
+    const Component = components[currentComponent];
 
     return (
         <div
@@ -25,7 +67,39 @@ const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
             {/* Top Navigation Menu */}
             <header className={`bg-white dark:bg-gray-900 p-5 shadow-md`}>
                 <ul className="flex justify-around items-center space-x-8">
-                    <li>
+                    {[...iconsMap].map(([key, [Icon, action]]) => {
+                        return (
+                            <li
+                                key={key}
+                                onClick={() => {
+                                    setSelectedIcon(key);
+                                    setCurrentComponent(key);
+                                    action();
+                                }}
+                            >
+                                <a
+                                    href="#"
+                                    className={`p-3 rounded-full transition-colors duration-200 ${
+                                        isDarkMode
+                                            ? "text-white hover:bg-gray-700"
+                                            : "text-gray-700 hover:bg-gray-200"
+                                    } ${
+                                        selectedIcon === key &&
+                                        selectedIcon !== 3 &&
+                                        "bg-gray-700 text-white hover:bg-gray-700"
+                                    } flex items-center justify-center`}
+                                >
+                                    <Icon size={28} />
+                                </a>
+                            </li>
+                        );
+                    })}
+
+                    <li
+                        onClick={() => {
+                            loggingOut(setIsSigningOut);
+                        }}
+                    >
                         <a
                             href="#"
                             className={`p-3 rounded-full transition-colors duration-200 ${
@@ -34,94 +108,23 @@ const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
                                     : "text-gray-700 hover:bg-gray-200"
                             } flex items-center justify-center`}
                         >
-                            <User size={28} /> {/* User Icon */}
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className={`p-3 rounded-full transition-colors duration-200 ${
-                                isDarkMode
-                                    ? "text-white hover:bg-gray-700"
-                                    : "text-gray-700 hover:bg-gray-200"
-                            } flex items-center justify-center`}
-                        >
-                            <File size={28} /> {/* Document Icon */}
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className={`p-3 rounded-full transition-colors duration-200 ${
-                                isDarkMode
-                                    ? "text-white hover:bg-gray-700"
-                                    : "text-gray-700 hover:bg-gray-200"
-                            } flex items-center justify-center`}
-                        >
-                            <Settings size={28} /> {/* Settings Icon */}
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            className={`p-3 rounded-full transition-colors duration-200 ${
-                                isDarkMode
-                                    ? "text-white hover:bg-gray-700"
-                                    : "text-gray-700 hover:bg-gray-200"
-                            } flex items-center justify-center`}
-                        >
-                            <LogOut size={28} /> {/* Logout Icon */}
+                            <LogOut size={28} />
                         </a>
                     </li>
                 </ul>
             </header>
 
-            {/* Main Content */}
-            <div className="flex flex-col flex-grow p-5">
-                {/* User Info Section */}
-                <section className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md mb-5">
-                    <h2
-                        className={`text-2xl font-semibold mb-4 ${isDarkMode ? "text-white" : "text-[#4A00E0]"}`}
-                    >
-                        Welcome, {user.name}
-                    </h2>
-                    <div className="flex flex-col space-y-2">
-                        <p
-                            className={`${isDarkMode ? "text-white" : "text-gray-700"}`}
-                        >
-                            <span className="font-medium">Email:</span>{" "}
-                            {user.email}
-                        </p>
-                        <p
-                            className={`${isDarkMode ? "text-white" : "text-gray-700"}`}
-                        >
-                            <span className="font-medium">Joined on:</span>{" "}
-                            {new Date(user.joinDate).toLocaleDateString()}
-                        </p>
-                    </div>
-                </section>
+            <Component {...componentsProps} />
 
-                {/* Recent Activity */}
-                {/* <section className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
-                    <h2
-                        className={`text-2xl font-semibold mb-4 ${isDarkMode ? "text-white" : "text-[#4A00E0]"}`}
-                    >
-                        Recent Activity
-                    </h2>
-                    <ul className="space-y-3">
-                        {user.recentActivities.map((activity, index) => (
-                            <li
-                                key={index}
-                                className={`${isDarkMode ? "text-white" : "text-gray-700"} p-3 border-b dark:border-gray-600`}
-                            >
-                                {activity}
-                            </li>
-                        ))}
-                    </ul>
-                </section> */}
-            </div>
+            <SignOutModal {...signOutModalProps} />
         </div>
     );
 };
+
+function loggingOut(
+    setIsSigningOut: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+    setIsSigningOut(true);
+}
 
 export default Profile;
