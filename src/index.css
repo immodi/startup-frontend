@@ -8,6 +8,10 @@
     box-sizing: border-box;
 }
 
+.portrait\:max-h-78 {
+    max-height: 19rem;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
