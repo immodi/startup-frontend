@@ -4,6 +4,7 @@ import React from "react";
 import NotFound from "./404";
 import { AuthPage } from "../auth/Auth";
 import { User } from "@/interfaces/userModel";
+import { UserAuthCookie } from "@/hooks/auth/useGetToken";
 
 const elements: Map<string, React.FC<PageProps>> = new Map([
     ["main", Main],
@@ -17,7 +18,7 @@ interface RouterProps extends PageProps {
 
     pageName: string;
     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
-
+    setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
     userData: User | undefined;
 }
 
@@ -26,6 +27,7 @@ const Router: React.FC<RouterProps> = ({
     authed,
     setAuthed,
     setUserData,
+    setToken,
     isDarkMode,
     token,
     isMenuOpen,
@@ -50,6 +52,7 @@ const Router: React.FC<RouterProps> = ({
             setUserData={setUserData}
             isMenuOpen={isMenuOpen}
             authed={authed}
+            setToken={setToken}
             isDarkMode={isDarkMode}
             setAuthed={setAuthed}
             token={token}

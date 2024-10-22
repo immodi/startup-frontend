@@ -4,16 +4,19 @@ import SignupPage from "./SignUp";
 import { PageProps } from "@/interfaces/pageProp";
 import Profile from "../pages/Profile";
 import { User } from "@/interfaces/userModel";
+import { UserAuthCookie } from "@/hooks/auth/useGetToken";
 
 export interface AuthPageProps extends PageProps {
     authed?: boolean;
     setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+    setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
 }
 
 export const AuthPage: React.FC<AuthPageProps> = ({
     authed,
     setAuthed,
+    setToken,
     setUserData,
     isMenuOpen,
     isDarkMode,
@@ -24,8 +27,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
         setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+        setToken?: React.Dispatch<
+            React.SetStateAction<UserAuthCookie | undefined>
+        >;
     } = {
         isMenuOpen: isMenuOpen,
+        setToken: setToken,
         setHasAccount: setHasAccount,
         setAuthed: setAuthed,
         setUserData: setUserData,

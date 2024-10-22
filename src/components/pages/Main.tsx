@@ -21,7 +21,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                 setTemplates(["document", "report", "paragraph"]);
                 // console.error(err);
             });
-    }, [token]);
+    }, []);
 
     return (
         <div

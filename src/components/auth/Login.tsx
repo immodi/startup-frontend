@@ -2,21 +2,32 @@ import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 import setAuth from "@/hooks/auth/useAuth";
 import { User } from "@/interfaces/userModel";
+import { UserAuthCookie } from "@/hooks/auth/useGetToken";
 
 export const LoginPage: React.FC<
     AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
         setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+        setToken?: React.Dispatch<
+            React.SetStateAction<UserAuthCookie | undefined>
+        >;
     }
-> = ({ setHasAccount, isDarkMode, isMenuOpen, setAuthed, setUserData }) => {
+> = ({
+    setHasAccount,
+    isDarkMode,
+    isMenuOpen,
+    setAuthed,
+    setUserData,
+    setToken,
+}) => {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setAuth(username, password, setUserData, setAuthed);
+        setAuth(username, password, setUserData, setAuthed, setToken);
     };
 
     const handleGoogleSignIn = () => {

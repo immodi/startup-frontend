@@ -30,8 +30,8 @@ export function useSetToken(
 
     cookies.set("userToken", userAuthCookie, {
         path: "/",
-        sameSite: "none",
-        secure: true,
+        sameSite: "lax",
+        secure: false,
         maxAge: 60 * 60 * 24 * 30,
     });
 

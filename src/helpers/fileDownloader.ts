@@ -24,18 +24,23 @@ export default async function fileDownloader(
             },
         );
 
-        // Creating a URL for the file
-        const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        const fileLink = document.createElement("a");
+        if (response.status > 199 && response.status < 300) {
+            // Creating a URL for the file
+            const fileURL = window.URL.createObjectURL(
+                new Blob([response.data]),
+            );
+            const fileLink = document.createElement("a");
 
-        // Set the file name and trigger the download
-        fileLink.href = fileURL;
-        fileLink.setAttribute("download", "data.pdf"); // Replace with the actual file name
-        document.body.appendChild(fileLink);
+            // Set the file name and trigger the download
+            fileLink.href = fileURL;
+            fileLink.setAttribute("download", "data.pdf"); // Replace with the actual file name
+            document.body.appendChild(fileLink);
 
-        // Programmatically click the link to trigger the download
-        fileLink.click();
-        fileLink.remove();
+            // Programmatically click the link to trigger the download
+            fileLink.click();
+            fileLink.remove();
+        }
+
         setIsLoading(false);
     } catch (error) {
         setIsLoading(false);

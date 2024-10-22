@@ -18,7 +18,8 @@ function App() {
     );
 
     useEffect(() => {
-        token !== undefined && setAuthed(true);
+        (token !== undefined || userData?.token !== undefined) &&
+            setAuthed(true);
     }, [token]);
 
     return (
@@ -49,6 +50,7 @@ function App() {
                 pageName={currentPageName}
                 token={token?.token}
                 setCurrentPageName={setCurrentPageName}
+                setToken={setToken}
             />
 
             <Footer isDarkMode={darkMode} isMenuOpen={isMenuOpen} />
