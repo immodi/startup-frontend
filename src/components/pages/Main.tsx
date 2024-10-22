@@ -18,18 +18,8 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                 setTemplates(res);
             })
             .catch((err) => {
-                setTemplates([
-                    "document",
-                    "report",
-                    "paragraph",
-                    "paragraph",
-                    "paragraph",
-                    "paragraph",
-                    "paragraph",
-                    "paragraph",
-                    "paragraph",
-                ]);
-                console.error(err);
+                setTemplates(["document", "report", "paragraph"]);
+                // console.error(err);
             });
     }, [token]);
 

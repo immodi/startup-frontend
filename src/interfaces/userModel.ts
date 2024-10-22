@@ -1,0 +1,15 @@
+export interface User {
+    avatar: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    email: string;
+    emailVisibility: boolean;
+    id: string;
+    name: string;
+    updated: string;
+    user_templates: string[]; // Array of strings
+    username: string;
+    verified: boolean;
+    token: string;
+}

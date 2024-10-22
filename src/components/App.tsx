@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/app.css";
 import Header from "./home/Header";
 import Menu from "./home/Menu";
 import Footer from "./home/Footer";
 import Router from "./pages/Router";
+import { User } from "@/interfaces/userModel";
+import { useGetToken, UserAuthCookie } from "@/hooks/auth/useGetToken";
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
-    const [authed, setAuthed] = useState(true);
+    const [authed, setAuthed] = useState(false);
     const [currentPageName, setCurrentPageName] = useState("main");
-    const [token, setToken] = useState<string>(import.meta.env.VITE_USER_TOKEN);
+    const [userData, setUserData] = useState<User>();
+    const [token, setToken] = useState<UserAuthCookie | undefined>(
+        useGetToken(),
+    );
+
+    useEffect(() => {
+        token !== undefined && setAuthed(true);
+    }, [token]);
 
     return (
         <div
@@ -31,12 +40,14 @@ function App() {
             />
 
             <Router
+                setUserData={setUserData}
+                userData={userData}
                 isMenuOpen={isMenuOpen}
                 authed={authed}
                 setAuthed={setAuthed}
                 isDarkMode={darkMode}
                 pageName={currentPageName}
-                token={token}
+                token={token?.token}
                 setCurrentPageName={setCurrentPageName}
             />
 

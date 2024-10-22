@@ -1,19 +1,22 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
+import setAuth from "@/hooks/auth/useAuth";
+import { User } from "@/interfaces/userModel";
 
 export const LoginPage: React.FC<
     AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
+        setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
+        setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
     }
-> = ({ setHasAccount, isDarkMode, isMenuOpen }) => {
+> = ({ setHasAccount, isDarkMode, isMenuOpen, setAuthed, setUserData }) => {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        // Handle login logic here (e.g., API call)
-        console.log({ username, password, rememberMe });
+        setAuth(username, password, setUserData, setAuthed);
     };
 
     const handleGoogleSignIn = () => {

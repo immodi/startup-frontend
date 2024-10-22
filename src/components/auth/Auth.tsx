@@ -3,15 +3,18 @@ import { LoginPage } from "./Login";
 import SignupPage from "./SignUp";
 import { PageProps } from "@/interfaces/pageProp";
 import Profile from "../pages/Profile";
+import { User } from "@/interfaces/userModel";
 
 export interface AuthPageProps extends PageProps {
     authed?: boolean;
+    setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AuthPage: React.FC<AuthPageProps> = ({
     authed,
     setAuthed,
+    setUserData,
     isMenuOpen,
     isDarkMode,
 }) => {
@@ -19,10 +22,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({
 
     const authProps: AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
+        setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
+        setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
     } = {
         isMenuOpen: isMenuOpen,
         setHasAccount: setHasAccount,
         setAuthed: setAuthed,
+        setUserData: setUserData,
         isDarkMode: isDarkMode,
     };
 

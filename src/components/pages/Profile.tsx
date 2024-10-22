@@ -9,6 +9,7 @@ import ProfileComponent from "./profile_components/MainProfile";
 import FilesComponent from "./profile_components/Files";
 import SettingsComponent from "./profile_components/Settings";
 import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
+import { useGetToken, UserAuthCookie } from "@/hooks/auth/useGetToken";
 
 type IconType = Map<
     number,
@@ -37,10 +38,11 @@ const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
         SettingsComponent,
     ];
 
+    const userLocal = useGetToken() as UserAuthCookie;
     const user: UserProp = {
-        name: "modi",
-        email: "test@test.com",
-        joinDate: new Date(2024),
+        name: userLocal.username,
+        email: userLocal.email,
+        joinDate: new Date(userLocal.joinedAt),
         recentActivities: ["Testing", "Testing2", "Testing3"],
     };
 
