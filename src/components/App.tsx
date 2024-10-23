@@ -4,15 +4,15 @@ import Header from "./home/Header";
 import Menu from "./home/Menu";
 import Footer from "./home/Footer";
 import Router from "./pages/Router";
-import { User } from "@/interfaces/userModel";
-import { useGetToken, UserAuthCookie } from "@/hooks/auth/useGetToken";
+import { UserModel } from "@/interfaces/userModel";
+import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
     const [authed, setAuthed] = useState(false);
     const [currentPageName, setCurrentPageName] = useState("main");
-    const [userData, setUserData] = useState<User>();
+    const [userData, setUserData] = useState<UserModel>();
     const [token, setToken] = useState<UserAuthCookie | undefined>(
         useGetToken(),
     );

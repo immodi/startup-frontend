@@ -1,13 +1,15 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
-import setAuth from "@/hooks/auth/useAuth";
-import { User } from "@/interfaces/userModel";
-import { UserAuthCookie } from "@/hooks/auth/useGetToken";
+import useLogin from "@/hooks/auth/useLogin";
+import { UserModel } from "@/interfaces/userModel";
+import { UserAuthCookie } from "@/hooks/auth/useToken";
 
 export const LoginPage: React.FC<
     AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
-        setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>;
+        setUserData?: React.Dispatch<
+            React.SetStateAction<UserModel | undefined>
+        >;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
         setToken?: React.Dispatch<
             React.SetStateAction<UserAuthCookie | undefined>
@@ -27,7 +29,7 @@ export const LoginPage: React.FC<
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setAuth(username, password, setUserData, setAuthed, setToken);
+        useLogin(username, password, setUserData, setAuthed, setToken);
     };
 
     const handleGoogleSignIn = () => {

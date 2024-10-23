@@ -9,7 +9,9 @@ import ProfileComponent from "./profile_components/MainProfile";
 import FilesComponent from "./profile_components/Files";
 import SettingsComponent from "./profile_components/Settings";
 import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
-import { useGetToken, UserAuthCookie } from "@/hooks/auth/useGetToken";
+import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
+import useSignout from "@/hooks/auth/useSignout";
+import { UserModel } from "@/interfaces/userModel";
 
 type IconType = Map<
     number,
@@ -21,7 +23,17 @@ type IconType = Map<
     ]
 >;
 
-const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
+const Profile: React.FC<
+    PageProps & {
+        setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
+        setToken: React.Dispatch<
+            React.SetStateAction<UserAuthCookie | undefined>
+        >;
+        setUserData: React.Dispatch<
+            React.SetStateAction<UserModel | undefined>
+        >;
+    }
+> = ({ isDarkMode, isMenuOpen, setAuthed, setToken, setUserData }) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [currentComponent, setCurrentComponent] = useState(0);
@@ -57,7 +69,9 @@ const Profile: React.FC<PageProps> = ({ isDarkMode, isMenuOpen }) => {
         isLoading: isLoading,
         isOpen: isSigningOut,
         onClose: () => setIsSigningOut(false),
-        onSignOut: () => {},
+        onSignOut: () => {
+            useSignout(setAuthed, setToken, setUserData);
+        },
     };
 
     const Component = components[currentComponent];

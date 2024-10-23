@@ -37,3 +37,8 @@ export function useSetToken(
 
     return true;
 }
+
+export function useDeleteToken(): void {
+    const cookies = new Cookies();
+    cookies.remove("userToken");
+}

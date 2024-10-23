@@ -3,8 +3,8 @@ import Main from "./Main";
 import React from "react";
 import NotFound from "./404";
 import { AuthPage } from "../auth/Auth";
-import { User } from "@/interfaces/userModel";
-import { UserAuthCookie } from "@/hooks/auth/useGetToken";
+import { UserModel } from "@/interfaces/userModel";
+import { UserAuthCookie } from "@/hooks/auth/useToken";
 
 const elements: Map<string, React.FC<PageProps>> = new Map([
     ["main", Main],
@@ -14,12 +14,12 @@ const elements: Map<string, React.FC<PageProps>> = new Map([
 interface RouterProps extends PageProps {
     authed: boolean;
     setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
-    setUserData: React.Dispatch<React.SetStateAction<User | undefined>>;
+    setUserData: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
 
     pageName: string;
     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
     setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
-    userData: User | undefined;
+    userData: UserModel | undefined;
 }
 
 const Router: React.FC<RouterProps> = ({

@@ -1,4 +1,4 @@
-export interface User {
+export interface UserModel {
     avatar: string;
     collectionId: string;
     collectionName: string;

@@ -1,11 +1,11 @@
-import { User } from "@/interfaces/userModel";
+import { UserModel } from "@/interfaces/userModel";
 import PocketBase from "pocketbase";
-import { useGetToken, UserAuthCookie, useSetToken } from "./useGetToken";
+import { useGetToken, UserAuthCookie, useSetToken } from "./useToken";
 
-function setAuth(
+function useLogin(
     username: string,
     password: string,
-    setUserData?: React.Dispatch<React.SetStateAction<User | undefined>>,
+    setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
     setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
 ) {
@@ -17,8 +17,8 @@ function setAuth(
         pb.collection("users")
             .authWithPassword(username, password)
             .then((res) => {
-                const user: User = {
-                    ...(res.record as unknown as User),
+                const user: UserModel = {
+                    ...(res.record as unknown as UserModel),
                     collectionId: "",
                     id: "",
                     collectionName: "",
@@ -47,4 +47,4 @@ function setAuth(
     }
 }
 
-export default setAuth;
+export default useLogin;
