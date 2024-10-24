@@ -15,23 +15,22 @@ function useLogin(
         setAuthed?.(true);
     } else {
         pb.collection("users")
-            .authWithPassword(username, password)
+            .authWithPassword<UserModel>(username, password)
             .then((res) => {
+                // change the application state to authed
+                setAuthed?.(true);
+
+                // auth the user to the application itself
                 const user: UserModel = {
-                    ...(res.record as unknown as UserModel),
+                    ...res.record,
                     collectionId: "",
                     id: "",
                     collectionName: "",
                     token: res.token,
                 };
                 setUserData?.(user);
-                setAuthed?.(true);
-                useSetToken(
-                    user.username,
-                    user.email,
-                    user.created,
-                    user.token,
-                );
+
+                // set the token and other local data for the other sign ins
                 const userAuthToken: UserAuthCookie = {
                     username: user.username,
                     email: user.email,
@@ -39,6 +38,13 @@ function useLogin(
                     token: user.token,
                 };
                 setToken?.(userAuthToken);
+
+                useSetToken(
+                    user.username,
+                    user.email,
+                    user.created,
+                    user.token,
+                );
             })
             .catch((err) => {
                 setAuthed?.(false);

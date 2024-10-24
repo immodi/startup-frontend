@@ -15,10 +15,10 @@ interface RouterProps extends PageProps {
     authed: boolean;
     setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
     setUserData: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
+    setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
 
     pageName: string;
     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
-    setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
     userData: UserModel | undefined;
 }
 

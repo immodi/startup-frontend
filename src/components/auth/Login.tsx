@@ -25,7 +25,7 @@ export const LoginPage: React.FC<
 }) => {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [rememberMe, setRememberMe] = useState<boolean>(false);
+    // const [rememberMe, setRememberMe] = useState<boolean>(false);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -90,14 +90,14 @@ export const LoginPage: React.FC<
                             className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                         <label className="inline-flex items-center">
                             <input
                                 type="checkbox"
-                                checked={rememberMe}
-                                onChange={(e) =>
-                                    setRememberMe(e.target.checked)
-                                }
+                                // checked={rememberMe}
+                                // onChange={(e) =>
+                                //     setRememberMe(e.target.checked)
+                                // }
                                 className="form-checkbox text-purple-500"
                             />
                             <span className="ml-2 text-sm">
@@ -110,7 +110,8 @@ export const LoginPage: React.FC<
                         >
                             Forgot Password?
                         </a>
-                    </div>
+                    </div> */}
+                    <div>{/* spacer div */}</div>
                     <button
                         type="submit"
                         className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500`}

@@ -3,6 +3,7 @@ import { capitalizeFirstChar, getAllTemplates } from "@/helpers/getTemplates";
 import { FormEvent, useEffect, useState } from "react";
 import { LoadingSpinner } from "../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
+import getTemplateData from "@/helpers/getTemplatesData";
 
 const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [templates, setTemplates] = useState<Array<string>>([]);
@@ -11,6 +12,10 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [creativity, setCreativity] = useState(50);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isKeyValuePopupOpen, setIsKeyValuePopupOpen] = useState(false);
+    const [userTemplateData, setUserTemplateData] = useState<
+        Map<string, string>
+    >(new Map());
 
     useEffect(() => {
         getAllTemplates(token ?? "")
@@ -45,7 +50,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                         fileDownloader(
                             topic,
                             selectedTemplate,
-                            new Map([]),
+                            userTemplateData,
                             token || "",
                             setIsLoading,
                         )
@@ -60,20 +65,20 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                             });
                     }}
                 >
-                    <div className="form-group w-full min-h-fit h-2/3 flex flex-col justify-center relative bottom-4 portrait:bottom-8">
+                    <div className="form-group w-full min-h-fit h-2/3 flex flex-col justify-center relative portrait:bottom-8">
                         {/* Topic Input */}
                         <div className="mb-4 item">
                             <input
                                 type="text"
                                 id="topic"
-                                className={`w-full portrait:h-14 p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
+                                className={`w-full portrait:top-4 relative portrait:h-14 p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
                                 placeholder="Enter a topic (e.g., FPS Games)"
                                 required
                             />
                         </div>
 
                         {/* Creativity Slider */}
-                        <div className="mb-4 item relative top-2 portrait:top-6">
+                        <div className="mb-4 item relative portrait:top-6">
                             <label
                                 htmlFor="creativity"
                                 className={`block font-semibold ${isDarkMode ? "text-white" : "text-gray-700"}`}
@@ -146,6 +151,17 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                             </div>
                         </div>
 
+                        {/* Button to open the Key-Value Pair Popup */}
+                        <div className="text-center mt-4 flex justify-center items-center">
+                            <button
+                                type="button"
+                                onClick={() => setIsKeyValuePopupOpen(true)}
+                                className={`w-full py-3 rounded-lg font-semibold tracking-wide text-lg transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
+                            >
+                                Add User Data To Template
+                            </button>
+                        </div>
+
                         {/* Submit Button */}
                         <div className="text-center mt-4 flex justify-center items-center">
                             {!isLoading ? (
@@ -165,6 +181,84 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                     </div>
                 </form>
             </div>
+
+            {isKeyValuePopupOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div
+                        className={`bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 portrait:w-full max-w-lg`}
+                    >
+                        <h3 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
+                            Add Data
+                        </h3>
+                        <form className="flex flex-col w-full h-full justify-between min-h-fit">
+                            <div className="form-group w-full min-h-fit flex flex-col space-y-4">
+                                {/* Key-Value Input Pairs */}
+                                {getTemplateData(selectedTemplate).map(
+                                    (label, index) => (
+                                        <div
+                                            className="flex justify-between items-center"
+                                            key={index}
+                                        >
+                                            {/* Key Input */}
+                                            <input
+                                                type="text"
+                                                disabled={true}
+                                                value={label
+                                                    .charAt(0)
+                                                    .toUpperCase()
+                                                    .concat(label.slice(1))}
+                                                className={`w-1/4 p-2 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
+                                            />
+                                            {/* Value Input */}
+                                            <input
+                                                type="text"
+                                                placeholder={`Value`}
+                                                value={
+                                                    userTemplateData.get(
+                                                        label,
+                                                    ) || ""
+                                                }
+                                                onChange={(event) => {
+                                                    const value =
+                                                        event.target.value;
+
+                                                    // Create a new Map instance based on the existing one
+                                                    const updatedMap = new Map(
+                                                        userTemplateData,
+                                                    );
+                                                    updatedMap.set(
+                                                        label,
+                                                        value,
+                                                    );
+
+                                                    // Set the new Map as the state
+                                                    setUserTemplateData(
+                                                        updatedMap,
+                                                    );
+                                                }}
+                                                className={`w-3/4 ml-4 p-2 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
+                                            />
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+
+                            {/* Close Button */}
+                            <div className="text-center mt-4 flex justify-center items-center">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setIsKeyValuePopupOpen(false)
+                                    }
+                                    className={`py-2 px-4 rounded-lg font-semibold transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -196,27 +290,3 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
 };
 
 export default Main;
-
-// <div className="mb-4">
-// <label
-//     htmlFor="template"
-//     className={`block font-medium mb-1 ${isDarkMode ? "text-white" : "text-[#4A00E0]"}`}
-// >
-//     Template
-// </label>
-// <select
-//     name="template"
-//     id="template"
-//     className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
-// >
-//     {templates.map((template, index) => (
-//         <option
-//             key={index}
-//             value={template.toLowerCase()}
-//             className={`${isDarkMode ? "dark:text-white dark:bg-gray-700" : ""}`}
-//         >
-//             {capitalizeFirstChar(template)}
-//         </option>
-//     ))}
-// </select>
-// </div>

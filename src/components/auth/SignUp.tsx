@@ -1,11 +1,28 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
+import useSignup from "@/hooks/auth/useSignup";
+import { UserAuthCookie } from "@/hooks/auth/useToken";
+import { UserModel } from "@/interfaces/userModel";
 
 const SignupPage: React.FC<
     AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
+        setUserData?: React.Dispatch<
+            React.SetStateAction<UserModel | undefined>
+        >;
+        setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+        setToken?: React.Dispatch<
+            React.SetStateAction<UserAuthCookie | undefined>
+        >;
     }
-> = ({ isDarkMode, setHasAccount, isMenuOpen }) => {
+> = ({
+    isDarkMode,
+    setHasAccount,
+    isMenuOpen,
+    setAuthed,
+    setToken,
+    setUserData,
+}) => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -13,6 +30,15 @@ const SignupPage: React.FC<
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        useSignup(
+            username,
+            email,
+            password,
+            confirmPassword,
+            setUserData,
+            setAuthed,
+            setToken,
+        );
         // Handle sign-up logic here (e.g., API call)
     };
 
