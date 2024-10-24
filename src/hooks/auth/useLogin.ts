@@ -5,9 +5,10 @@ import { useGetToken, UserAuthCookie, useSetToken } from "./useToken";
 function useLogin(
     username: string,
     password: string,
+    rememberMe: boolean,
     setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
-    setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
+    // setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
 ) {
     const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
     const userAuthToken = useGetToken();
@@ -31,20 +32,22 @@ function useLogin(
                 setUserData?.(user);
 
                 // set the token and other local data for the other sign ins
-                const userAuthToken: UserAuthCookie = {
-                    username: user.username,
-                    email: user.email,
-                    joinedAt: user.created,
-                    token: user.token,
-                };
-                setToken?.(userAuthToken);
+                // const userAuthToken: UserAuthCookie = {
+                //     username: user.username,
+                //     email: user.email,
+                //     joinedAt: user.created,
+                //     token: user.token,
+                // };
+                // setToken?.(userAuthToken);
 
-                useSetToken(
-                    user.username,
-                    user.email,
-                    user.created,
-                    user.token,
-                );
+                // save token if the user chooses to me remebered
+                rememberMe &&
+                    useSetToken(
+                        user.username,
+                        user.email,
+                        user.created,
+                        user.token,
+                    );
             })
             .catch((err) => {
                 setAuthed?.(false);

@@ -7,12 +7,39 @@ import Router from "./pages/Router";
 import { UserModel } from "@/interfaces/userModel";
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 
+const getLocalUser = () => {
+    const localUser: UserAuthCookie | undefined = useGetToken();
+    if (localUser !== undefined) {
+        const user: UserModel = {
+            username: localUser.username,
+            email: localUser.email,
+            created: localUser.joinedAt,
+            token: localUser.token,
+            avatar: "",
+            collectionId: "",
+            collectionName: "",
+            emailVisibility: true,
+            id: "",
+            name: "",
+            updated: "",
+            user_templates: [],
+            verified: false,
+        };
+
+        return user;
+    }
+
+    return undefined;
+};
+
 function App() {
     const [darkMode, setDarkMode] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
     const [authed, setAuthed] = useState(false);
     const [currentPageName, setCurrentPageName] = useState("main");
-    const [userData, setUserData] = useState<UserModel>();
+    const [userData, setUserData] = useState<UserModel | undefined>(
+        getLocalUser(),
+    );
     // const [token, setToken] = useState<UserAuthCookie | undefined>(
     //     useGetToken(),
     // );

@@ -22,7 +22,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
             .then((res) => {
                 setTemplates(res);
             })
-            .catch((err) => {
+            .catch(() => {
                 setTemplates(["document", "report", "paragraph"]);
                 // console.error(err);
             });

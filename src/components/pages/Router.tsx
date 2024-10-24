@@ -4,7 +4,6 @@ import React from "react";
 import NotFound from "./404";
 import { AuthPage } from "../auth/Auth";
 import { UserModel } from "@/interfaces/userModel";
-import { UserAuthCookie } from "@/hooks/auth/useToken";
 
 const elements: Map<string, React.FC<PageProps>> = new Map([
     ["main", Main],

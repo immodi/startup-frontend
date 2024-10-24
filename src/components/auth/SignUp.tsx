@@ -56,7 +56,7 @@ const SignupPage: React.FC<
             `}
         >
             <div
-                className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
+                className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : ""}`}
             >
                 <h2 className="text-2xl text-[#4A00E0] dark:text-white font-semibold text-center mb-6">
                     Create an Account
@@ -79,7 +79,7 @@ const SignupPage: React.FC<
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div>
@@ -96,7 +96,7 @@ const SignupPage: React.FC<
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div>
@@ -113,7 +113,7 @@ const SignupPage: React.FC<
                             placeholder="Enter your password"
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div>
@@ -130,7 +130,7 @@ const SignupPage: React.FC<
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     {/* <div className="flex items-center">
@@ -158,7 +158,7 @@ const SignupPage: React.FC<
                     </button>
                 </form>
                 <div className="relative text-center my-4">
-                    <span className="absolute inset-x-0 top-1/2 border-t border-gray-300"></span>
+                    <span className="absolute inset-x-0 top-1/2 border-t "></span>
                     <span className="relative text-[#000000] dark:text-white bg-white dark:bg-gray-800 px-3 text-sm ">
                         Or sign up with
                     </span>
@@ -203,7 +203,7 @@ const SignupPage: React.FC<
                             e.preventDefault();
                             setHasAccount?.(true);
                         }}
-                        className="text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
+                        className="text-[#4A00E0] font-bold dark:text-[#7A1CAC] hover:underline"
                     >
                         Log in
                     </a>

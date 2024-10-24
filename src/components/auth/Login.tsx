@@ -2,7 +2,6 @@ import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 import useLogin from "@/hooks/auth/useLogin";
 import { UserModel } from "@/interfaces/userModel";
-import { UserAuthCookie } from "@/hooks/auth/useToken";
 
 export const LoginPage: React.FC<
     AuthPageProps & {
@@ -11,9 +10,9 @@ export const LoginPage: React.FC<
             React.SetStateAction<UserModel | undefined>
         >;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
-        setToken?: React.Dispatch<
-            React.SetStateAction<UserAuthCookie | undefined>
-        >;
+        // setToken?: React.Dispatch<
+        //     React.SetStateAction<UserAuthCookie | undefined>
+        // >;
     }
 > = ({
     setHasAccount,
@@ -21,15 +20,22 @@ export const LoginPage: React.FC<
     isMenuOpen,
     setAuthed,
     setUserData,
-    setToken,
+    // setToken,
 }) => {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    // const [rememberMe, setRememberMe] = useState<boolean>(false);
+    const [rememberMe, setRememberMe] = useState<boolean>(true);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        useLogin(username, password, setUserData, setAuthed, setToken);
+        useLogin(
+            username,
+            password,
+            rememberMe,
+            setUserData,
+            setAuthed,
+            // setToken,
+        );
     };
 
     const handleGoogleSignIn = () => {
@@ -46,7 +52,7 @@ export const LoginPage: React.FC<
         `}
         >
             <div
-                className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"}`}
+                className={`bg-white dark:bg-gray-800 p-8 flex flex-col justify-center rounded-lg shadow-lg min-h-fit max-w-md w-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : ""}`}
             >
                 <h2 className="text-2xl text-[#4A00E0] dark:text-white font-semibold text-center mb-6">
                     Welcome Back!
@@ -70,7 +76,7 @@ export const LoginPage: React.FC<
                             value={username}
                             onChange={(e) => setUserName(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
                     <div>
@@ -87,17 +93,17 @@ export const LoginPage: React.FC<
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
+                            className={`${isDarkMode ? "bg-gray-700 text-white" : "bg-white"} w-full p-2 border  rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500`}
                         />
                     </div>
-                    {/* <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                         <label className="inline-flex items-center">
                             <input
                                 type="checkbox"
-                                // checked={rememberMe}
-                                // onChange={(e) =>
-                                //     setRememberMe(e.target.checked)
-                                // }
+                                checked={rememberMe}
+                                onChange={(e) =>
+                                    setRememberMe(e.target.checked)
+                                }
                                 className="form-checkbox text-purple-500"
                             />
                             <span className="ml-2 text-sm">
@@ -106,12 +112,11 @@ export const LoginPage: React.FC<
                         </label>
                         <a
                             href="#"
-                            className="text-sm text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
+                            className="text-sm font-bold text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
                         >
                             Forgot Password?
                         </a>
-                    </div> */}
-                    <div>{/* spacer div */}</div>
+                    </div>
                     <button
                         type="submit"
                         className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500`}
@@ -121,9 +126,9 @@ export const LoginPage: React.FC<
                 </form>
 
                 <div className="relative text-center my-4">
-                    <span className="absolute inset-x-0 top-1/2 border-t border-gray-300"></span>
+                    <span className="absolute inset-x-0 top-1/2 border-t "></span>
                     <span className="relative text-[#000000] dark:text-white bg-white dark:bg-gray-800 px-3 text-sm ">
-                        Or sign up with
+                        Or sign in with
                     </span>
                 </div>
 
@@ -157,14 +162,14 @@ export const LoginPage: React.FC<
                             d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
                         ></path>
                     </svg>
-                    Sign up with Google
+                    Log in with Google
                 </button>
 
                 <p className="text-sm text-black dark:text-white text-center mt-4">
                     Don't have an account?{" "}
                     <a
                         href="#"
-                        className="text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
+                        className="text-[#4A00E0] dark:text-[#7A1CAC] font-bold hover:underline"
                         onClick={(e: FormEvent) => {
                             e.preventDefault();
                             setHasAccount?.(false);
