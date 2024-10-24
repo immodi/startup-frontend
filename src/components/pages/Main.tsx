@@ -226,10 +226,17 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                                                     const updatedMap = new Map(
                                                         userTemplateData,
                                                     );
-                                                    updatedMap.set(
-                                                        label,
-                                                        value,
-                                                    );
+
+                                                    if (value !== "") {
+                                                        updatedMap.set(
+                                                            label,
+                                                            value,
+                                                        );
+                                                    } else {
+                                                        updatedMap.delete(
+                                                            label,
+                                                        );
+                                                    }
 
                                                     // Set the new Map as the state
                                                     setUserTemplateData(
