@@ -3,12 +3,12 @@ import { useDeleteToken, UserAuthCookie } from "./useToken";
 
 function useSignout(
     setAuthed: React.Dispatch<React.SetStateAction<boolean>>,
-    setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
+    // setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
     setUserData: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
 ) {
     setAuthed(false);
     useDeleteToken();
-    setToken(undefined);
+    // setToken(undefined);
     setUserData(undefined);
 }
 

@@ -26,14 +26,22 @@ type IconType = Map<
 const Profile: React.FC<
     PageProps & {
         setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
-        setToken: React.Dispatch<
-            React.SetStateAction<UserAuthCookie | undefined>
-        >;
+        // setToken: React.Dispatch<
+        //     React.SetStateAction<UserAuthCookie | undefined>
+        // >;
         setUserData: React.Dispatch<
             React.SetStateAction<UserModel | undefined>
         >;
+        userData: UserModel | undefined;
     }
-> = ({ isDarkMode, isMenuOpen, setAuthed, setToken, setUserData }) => {
+> = ({
+    isDarkMode,
+    isMenuOpen,
+    setAuthed,
+    // setToken,
+    setUserData,
+    userData,
+}) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [currentComponent, setCurrentComponent] = useState(0);
@@ -50,11 +58,11 @@ const Profile: React.FC<
         SettingsComponent,
     ];
 
-    const userLocal = useGetToken() as UserAuthCookie;
+    const userLocal = userData || (useGetToken() as UserAuthCookie);
     const user: UserProp = {
         name: userLocal.username,
         email: userLocal.email,
-        joinDate: new Date(userLocal.joinedAt),
+        joinDate: getCreationDate(userLocal),
         recentActivities: ["Testing", "Testing2", "Testing3"],
     };
 
@@ -70,7 +78,8 @@ const Profile: React.FC<
         isOpen: isSigningOut,
         onClose: () => setIsSigningOut(false),
         onSignOut: () => {
-            useSignout(setAuthed, setToken, setUserData);
+            // useSignout(setAuthed, setToken, setUserData);
+            useSignout(setAuthed, setUserData);
         },
     };
 
@@ -142,5 +151,16 @@ function loggingOut(
 ) {
     setIsSigningOut(true);
 }
+
+const getCreationDate = (user: UserAuthCookie | UserModel): Date => {
+    if ((user as UserModel).created !== undefined) {
+        return new Date((user as UserModel).created);
+    } else if ((user as UserAuthCookie).joinedAt !== undefined) {
+        return new Date((user as UserAuthCookie).joinedAt);
+    } else {
+        return new Date(new Date().toISOString().split("T")[0]);
+    }
+    3;
+};
 
 export default Profile;

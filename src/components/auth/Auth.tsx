@@ -10,16 +10,18 @@ export interface AuthPageProps extends PageProps {
     authed?: boolean;
     setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
-    setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
+    // setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
     goHome?: () => void;
+    userData?: UserModel | undefined;
 }
 
 export const AuthPage: React.FC<AuthPageProps> = ({
     authed,
     setAuthed,
-    setToken,
+    // setToken,
     setUserData,
     isMenuOpen,
+    userData,
     isDarkMode,
 }) => {
     const [hasAccount, setHasAccount] = useState<boolean>(false);
@@ -30,12 +32,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             React.SetStateAction<UserModel | undefined>
         >;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
-        setToken?: React.Dispatch<
-            React.SetStateAction<UserAuthCookie | undefined>
-        >;
+        // setToken?: React.Dispatch<
+        //     React.SetStateAction<UserAuthCookie | undefined>
+        // >;
+        userData?: UserModel | undefined;
     } = {
         isMenuOpen: isMenuOpen,
-        setToken: setToken,
+        // setToken: setToken,
+        userData: userData,
         setHasAccount: setHasAccount,
         setAuthed: setAuthed,
         setUserData: setUserData,
@@ -52,7 +56,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({
         <Profile
             isMenuOpen={isMenuOpen}
             setAuthed={setAuthed!}
-            setToken={setToken!}
+            // setToken={setToken!}
+            userData={userData}
             isDarkMode={isDarkMode}
             setUserData={setUserData!}
         />

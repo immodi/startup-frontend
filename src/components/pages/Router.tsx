@@ -15,7 +15,7 @@ interface RouterProps extends PageProps {
     authed: boolean;
     setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
     setUserData: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
-    setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
+    // setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
 
     pageName: string;
     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +27,8 @@ const Router: React.FC<RouterProps> = ({
     authed,
     setAuthed,
     setUserData,
-    setToken,
+    // setToken,
+    userData,
     isDarkMode,
     token,
     isMenuOpen,
@@ -52,7 +53,8 @@ const Router: React.FC<RouterProps> = ({
             setUserData={setUserData}
             isMenuOpen={isMenuOpen}
             authed={authed}
-            setToken={setToken}
+            userData={userData}
+            // setToken={setToken}
             isDarkMode={isDarkMode}
             setAuthed={setAuthed}
             token={token}

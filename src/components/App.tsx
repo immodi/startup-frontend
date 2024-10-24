@@ -13,14 +13,13 @@ function App() {
     const [authed, setAuthed] = useState(false);
     const [currentPageName, setCurrentPageName] = useState("main");
     const [userData, setUserData] = useState<UserModel>();
-    const [token, setToken] = useState<UserAuthCookie | undefined>(
-        useGetToken(),
-    );
+    // const [token, setToken] = useState<UserAuthCookie | undefined>(
+    //     useGetToken(),
+    // );
 
     useEffect(() => {
-        (token !== undefined || userData?.token !== undefined) &&
-            setAuthed(true);
-    }, [token]);
+        userData?.token !== undefined && setAuthed(true);
+    }, [userData]);
 
     return (
         <div
@@ -48,9 +47,9 @@ function App() {
                 setAuthed={setAuthed}
                 isDarkMode={darkMode}
                 pageName={currentPageName}
-                token={token?.token}
+                token={userData?.token}
                 setCurrentPageName={setCurrentPageName}
-                setToken={setToken}
+                // setToken={setToken}
             />
 
             <Footer isDarkMode={darkMode} isMenuOpen={isMenuOpen} />
