@@ -11,18 +11,11 @@ const SignupPage: React.FC<
             React.SetStateAction<UserModel | undefined>
         >;
         setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
-        setToken?: React.Dispatch<
-            React.SetStateAction<UserAuthCookie | undefined>
-        >;
+        // setToken?: React.Dispatch<
+        //     React.SetStateAction<UserAuthCookie | undefined>
+        // >;
     }
-> = ({
-    isDarkMode,
-    setHasAccount,
-    isMenuOpen,
-    setAuthed,
-    setToken,
-    setUserData,
-}) => {
+> = ({ isDarkMode, setHasAccount, isMenuOpen, setAuthed, setUserData }) => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -37,7 +30,7 @@ const SignupPage: React.FC<
             confirmPassword,
             setUserData,
             setAuthed,
-            setToken,
+            // setToken,
         );
         // Handle sign-up logic here (e.g., API call)
     };

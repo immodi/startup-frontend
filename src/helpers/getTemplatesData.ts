@@ -1,5 +1,6 @@
 const defaultTemplates: Map<string, Array<string>> = new Map([
     ["document", ["title"]],
+    ["paragraph", ["title"]],
     ["report", ["title", "name", "affiliation"]],
 ]);
 
