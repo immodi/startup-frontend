@@ -3,6 +3,7 @@ import { AuthPageProps } from "./Auth";
 import useSignup from "@/hooks/auth/useSignup";
 import { UserAuthCookie } from "@/hooks/auth/useToken";
 import { UserModel } from "@/interfaces/userModel";
+import { LoadingSpinner } from "../ui/Spinner";
 
 const SignupPage: React.FC<
     AuthPageProps & {
@@ -20,9 +21,12 @@ const SignupPage: React.FC<
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>(""); // State for error message
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        setErrorMessage(""); // Clear any previous error messages
         useSignup(
             username,
             email,
@@ -30,7 +34,8 @@ const SignupPage: React.FC<
             confirmPassword,
             setUserData,
             setAuthed,
-            // setToken,
+            setIsLoading,
+            setErrorMessage,
         );
         // Handle sign-up logic here (e.g., API call)
     };
@@ -54,6 +59,13 @@ const SignupPage: React.FC<
                 <h2 className="text-2xl text-[#4A00E0] dark:text-white font-semibold text-center mb-6">
                     Create an Account
                 </h2>
+
+                {errorMessage && (
+                    <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
+                        {errorMessage}
+                    </div>
+                )}
+
                 <form
                     onSubmit={handleSubmit}
                     className="text-[#4A00E0] dark:text-white space-y-4"
@@ -143,12 +155,22 @@ const SignupPage: React.FC<
                             </a>
                         </label>
                     </div> */}
-                    <button
-                        type="submit"
-                        className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} py-2 rounded-md`}
-                    >
-                        Sign Up
-                    </button>
+
+                    {!isLoading ? (
+                        <button
+                            type="submit"
+                            className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} py-2 rounded-md`}
+                        >
+                            Sign Up
+                        </button>
+                    ) : (
+                        <div className="w-full flex justify-center items-center min-h-fit">
+                            <LoadingSpinner
+                                className="w-12 h-12"
+                                isDarkMode={isDarkMode}
+                            />
+                        </div>
+                    )}
                 </form>
                 <div className="relative text-center my-4">
                     <span className="absolute inset-x-0 top-1/2 border-t "></span>

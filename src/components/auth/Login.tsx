@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 import useLogin from "@/hooks/auth/useLogin";
 import { UserModel } from "@/interfaces/userModel";
+import { LoadingSpinner } from "../ui/Spinner";
 
 export const LoginPage: React.FC<
     AuthPageProps & {
@@ -24,17 +25,21 @@ export const LoginPage: React.FC<
 }) => {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [rememberMe, setRememberMe] = useState<boolean>(true);
+    const [rememberMe, setRememberMe] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>(""); // State for error message
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        setErrorMessage(""); // Clear any previous error messages
         useLogin(
             username,
             password,
             rememberMe,
             setUserData,
             setAuthed,
-            // setToken,
+            setIsLoading,
+            setErrorMessage,
         );
     };
 
@@ -58,9 +63,15 @@ export const LoginPage: React.FC<
                     Welcome Back!
                 </h2>
 
+                {errorMessage && (
+                    <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
+                        {errorMessage}
+                    </div>
+                )}
+
                 <form
                     onSubmit={handleSubmit}
-                    className="space-y-4 text-[#4A00E0] dark:text-white"
+                    className="space-y-4 text-[#000] dark:text-white"
                 >
                     <div>
                         <label
@@ -117,12 +128,21 @@ export const LoginPage: React.FC<
                             Forgot Password?
                         </a>
                     </div>
-                    <button
-                        type="submit"
-                        className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                    >
-                        Sign In
-                    </button>
+                    {!isLoading ? (
+                        <button
+                            type="submit"
+                            className={`w-full ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"} text-white py-2 px-4 rounded-md`}
+                        >
+                            Sign In
+                        </button>
+                    ) : (
+                        <div className="w-full flex justify-center items-center min-h-fit">
+                            <LoadingSpinner
+                                className="w-12 h-12"
+                                isDarkMode={isDarkMode}
+                            />
+                        </div>
+                    )}
                 </form>
 
                 <div className="relative text-center my-4">

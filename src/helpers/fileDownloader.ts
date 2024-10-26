@@ -24,26 +24,49 @@ export default async function fileDownloader(
             },
         );
 
-        if (response.status > 199 && response.status < 300) {
-            // Creating a URL for the file
-            const fileURL = window.URL.createObjectURL(
-                new Blob([response.data]),
-            );
+        if (response.status >= 200 && response.status < 300) {
+            // Extract filename from Content-Disposition header
+            const contentDisposition =
+                response.headers["content-disposition"] ||
+                response.headers["Content-Disposition"];
+
+            let filename = "document.pdf"; // Default name
+
+            if (contentDisposition) {
+                // Handle different Content-Disposition format possibilities
+                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                const matches = filenameRegex.exec(contentDisposition);
+                if (matches != null && matches[1]) {
+                    // Remove quotes if present
+                    filename = matches[1].replace(/['"]/g, "");
+                    // Handle UTF-8 encoding if present
+                    if (filename.toLowerCase().startsWith("utf-8''")) {
+                        filename = decodeURIComponent(filename.substring(7));
+                    }
+                }
+            }
+
+            // Create blob URL
+            const blob = new Blob([response.data], { type: "application/pdf" });
+            const fileURL = window.URL.createObjectURL(blob);
+
+            // Create and trigger download
             const fileLink = document.createElement("a");
-
-            // Set the file name and trigger the download
             fileLink.href = fileURL;
-            fileLink.setAttribute("download", "data.pdf"); // Replace with the actual file name
+            fileLink.setAttribute("download", filename);
+
+            // Append to body, click, and cleanup
             document.body.appendChild(fileLink);
-
-            // Programmatically click the link to trigger the download
             fileLink.click();
-            fileLink.remove();
-        }
 
+            // Cleanup
+            document.body.removeChild(fileLink);
+            window.URL.revokeObjectURL(fileURL); // Free up memory
+        }
         setIsLoading(false);
     } catch (error) {
         setIsLoading(false);
         console.error("Error downloading the file:", error);
+        throw error; // Re-throw to allow handling by caller
     }
 }

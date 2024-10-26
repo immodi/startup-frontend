@@ -1,6 +1,7 @@
 import { UserModel } from "@/interfaces/userModel";
 import PocketBase from "pocketbase";
 import useLogin from "./useLogin";
+import { AuthErrorResponse } from "@/interfaces/authResponses";
 
 function useSignup(
     username: string,
@@ -9,8 +10,11 @@ function useSignup(
     confirmPassword: string,
     setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
-    // setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
+    setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
+    setErrorMessage?: React.Dispatch<React.SetStateAction<string>>,
 ) {
+    setIsLoading?.(true);
+
     const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
     const data = {
         username: username,
@@ -29,11 +33,27 @@ function useSignup(
     pb.collection("users")
         .create<UserModel>(data)
         .then(() => {
-            useLogin(username, password, true, setUserData, setAuthed);
+            useLogin(
+                username,
+                password,
+                true,
+                setUserData,
+                setAuthed,
+                setIsLoading,
+                setErrorMessage,
+            );
         })
         .catch((err) => {
             setAuthed?.(false);
+            const error = Object.entries(err.data.data).map(([key, value]) => {
+                return `${key} - ${(value as { message: string }).message}`;
+            });
+
+            setErrorMessage?.(err.message + "\n" + error.join("\n"));
             return err;
+        })
+        .finally(() => {
+            setIsLoading?.(false);
         });
 }
 

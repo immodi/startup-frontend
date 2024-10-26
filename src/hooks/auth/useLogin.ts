@@ -1,6 +1,7 @@
 import { UserModel } from "@/interfaces/userModel";
 import PocketBase from "pocketbase";
 import { useGetToken, UserAuthCookie, useSetToken } from "./useToken";
+import { AuthErrorResponse } from "@/interfaces/authResponses";
 
 function useLogin(
     username: string,
@@ -8,8 +9,11 @@ function useLogin(
     rememberMe: boolean,
     setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
-    // setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
+    setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
+    setErrorMessage?: React.Dispatch<React.SetStateAction<string>>,
 ) {
+    setIsLoading?.(true);
+
     const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
     const userAuthToken = useGetToken();
     if (userAuthToken !== undefined) {
@@ -49,9 +53,14 @@ function useLogin(
                         user.token,
                     );
             })
-            .catch((err) => {
+            .catch((err: AuthErrorResponse) => {
                 setAuthed?.(false);
+                setErrorMessage?.(err.message);
+
                 return err;
+            })
+            .finally(() => {
+                setIsLoading?.(false);
             });
     }
 }
