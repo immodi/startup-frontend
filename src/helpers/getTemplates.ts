@@ -6,7 +6,7 @@ type Template = {
 
 export async function getAllTemplates(token: string): Promise<Array<string>> {
     const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/templates`,
+        `${(window as any).env.VITE_BACKEND_URL}/api/templates`,
         {},
         {
             headers: {

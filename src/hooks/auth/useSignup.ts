@@ -14,7 +14,7 @@ function useSignup(
 ) {
     setIsLoading?.(true);
 
-    const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
+    const pb = new PocketBase((window as any).env.VITE_BACKEND_URL);
     const data = {
         username: username,
         email: email,

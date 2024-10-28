@@ -13,7 +13,7 @@ function useLogin(
 ) {
     setIsLoading?.(true);
 
-    const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
+    const pb = new PocketBase((window as any).env.VITE_BACKEND_URL);
     const userAuthToken = useGetToken();
     if (userAuthToken !== undefined) {
         setAuthed?.(true);
