@@ -20,9 +20,6 @@ FROM nginx:alpine
 # Copy the build files from the first stage to the Nginx web directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy a custom Nginx configuration (optional)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Expose the port Nginx is running on
 EXPOSE 3000
 
