@@ -43,7 +43,7 @@ const Profile: React.FC<
     userData,
 }) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, _] = useState(false);
     const [currentComponent, setCurrentComponent] = useState(0);
     const [selectedIcon, setSelectedIcon] = useState(0);
     const iconsMap: IconType = new Map([

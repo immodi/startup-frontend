@@ -26,3 +26,4 @@ dist-ssr
 .prettierignore
 .prettierrc
 vite-env.d.ts
+*.tsbuildinfo

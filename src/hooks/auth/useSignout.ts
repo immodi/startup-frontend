@@ -1,5 +1,5 @@
 import { UserModel } from "@/interfaces/userModel";
-import { useDeleteToken, UserAuthCookie } from "./useToken";
+import { useDeleteToken } from "./useToken";
 
 function useSignout(
     setAuthed: React.Dispatch<React.SetStateAction<boolean>>,

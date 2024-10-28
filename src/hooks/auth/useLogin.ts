@@ -1,6 +1,6 @@
 import { UserModel } from "@/interfaces/userModel";
 import PocketBase from "pocketbase";
-import { useGetToken, UserAuthCookie, useSetToken } from "./useToken";
+import { useGetToken, useSetToken } from "./useToken";
 
 function useLogin(
     username: string,

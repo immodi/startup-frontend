@@ -1,7 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 import useSignup from "@/hooks/auth/useSignup";
-import { UserAuthCookie } from "@/hooks/auth/useToken";
 import { UserModel } from "@/interfaces/userModel";
 import { LoadingSpinner } from "../ui/Spinner";
 

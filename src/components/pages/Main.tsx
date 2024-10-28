@@ -1,6 +1,6 @@
 import fileDownloader from "@/helpers/fileDownloader";
 import { capitalizeFirstChar, getAllTemplates } from "@/helpers/getTemplates";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
 import getTemplateData from "@/helpers/getTemplatesData";
@@ -11,7 +11,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [selectedTemplate, setSelectedTemplate] =
         useState<string>("document");
     const [isLoading, setIsLoading] = useState(false);
-    const [creativity, setCreativity] = useState(50);
+    const [vocabulary, setVocabulary] = useState(6);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isKeyValuePopupOpen, setIsKeyValuePopupOpen] = useState(false);
     const [userTemplateData, setUserTemplateData] = useState<
@@ -53,6 +53,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                         fileDownloader(
                             topic,
                             selectedTemplate,
+                            vocabulary,
                             userTemplateData,
                             token!,
                             setIsLoading,
@@ -88,19 +89,19 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                                 htmlFor="creativity"
                                 className={`block font-semibold ${isDarkMode ? "text-white" : "text-gray-700"}`}
                             >
-                                Creativity Level:{" "}
-                                <span id="creativity-value">{creativity}</span>
+                                Vocabulary Level:{" "}
+                                <span id="creativity-value">{vocabulary}</span>
                             </label>
                             <input
                                 type="range"
-                                id="creativity"
-                                name="creativity"
+                                id="vocabulary"
+                                name="vocabulary"
                                 min="0"
-                                max="100"
-                                defaultValue={creativity.toString()}
+                                max="10"
+                                defaultValue={vocabulary.toString()}
                                 className={`w-full focus:outline-none ${isDarkMode ? "bg-gray-700 accent-[#AD49E1]" : "bg-gray-200 accent-[#4A00E0]"}`}
                                 onChange={(e) => {
-                                    setCreativity(
+                                    setVocabulary(
                                         parseInt(e.currentTarget.value),
                                     );
                                 }}
@@ -196,7 +197,7 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                             Add Data
                         </h3>
                         <form className="flex flex-col w-full h-full justify-between min-h-fit">
-                            <div className="form-group w-full min-h-fit flex flex-col space-y-4">
+                            <div className="form-group overflow-y-auto max-h-64 w-full min-h-fit flex flex-col space-y-4">
                                 {/* Key-Value Input Pairs */}
                                 {getTemplateData(selectedTemplate).map(
                                     (label, index) => (

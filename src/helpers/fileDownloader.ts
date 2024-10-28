@@ -3,6 +3,7 @@ import axios from "axios";
 export default async function fileDownloader(
     topic: string,
     templateString: string,
+    vocabularyLevel: number,
     data: Map<string, string>,
     token: string,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,6 +14,7 @@ export default async function fileDownloader(
             {
                 topic: topic,
                 template: templateString,
+                level: vocabularyLevel,
                 data: Object.fromEntries(data),
             },
             {
