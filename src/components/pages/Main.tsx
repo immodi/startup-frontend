@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { LoadingSpinner } from "../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
 import getTemplateData from "@/helpers/getTemplatesData";
+import { GenerateErrorResponse } from "@/interfaces/genrateResponses";
 
 const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [templates, setTemplates] = useState<Array<string>>([]);
@@ -16,6 +17,8 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
     const [userTemplateData, setUserTemplateData] = useState<
         Map<string, string>
     >(new Map());
+    const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         getAllTemplates(token ?? "")
@@ -51,14 +54,16 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                             topic,
                             selectedTemplate,
                             userTemplateData,
-                            token || "",
+                            token!,
                             setIsLoading,
                         )
                             .then((res) => {
                                 console.log(res);
                             })
-                            .catch((err) => {
-                                console.log(err);
+                            .catch((err: GenerateErrorResponse) => {
+                                console.log(err.details);
+                                setIsErrorDialogOpen(true);
+                                setErrorMessage(err.details);
                             })
                             .finally(() => {
                                 setIsLoading(false);
@@ -292,6 +297,53 @@ const Main: React.FC<PageProps> = ({ token, isDarkMode, isMenuOpen }) => {
                     </div>
                 </div>
             )}
+
+            {isErrorDialogOpen && (
+                <ErrorDialog
+                    errorMessage={errorMessage}
+                    onClose={() => setIsErrorDialogOpen(false)}
+                    isDarkMode={isDarkMode}
+                />
+            )}
+        </div>
+    );
+};
+
+// Define the interface for the error dialog props
+interface ErrorDialogProps {
+    errorMessage: string;
+    onClose: () => void;
+    isDarkMode: boolean;
+}
+
+// Error dialog modal component
+const ErrorDialog: React.FC<ErrorDialogProps> = ({
+    errorMessage,
+    onClose,
+    isDarkMode,
+}) => {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 max-w-md">
+                <h2 className="text-2xl font-semibold mb-4 text-center dark:text-white text-[#4A00E0]">
+                    Error
+                </h2>
+                <p className="text-gray-700 dark:text-gray-300">
+                    {errorMessage}
+                </p>
+                <div className="text-center mt-4">
+                    <button
+                        onClick={onClose}
+                        className={`py-2 px-4 rounded-lg font-semibold transition-colors duration-300 ${
+                            isDarkMode
+                                ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white"
+                                : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"
+                        }`}
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

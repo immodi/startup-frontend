@@ -1,7 +1,6 @@
 import { UserModel } from "@/interfaces/userModel";
 import PocketBase from "pocketbase";
 import useLogin from "./useLogin";
-import { AuthErrorResponse } from "@/interfaces/authResponses";
 
 function useSignup(
     username: string,
@@ -11,7 +10,7 @@ function useSignup(
     setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
     setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
     setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
-    setErrorMessage?: React.Dispatch<React.SetStateAction<string>>,
+    setErrorMessages?: React.Dispatch<React.SetStateAction<string[] | null>>,
 ) {
     setIsLoading?.(true);
 
@@ -40,7 +39,7 @@ function useSignup(
                 setUserData,
                 setAuthed,
                 setIsLoading,
-                setErrorMessage,
+                setErrorMessages,
             );
         })
         .catch((err) => {
@@ -49,7 +48,7 @@ function useSignup(
                 return `${key} - ${(value as { message: string }).message}`;
             });
 
-            setErrorMessage?.(err.message + "\n" + error.join("\n"));
+            setErrorMessages?.([err.message, ...error]);
             return err;
         })
         .finally(() => {

@@ -22,11 +22,11 @@ const SignupPage: React.FC<
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string>(""); // State for error message
+    const [errorMessages, setErrorMessages] = useState<string[] | null>(null); // State for error message
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setErrorMessage(""); // Clear any previous error messages
+        setErrorMessages(null); // Clear any previous error messages
         useSignup(
             username,
             email,
@@ -35,7 +35,7 @@ const SignupPage: React.FC<
             setUserData,
             setAuthed,
             setIsLoading,
-            setErrorMessage,
+            setErrorMessages,
         );
         // Handle sign-up logic here (e.g., API call)
     };
@@ -60,10 +60,17 @@ const SignupPage: React.FC<
                     Create an Account
                 </h2>
 
-                {errorMessage && (
-                    <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
-                        {errorMessage}
-                    </div>
+                {errorMessages !== null && (
+                    <ul className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
+                        <p>{errorMessages[0]}</p>
+                        {errorMessages
+                            .slice(1, errorMessages.length)
+                            .map((error) => {
+                                return (
+                                    <li className="list-disc mx-6">{error}</li>
+                                );
+                            })}
+                    </ul>
                 )}
 
                 <form

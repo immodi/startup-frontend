@@ -17,10 +17,11 @@ export default async function fileDownloader(
             },
             {
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: token,
                 },
                 responseType: "blob",
+                // Add this to capture error responses as JSON instead of blob
+                validateStatus: (status) => status === 200,
             },
         );
 
@@ -62,11 +63,19 @@ export default async function fileDownloader(
             // Cleanup
             document.body.removeChild(fileLink);
             window.URL.revokeObjectURL(fileURL); // Free up memory
+        } else {
         }
+
         setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
         setIsLoading(false);
-        console.error("Error downloading the file:", error);
-        throw error; // Re-throw to allow handling by caller
+
+        if (error.response?.data instanceof Blob) {
+            const jsonError = await error.response.data.text();
+            const errorData = JSON.parse(jsonError);
+
+            throw errorData;
+        }
+        throw error;
     }
 }
