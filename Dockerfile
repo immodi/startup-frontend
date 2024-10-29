@@ -28,12 +28,6 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Install Node.js to run the environment script
 RUN apk add --no-cache nodejs npm
 
-# Copy the Node script to the container
-# COPY public/writeEnv.js /usr/share/nginx/writeEnv.js
-
-# Run the Node script to create the .env file
-# RUN node /usr/share/nginx/writeEnv.js
-
 # Expose port 5173
 EXPOSE 5173
 
