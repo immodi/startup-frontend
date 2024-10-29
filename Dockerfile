@@ -25,14 +25,17 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy nginx configuration (created below)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY public/env-config.js /usr/share/nginx/html/env-config.js
-COPY ./inject-env.sh /docker-entrypoint.d/10-inject-env.sh
-RUN chmod +x /docker-entrypoint.d/10-inject-env.sh
+# Install Node.js to run the environment script
+RUN apk add --no-cache nodejs npm
+
+# Copy the Node script to the container
+COPY public/writeEnv.js /usr/share/nginx/writeEnv.js
+
+# Run the Node script to create the .env file
+RUN node /usr/share/nginx/writeEnv.js
 
 # Expose port 5173
 EXPOSE 5173
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
-
-
