@@ -1,21 +1,38 @@
-# Stage 1: Build
-FROM node:18-alpine AS builder
+# Build stage
+FROM node:18-alpine as build
+
+# Set working directory
 WORKDIR /app
+
+# Copy package files
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy project files
 COPY . .
+
+# Build the app
 RUN npm run build
 
-# Stage 2: Serve
+# Production stage
 FROM nginx:alpine
 
-# Set up environment injection script
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY public/env-config.js /usr/share/nginx/html/env-config.js
+# Copy built assets from build stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Inject environment variables script
+# Copy nginx configuration (created below)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY public/env-config.js /usr/share/nginx/html/env-config.js
 COPY ./inject-env.sh /docker-entrypoint.d/10-inject-env.sh
 RUN chmod +x /docker-entrypoint.d/10-inject-env.sh
 
-EXPOSE 3000
+# Expose port 5173
+EXPOSE 5173
+
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+
