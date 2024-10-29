@@ -10,7 +10,7 @@ export default async function fileDownloader(
 ) {
     try {
         const response = await axios.post(
-            `${(window as any).env.VITE_BACKEND_URL}/api/generate`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/generate`,
             {
                 topic: topic,
                 template: templateString,
