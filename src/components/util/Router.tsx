@@ -1,7 +1,7 @@
 import { PageProps } from "@/interfaces/pageProp";
-import Main from "./Main";
+import Main from "../pages/Main";
 import React from "react";
-import NotFound from "./404";
+import NotFound from "../pages/404";
 import { AuthPage } from "../auth/Auth";
 import { UserModel } from "@/interfaces/userModel";
 

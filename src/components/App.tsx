@@ -3,7 +3,7 @@ import "../styles/app.css";
 import Header from "./home/Header";
 import Menu from "./home/Menu";
 import Footer from "./home/Footer";
-import Router from "./pages/Router";
+import Router from "./util/Router";
 import { UserModel } from "@/interfaces/userModel";
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 
