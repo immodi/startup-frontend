@@ -1,12 +1,13 @@
 import { PageProps } from "@/interfaces/pageProp";
-import Main from "../pages/Main";
 import React from "react";
-import NotFound from "../pages/404";
-import { AuthPage } from "../auth/Auth";
 import { UserModel } from "@/interfaces/userModel";
+import Main from "../routes/home/pages/Main";
+import { AuthPage } from "../routes/auth/Auth";
+import NotFound from "../routes/home/pages/404";
+import { useNavigate } from "react-router-dom";
 
 const elements: Map<string, React.FC<PageProps>> = new Map([
-    ["main", Main],
+    ["home", Main],
     ["profile", AuthPage],
 ]);
 
@@ -34,6 +35,10 @@ const Router: React.FC<RouterProps> = ({
     setCurrentPageName,
 }) => {
     const Component = elements.get(pageName);
+    const navigate = useNavigate();
+    const navigateTo = (route: string) => {
+        navigate(`/${route}`, { replace: true });
+    };
 
     if (!Component) {
         return (
@@ -41,7 +46,8 @@ const Router: React.FC<RouterProps> = ({
                 isMenuOpen={isMenuOpen}
                 isDarkMode={isDarkMode}
                 goHome={() => {
-                    setCurrentPageName("main");
+                    setCurrentPageName("home");
+                    navigateTo("home");
                 }}
             />
         );

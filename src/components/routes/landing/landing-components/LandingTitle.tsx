@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LandingTitle: React.FC = () => {
     return (
@@ -16,7 +17,8 @@ const LandingTitle: React.FC = () => {
                 size="lg"
                 className="text-lg px-8 bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white"
             >
-                Get Started <ArrowRight className="ml-2" />
+                <Link to={"/home"}>Get Started</Link>{" "}
+                <ArrowRight className="ml-2" />
             </Button>
         </section>
     );

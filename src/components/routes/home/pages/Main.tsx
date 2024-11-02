@@ -1,7 +1,7 @@
 import fileDownloader from "@/helpers/fileDownloader";
 import { capitalizeFirstChar, getAllTemplates } from "@/helpers/getTemplates";
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../ui/Spinner";
+import { LoadingSpinner } from "../../../ui/Spinner";
 import { PageProps } from "@/interfaces/pageProp";
 import getTemplateData from "@/helpers/getTemplatesData";
 import { GenerateErrorResponse } from "@/interfaces/genrateResponses";

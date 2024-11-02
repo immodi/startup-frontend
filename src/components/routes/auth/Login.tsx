@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from "react";
 import { AuthPageProps } from "./Auth";
 import useLogin from "@/hooks/auth/useLogin";
 import { UserModel } from "@/interfaces/userModel";
-import { LoadingSpinner } from "../ui/Spinner";
+import { LoadingSpinner } from "@/components/ui/Spinner";
 
 export const LoginPage: React.FC<
     AuthPageProps & {

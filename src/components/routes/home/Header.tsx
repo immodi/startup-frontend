@@ -1,17 +1,17 @@
-import DarkModeIcon from "../ui/DarkMode";
-import LightModeIcon from "../ui/LightMode";
+import DarkModeIcon from "../../ui/DarkMode";
+import LightModeIcon from "../../ui/LightMode";
 
 interface HeaderProps {
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isMenuOpen: boolean;
-    setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleDarkMode: () => void;
     darkMode: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
     setIsMenuOpen,
     isMenuOpen,
-    setDarkMode,
+    toggleDarkMode,
     darkMode,
 }) => {
     return (
@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({
             {/* Dark Mode Toggle */}
             <div>
                 <button
-                    onClick={() => setDarkMode(!darkMode)}
+                    onClick={() => toggleDarkMode()}
                     className="text-gray-700 dark:text-white focus:outline-none"
                 >
                     {/* Dark Mode Icon */}

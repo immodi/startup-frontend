@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import HomeIcon from "../ui/menu-icons/HomeIcon";
-import DesignerIcon from "../ui/menu-icons/DesignerIcon";
-import UserProfileIcon from "../ui/menu-icons/UserIcon";
-import BillingIcon from "../ui/menu-icons/BillingIcon";
+import HomeIcon from "../../ui/menu-icons/HomeIcon";
+import DesignerIcon from "../../ui/menu-icons/DesignerIcon";
+import UserProfileIcon from "../../ui/menu-icons/UserIcon";
+import BillingIcon from "../../ui/menu-icons/BillingIcon";
+import { useNavigate } from "react-router-dom";
 
 interface MenuProps {
     isDarkMode: boolean;
     isMenuOpen: boolean;
+    currentPageName: string;
     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -52,9 +54,15 @@ const menuItems: MenuItemProps[] = [
 const Menu: React.FC<MenuProps> = ({
     isDarkMode,
     isMenuOpen,
+    currentPageName,
     setIsMenuOpen,
     setCurrentPageName,
 }) => {
+    const navigate = useNavigate();
+    const navigateTo = (route: string) => {
+        navigate(`/${route}`, { replace: true });
+    };
+
     const [menuState, setMenuState] = useState<Array<boolean>>([
         true,
         false,
@@ -79,6 +87,22 @@ const Menu: React.FC<MenuProps> = ({
         };
     }, [isMenuOpen]);
 
+    useEffect(() => {
+        const item = menuItems
+            .filter((menuItem) => {
+                if (currentPageName === menuItem.label.toLowerCase()) {
+                    return menuItem;
+                } else {
+                    return undefined;
+                }
+            })
+            .pop();
+
+        if (item !== undefined) {
+            handleItemClick(item.index, menuState, setIsMenuOpen, setMenuState);
+        }
+    }, [currentPageName]);
+
     return (
         <div
             ref={menuRef}
@@ -102,22 +126,26 @@ const Menu: React.FC<MenuProps> = ({
                             switch (index) {
                                 case 0:
                                     //Home
-                                    setCurrentPageName("main");
+                                    setCurrentPageName("home");
+                                    navigateTo("home");
                                     break;
 
                                 case 1:
                                     //Designer
                                     setCurrentPageName("designer");
+                                    navigateTo("designer");
                                     break;
 
                                 case 2:
                                     //Profile
                                     setCurrentPageName("profile");
+                                    navigateTo("profile");
                                     break;
 
                                 case 3:
                                     //Billing
                                     setCurrentPageName("billing");
+                                    navigateTo("billing");
                                     break;
 
                                 default:

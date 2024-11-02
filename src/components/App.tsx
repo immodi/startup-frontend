@@ -1,87 +1,78 @@
-import { useEffect, useState } from "react";
-import "../styles/app.css";
-import Header from "./home/Header";
-import Menu from "./home/Menu";
-import Footer from "./home/Footer";
-import Router from "./util/Router";
-import { UserModel } from "@/interfaces/userModel";
-import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
+import React, { createContext, useEffect, useState } from "react";
+import {
+    BrowserRouter,
+    createBrowserRouter,
+    Outlet,
+    Route,
+    RouterProvider,
+    Routes,
+} from "react-router-dom";
+import LandingPage from "./routes/landing/Landing";
+import Home from "./routes/home/Home";
+import ErrorPage from "./util/Error";
+import useLocalStorageState from "@/hooks/local-data/useLocalData";
+import { Context } from "./util/context";
 
-const getLocalUser = () => {
-    const localUser: UserAuthCookie | undefined = useGetToken();
-    if (localUser !== undefined) {
-        const user: UserModel = {
-            username: localUser.username,
-            email: localUser.email,
-            created: localUser.joinedAt,
-            token: localUser.token,
-            avatar: "",
-            collectionId: "",
-            collectionName: "",
-            emailVisibility: true,
-            id: "",
-            name: "",
-            updated: "",
-            user_templates: [],
-            verified: false,
-        };
-
-        return user;
-    }
-
-    return undefined;
-};
-
-function App() {
-    const [darkMode, setDarkMode] = useState(true);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
-    const [authed, setAuthed] = useState(false);
-    const [currentPageName, setCurrentPageName] = useState("main");
-    const [userData, setUserData] = useState<UserModel | undefined>(
-        getLocalUser(),
-    );
-    // const [token, setToken] = useState<UserAuthCookie | undefined>(
-    //     useGetToken(),
-    // );
+const App: React.FC = () => {
+    const [localState, setLocalState, clearLocalState] = useLocalStorageState();
+    const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
-        userData?.token !== undefined && setAuthed(true);
-    }, [userData]);
+        if (localState.isDarkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+
+        setIsDarkMode(localState.isDarkMode);
+    }, [localState.isDarkMode]);
+
+    const toggleDarkMode = () => {
+        const newDarkMode = !isDarkMode;
+        setIsDarkMode(newDarkMode);
+        setLocalState((prev) => ({ ...prev, isDarkMode: newDarkMode }));
+        document.documentElement.classList.toggle("dark", newDarkMode);
+    };
 
     return (
-        <div
-            className={`${darkMode && "dark"} overflow-x-hidden flex w-screen h-screen flex-col`}
+        <Context.Provider
+            value={{ isDarkMode: isDarkMode, toggleDarkMode: toggleDarkMode }}
         >
-            <Header
-                setDarkMode={setDarkMode}
-                darkMode={darkMode}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-            />
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <LandingPage
+                                isDarkMode={isDarkMode}
+                                toggleDarkMode={toggleDarkMode}
+                            />
+                        }
+                    />
+                    <Route path="/" element={<HomeLayout />}>
+                        <Route path="home" element={<Home />} />
+                        <Route path="designer" element={<Home />} />
+                        <Route path="profile" element={<Home />} />
+                        <Route path="billing" element={<Home />} />
+                    </Route>
 
-            <Menu
-                isDarkMode={darkMode}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                setCurrentPageName={setCurrentPageName}
-            />
-
-            <Router
-                setUserData={setUserData}
-                userData={userData}
-                isMenuOpen={isMenuOpen}
-                authed={authed}
-                setAuthed={setAuthed}
-                isDarkMode={darkMode}
-                pageName={currentPageName}
-                token={userData?.token}
-                setCurrentPageName={setCurrentPageName}
-                // setToken={setToken}
-            />
-
-            <Footer isDarkMode={darkMode} isMenuOpen={isMenuOpen} />
-        </div>
+                    <Route
+                        path="*"
+                        element={
+                            <ErrorPage
+                                isDarkMode={isDarkMode}
+                                toggleDarkMode={toggleDarkMode}
+                            />
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </Context.Provider>
     );
-}
+};
+
+const HomeLayout: React.FC = () => {
+    return <Outlet />;
+};
 
 export default App;

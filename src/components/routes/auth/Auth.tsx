@@ -2,8 +2,8 @@ import { useState } from "react";
 import { LoginPage } from "./Login";
 import SignupPage from "./SignUp";
 import { PageProps } from "@/interfaces/pageProp";
-import Profile from "../pages/Profile";
 import { UserModel } from "@/interfaces/userModel";
+import Profile from "../home/pages/Profile";
 
 export interface AuthPageProps extends PageProps {
     authed?: boolean;
