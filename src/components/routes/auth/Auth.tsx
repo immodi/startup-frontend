@@ -1,47 +1,48 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LoginPage } from "./Login";
 import SignupPage from "./SignUp";
 import { PageProps } from "@/interfaces/pageProp";
 import { UserModel } from "@/interfaces/userModel";
 import Profile from "../home/pages/Profile";
+import {
+    Context,
+    ContextObject,
+    GeneratorContext,
+    GeneratorContextObject,
+} from "@/components/util/context";
 
 export interface AuthPageProps extends PageProps {
     authed?: boolean;
-    setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>;
-    setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+    setUserData?: (userData: UserModel | undefined) => void;
+    setAuthed?: (isAuthed: boolean) => void;
     // setToken?: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>;
     goHome?: () => void;
     userData?: UserModel | undefined;
 }
 
-export const AuthPage: React.FC<AuthPageProps> = ({
-    authed,
-    setAuthed,
-    // setToken,
-    setUserData,
-    isMenuOpen,
-    userData,
-    isDarkMode,
-}) => {
+export const AuthPage: React.FC = () => {
+    const context = useContext(Context) as ContextObject;
+    const generatorContext = useContext(
+        GeneratorContext,
+    ) as GeneratorContextObject;
+
+    const { isDarkMode, userData, setAuthed, setCurrentUserData, authed } =
+        context;
+    const { isMenuOpen } = generatorContext;
+
     const [hasAccount, setHasAccount] = useState<boolean>(false);
 
     const authProps: AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
-        setUserData?: React.Dispatch<
-            React.SetStateAction<UserModel | undefined>
-        >;
-        setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
-        // setToken?: React.Dispatch<
-        //     React.SetStateAction<UserAuthCookie | undefined>
-        // >;
+        setUserData?: (userData: UserModel | undefined) => void;
+        setAuthed?: (isAuthed: boolean) => void;
         userData?: UserModel | undefined;
     } = {
         isMenuOpen: isMenuOpen,
-        // setToken: setToken,
         userData: userData,
         setHasAccount: setHasAccount,
         setAuthed: setAuthed,
-        setUserData: setUserData,
+        setUserData: setCurrentUserData,
         isDarkMode: isDarkMode,
     };
 
@@ -58,7 +59,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
             // setToken={setToken!}
             userData={userData}
             isDarkMode={isDarkMode}
-            setUserData={setUserData!}
+            setUserData={setCurrentUserData!}
         />
     );
 };

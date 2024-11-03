@@ -1,11 +1,12 @@
-import React, { FormEvent } from "react";
+import React, { useContext } from "react";
 import LandingPageHeader from "../routes/landing/landing-components/LandingHeader";
 import { Link } from "react-router-dom";
+import { Context, ContextObject } from "./context";
 
-const ErrorPage: React.FC<{
-    isDarkMode: boolean;
-    toggleDarkMode: () => void;
-}> = ({ isDarkMode, toggleDarkMode }) => {
+const ErrorPage: React.FC<{}> = () => {
+    const context = useContext(Context) as ContextObject;
+    const { isDarkMode, toggleDarkMode } = context;
+
     return (
         <div className="w-dvw h-dvh">
             <LandingPageHeader

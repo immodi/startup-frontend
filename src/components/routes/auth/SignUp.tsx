@@ -7,10 +7,8 @@ import { LoadingSpinner } from "@/components/ui/Spinner";
 const SignupPage: React.FC<
     AuthPageProps & {
         setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
-        setUserData?: React.Dispatch<
-            React.SetStateAction<UserModel | undefined>
-        >;
-        setAuthed?: React.Dispatch<React.SetStateAction<boolean>>;
+        setUserData?: (userData: UserModel | undefined) => void;
+        setAuthed?: (isAuthed: boolean) => void;
         // setToken?: React.Dispatch<
         //     React.SetStateAction<UserAuthCookie | undefined>
         // >;

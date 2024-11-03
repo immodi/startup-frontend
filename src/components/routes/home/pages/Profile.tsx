@@ -25,13 +25,11 @@ type IconType = Map<
 
 const Profile: React.FC<
     PageProps & {
-        setAuthed: React.Dispatch<React.SetStateAction<boolean>>;
+        setAuthed: (isAuthed: boolean) => void;
         // setToken: React.Dispatch<
         //     React.SetStateAction<UserAuthCookie | undefined>
         // >;
-        setUserData: React.Dispatch<
-            React.SetStateAction<UserModel | undefined>
-        >;
+        setUserData: (userData: UserModel | undefined) => void;
         userData: UserModel | undefined;
     }
 > = ({

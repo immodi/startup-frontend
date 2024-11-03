@@ -1,19 +1,22 @@
+import { useContext } from "react";
 import DarkModeIcon from "../../ui/DarkMode";
 import LightModeIcon from "../../ui/LightMode";
+import {
+    Context,
+    ContextObject,
+    GeneratorContext,
+    GeneratorContextObject,
+} from "@/components/util/context";
 
-interface HeaderProps {
-    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    isMenuOpen: boolean;
-    toggleDarkMode: () => void;
-    darkMode: boolean;
-}
+const Header: React.FC = () => {
+    const context = useContext(Context) as ContextObject;
+    const generatorContext = useContext(
+        GeneratorContext,
+    ) as GeneratorContextObject;
 
-const Header: React.FC<HeaderProps> = ({
-    setIsMenuOpen,
-    isMenuOpen,
-    toggleDarkMode,
-    darkMode,
-}) => {
+    const { isDarkMode, toggleDarkMode } = context;
+    const { isMenuOpen, setIsMenuOpen } = generatorContext;
+
     return (
         <header
             className={`w-full bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center transition-all ${isMenuOpen && "translate-x-24"} duration-300`}
@@ -52,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({
                     className="text-gray-700 dark:text-white focus:outline-none"
                 >
                     {/* Dark Mode Icon */}
-                    {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+                    {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
                 </button>
             </div>
         </header>

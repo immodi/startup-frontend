@@ -7,8 +7,8 @@ function useSignup(
     email: string,
     password: string,
     confirmPassword: string,
-    setUserData?: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
-    setAuthed?: React.Dispatch<React.SetStateAction<boolean>>,
+    setUserData?: (userData: UserModel | undefined) => void,
+    setAuthed?: (isAuthed: boolean) => void,
     setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>,
     setErrorMessages?: React.Dispatch<React.SetStateAction<string[] | null>>,
 ) {

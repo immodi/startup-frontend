@@ -1,11 +1,20 @@
-import { PageProps } from "@/interfaces/pageProp";
-import { FormEvent } from "react";
+import {
+    Context,
+    ContextObject,
+    GeneratorContext,
+    GeneratorContextObject,
+} from "@/components/util/context";
+import { FormEvent, useContext } from "react";
 
-interface Test extends PageProps {
-    goHome: () => void;
-}
+const NotFound: React.FC = () => {
+    const context = useContext(Context) as ContextObject;
+    const generatorContext = useContext(
+        GeneratorContext,
+    ) as GeneratorContextObject;
 
-const NotFound: React.FC<Test> = ({ isDarkMode, goHome, isMenuOpen }) => {
+    const { isDarkMode } = context;
+    const { isMenuOpen, navigateTo } = generatorContext;
+
     return (
         <div
             className={`
@@ -33,7 +42,7 @@ const NotFound: React.FC<Test> = ({ isDarkMode, goHome, isMenuOpen }) => {
                         href="#"
                         onClick={(e: FormEvent) => {
                             e.preventDefault();
-                            goHome();
+                            navigateTo("home");
                         }}
                         className={`font-bold py-2 px-5 rounded-md focus:outline-none focus:ring-2 transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white focus:ring-[#2E073F]" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white focus:ring-[#4A00E0]"}`}
                     >

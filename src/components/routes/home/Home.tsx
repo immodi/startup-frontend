@@ -4,86 +4,62 @@ import { UserModel } from "@/interfaces/userModel";
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 import Header from "./Header";
 import Menu from "./Menu";
-import Router from "../../util/Router";
 import Footer from "./Footer";
-import { useLocation } from "react-router-dom";
-import { Context, ContextObject } from "@/components/util/context";
-const getLocalUser = () => {
-    const localUser: UserAuthCookie | undefined = useGetToken();
-    if (localUser !== undefined) {
-        const user: UserModel = {
-            username: localUser.username,
-            email: localUser.email,
-            created: localUser.joinedAt,
-            token: localUser.token,
-            avatar: "",
-            collectionId: "",
-            collectionName: "",
-            emailVisibility: true,
-            id: "",
-            name: "",
-            updated: "",
-            user_templates: [],
-            verified: false,
-        };
-
-        return user;
-    }
-
-    return undefined;
-};
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+    Context,
+    ContextObject,
+    GeneratorContext,
+    GeneratorContextObject,
+} from "@/components/util/context";
 
 const Home: React.FC = () => {
     const path = useLocation();
+    const navigate = useNavigate();
     const context = useContext(Context) as ContextObject;
-    const { isDarkMode, toggleDarkMode } = context;
+    const { isDarkMode } = context;
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu open/close state
-    const [authed, setAuthed] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentPageName, setCurrentPageName] = useState(
         path.pathname.slice(1, path.pathname.length),
     );
-    const [userData, setUserData] = useState<UserModel | undefined>(
-        getLocalUser(),
-    );
 
-    useEffect(() => {
-        userData?.token !== undefined && setAuthed(true);
-    }, [userData]);
+    function setIsGeneratorMenuOpen(isMenuOpen: boolean) {
+        setIsMenuOpen(isMenuOpen);
+    }
+
+    function setCurrentGeneratorPageName(pageName: string) {
+        setCurrentPageName(pageName);
+    }
+
+    function navigateTo(route: string) {
+        setCurrentPageName(route);
+        navigate(`/${route}`, { replace: true });
+    }
+
+    const generatorContext: GeneratorContextObject = {
+        isMenuOpen: isMenuOpen,
+        currentPageName: currentPageName,
+
+        setIsMenuOpen: setIsGeneratorMenuOpen,
+        setCurrentPageName: setCurrentGeneratorPageName,
+        navigateTo: navigateTo,
+    };
 
     return (
-        <div
-            className={`${isDarkMode && "dark"} overflow-x-hidden flex w-screen h-screen flex-col`}
-        >
-            <Header
-                darkMode={isDarkMode}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                toggleDarkMode={toggleDarkMode}
-            />
+        <GeneratorContext.Provider value={generatorContext}>
+            <div
+                className={`${isDarkMode && "dark"} overflow-x-hidden flex w-screen h-screen flex-col`}
+            >
+                <Header />
 
-            <Menu
-                currentPageName={currentPageName}
-                isDarkMode={isDarkMode}
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                setCurrentPageName={setCurrentPageName}
-            />
+                <Menu />
 
-            <Router
-                setUserData={setUserData}
-                userData={userData}
-                isMenuOpen={isMenuOpen}
-                authed={authed}
-                setAuthed={setAuthed}
-                isDarkMode={isDarkMode}
-                pageName={currentPageName}
-                token={userData?.token}
-                setCurrentPageName={setCurrentPageName}
-            />
+                <Outlet />
 
-            <Footer isDarkMode={isDarkMode} isMenuOpen={isMenuOpen} />
-        </div>
+                <Footer />
+            </div>
+        </GeneratorContext.Provider>
     );
 };
 

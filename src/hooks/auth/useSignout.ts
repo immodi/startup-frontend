@@ -2,9 +2,9 @@ import { UserModel } from "@/interfaces/userModel";
 import { useDeleteToken } from "./useToken";
 
 function useSignout(
-    setAuthed: React.Dispatch<React.SetStateAction<boolean>>,
+    setAuthed: (isAuthed: boolean) => void,
     // setToken: React.Dispatch<React.SetStateAction<UserAuthCookie | undefined>>,
-    setUserData: React.Dispatch<React.SetStateAction<UserModel | undefined>>,
+    setUserData: (userData: UserModel | undefined) => void,
 ) {
     setAuthed(false);
     useDeleteToken();

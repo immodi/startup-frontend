@@ -1,84 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import HomeIcon from "../../ui/menu-icons/HomeIcon";
 import DesignerIcon from "../../ui/menu-icons/DesignerIcon";
 import UserProfileIcon from "../../ui/menu-icons/UserIcon";
 import BillingIcon from "../../ui/menu-icons/BillingIcon";
 import { useNavigate } from "react-router-dom";
+import {
+    Context,
+    ContextObject,
+    GeneratorContext,
+    GeneratorContextObject,
+} from "@/components/util/context";
 
-interface MenuProps {
-    isDarkMode: boolean;
-    isMenuOpen: boolean;
-    currentPageName: string;
-    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
-}
+// interface MenuProps {
+//     isDarkMode: boolean;
+//     isMenuOpen: boolean;
+//     currentPageName: string;
+//     setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+//     setCurrentPageName: React.Dispatch<React.SetStateAction<string>>;
+// }
 
-interface MenuItemProps {
-    index: number;
-    label: string;
-    isActive: boolean;
-    IconComponent: React.FC<{
-        size?: number;
-        color?: string;
-        onClick?: () => void;
-    }>;
-}
+const Menu: React.FC = () => {
+    const context = useContext(Context) as ContextObject;
+    const generatorContext = useContext(
+        GeneratorContext,
+    ) as GeneratorContextObject;
 
-const menuItems: MenuItemProps[] = [
-    {
-        index: 0,
-        label: "Home",
-        isActive: true,
-        IconComponent: HomeIcon,
-    },
-    {
-        index: 1,
-        label: "Designer",
-        isActive: false,
-        IconComponent: DesignerIcon,
-    },
-    {
-        index: 2,
-        label: "Profile",
-        isActive: false,
-        IconComponent: UserProfileIcon,
-    },
-    {
-        index: 3,
-        label: "Billing",
-        isActive: false,
-        IconComponent: BillingIcon,
-    },
-];
-
-const Menu: React.FC<MenuProps> = ({
-    isDarkMode,
-    isMenuOpen,
-    currentPageName,
-    setIsMenuOpen,
-    setCurrentPageName,
-}) => {
     const navigate = useNavigate();
-    const navigateTo = (route: string) => {
-        navigate(`/${route}`, { replace: true });
-    };
 
+    const { isDarkMode } = context;
+    const { currentPageName, isMenuOpen, setCurrentPageName, setIsMenuOpen } =
+        generatorContext;
+    const menuRef = useRef<HTMLDivElement | null>(null);
     const [menuState, setMenuState] = useState<Array<boolean>>([
         true,
         false,
         false,
         false,
     ]);
-    const menuRef = useRef<HTMLDivElement | null>(null);
-    const handleClickOutside = (event: MouseEvent) => {
-        if (
-            menuRef.current &&
-            isMenuOpen &&
-            menuRef.current.contains(event.target as Node)
-        ) {
-            setIsMenuOpen(false);
-        }
-    };
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
@@ -102,6 +60,20 @@ const Menu: React.FC<MenuProps> = ({
             handleItemClick(item.index, menuState, setIsMenuOpen, setMenuState);
         }
     }, [currentPageName]);
+
+    function navigateTo(route: string) {
+        navigate(`/${route}`, { replace: true });
+    }
+
+    function handleClickOutside(event: MouseEvent) {
+        if (
+            menuRef.current &&
+            isMenuOpen &&
+            menuRef.current.contains(event.target as Node)
+        ) {
+            setIsMenuOpen(false);
+        }
+    }
 
     return (
         <div
@@ -165,6 +137,45 @@ const Menu: React.FC<MenuProps> = ({
         </div>
     );
 };
+
+interface MenuItemProps {
+    index: number;
+    label: string;
+    isActive: boolean;
+    IconComponent: React.FC<{
+        size?: number;
+        color?: string;
+        onClick?: () => void;
+    }>;
+}
+
+const menuItems: MenuItemProps[] = [
+    {
+        index: 0,
+        label: "Home",
+        isActive: true,
+        IconComponent: HomeIcon,
+    },
+    {
+        index: 1,
+        label: "Designer",
+        isActive: false,
+        IconComponent: DesignerIcon,
+    },
+    {
+        index: 2,
+        label: "Profile",
+        isActive: false,
+        IconComponent: UserProfileIcon,
+    },
+    {
+        index: 3,
+        label: "Billing",
+        isActive: false,
+        IconComponent: BillingIcon,
+    },
+];
+
 const MenuItem: React.FC<{
     isActive: boolean;
     element: JSX.Element;
@@ -193,7 +204,7 @@ const MenuItem: React.FC<{
 function handleItemClick(
     elementIndex: number,
     menuState: Array<boolean>,
-    setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsMenuOpen: (isMenuOpen: boolean) => void,
     setMenuState: React.Dispatch<React.SetStateAction<Array<boolean>>>,
 ) {
     setIsMenuOpen(false);
