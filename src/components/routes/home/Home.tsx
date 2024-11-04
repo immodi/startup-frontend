@@ -1,7 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "../../../styles/app.css";
-import { UserModel } from "@/interfaces/userModel";
-import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 import Header from "./Header";
 import Menu from "./Menu";
 import Footer from "./Footer";

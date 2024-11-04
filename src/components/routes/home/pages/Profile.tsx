@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { PageProps } from "@/interfaces/pageProp";
 import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
 import {

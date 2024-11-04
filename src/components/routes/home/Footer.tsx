@@ -1,9 +1,4 @@
-import {
-    Context,
-    ContextInterface,
-    HomeContext,
-    HomeContextInterface,
-} from "@/components/util/context";
+import { HomeContext, HomeContextInterface } from "@/components/util/context";
 import { useContext } from "react";
 
 const Footer: React.FC = () => {

@@ -9,7 +9,7 @@ import fileDownloader from "@/helpers/fileDownloader";
 import { capitalizeFirstChar } from "@/helpers/getTemplates";
 import { INITAL_LOCAL_STATE } from "@/hooks/local-data/useLocalData";
 import { GenerateErrorResponse } from "@/interfaces/genrateResponses";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 const MainContent: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -100,13 +100,15 @@ const MainContent: React.FC = () => {
                             name="vocabulary"
                             min="0"
                             max="10"
-                            defaultValue={vocabulary.toString()}
+                            value={vocabulary.toString()}
                             className={`w-full focus:outline-none ${isDarkMode ? "bg-gray-700 accent-[#AD49E1]" : "bg-gray-200 accent-[#4A00E0]"}`}
                             onChange={(e) => {
                                 const vocabulary: number = parseInt(
                                     e.currentTarget.value,
                                 );
-                                setVocabulary(vocabulary);
+                                setTimeout(() => {
+                                    setVocabulary(vocabulary);
+                                }, 10);
                             }}
                         />
                     </div>

@@ -24,23 +24,11 @@ const Main: React.FC = () => {
 
     const token = context.userData?.token;
     const [templates, setTemplates] = useState<Array<string>>([]);
-    // const [selectedTemplate, setSelectedTemplate] = useState<string>(
-    //     localState.generator.selectedTemplate,
-    // );
     const [isLoading, setIsLoading] = useState(false);
-    // const [topic, setTopic] = useState(localState.generator.topic);
-    // const [vocabulary, setVocabulary] = useState(
-    //     localState.generator.vocabulary,
-    // );
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isKeyValuePopupOpen, setIsKeyValuePopupOpen] = useState(false);
-    // const [userTemplateData, setUserTemplateData] = useState<
-    //     Map<string, string>
-    // >(localState.generator.userTemplateData);
     const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
-    // useEffect(() => console.log(localState), [localState]);
 
     useEffect(() => {
         if (authed) {
@@ -96,7 +84,6 @@ const Main: React.FC = () => {
     }
 
     function setCurrentUserTemplateData(userTemplateData: Map<string, string>) {
-        // setUserTemplateData(userTemplateData);
         cacheLocalState({
             ...localState,
             generator: {
@@ -107,7 +94,6 @@ const Main: React.FC = () => {
     }
 
     function setCurrentTopic(topic: string) {
-        // setTopic(topic);
         cacheLocalState({
             ...localState,
             generator: {
@@ -118,12 +104,8 @@ const Main: React.FC = () => {
     }
 
     const generatorContext: GeneratorContextInterface = {
-        // topic: localState.generator.topic,
         templates: templates,
-        // selectedTemplate: localState.generator.selectedTemplate,
         isLoading: isLoading,
-        // vocabulary: localState.generator.vocabulary,
-        // userTemplateData: localState.generator.userTemplateData,
         token: token ?? "",
         errorMessage: errorMessage,
 
