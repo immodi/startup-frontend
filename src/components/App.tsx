@@ -1,18 +1,13 @@
-import React, { createContext, useEffect, useState } from "react";
-import {
-    BrowserRouter,
-    createBrowserRouter,
-    Outlet,
-    Route,
-    RouterProvider,
-    Routes,
-    useNavigate,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./routes/landing/Landing";
 import Home from "./routes/home/Home";
 import ErrorPage from "./util/Error";
-import useLocalStorageState from "@/hooks/local-data/useLocalData";
-import { Context, ContextObject } from "./util/context";
+import {
+    LocalState,
+    useLocalStorageState,
+} from "@/hooks/local-data/useLocalData";
+import { Context, ContextInterface } from "./util/context";
 import { UserModel } from "@/interfaces/userModel";
 import getLocalUser from "@/helpers/getLocalUser";
 import Main from "./routes/home/pages/Main";
@@ -20,9 +15,7 @@ import NotFound from "./routes/home/pages/404";
 import { AuthPage } from "./routes/auth/Auth";
 
 const App: React.FC = () => {
-    const [localState, setLocalState, clearLocalState] = useLocalStorageState();
-    const [isDarkMode, setIsDarkMode] = useState(true);
-    const [authed, setAuthed] = useState(false);
+    const [localState, setLocalState] = useLocalStorageState();
     const [userData, setUserData] = useState<UserModel | undefined>(
         getLocalUser(),
     );
@@ -34,18 +27,26 @@ const App: React.FC = () => {
             document.documentElement.classList.remove("dark");
         }
 
-        setIsDarkMode(localState.isDarkMode);
+        setLocalState((prev) => ({
+            ...prev,
+            isDarkMode: localState.isDarkMode,
+        }));
     }, [localState.isDarkMode]);
 
     useEffect(() => {
-        userData?.token !== undefined && setAuthed(true);
+        if (userData?.token) {
+            setCurrentUserAuthed(true);
+        }
     }, [userData]);
 
     function toggleDarkMode() {
-        const newDarkMode = !isDarkMode;
-        setIsDarkMode(newDarkMode);
+        const newDarkMode = !localState.isDarkMode;
         setLocalState((prev) => ({ ...prev, isDarkMode: newDarkMode }));
         document.documentElement.classList.toggle("dark", newDarkMode);
+    }
+
+    function cacheLocalState(newState: LocalState) {
+        setLocalState((prev) => ({ ...prev, ...newState }));
     }
 
     function setCurrentUserData(userData: UserModel | undefined) {
@@ -53,17 +54,20 @@ const App: React.FC = () => {
     }
 
     function setCurrentUserAuthed(isAuthed: boolean) {
-        setAuthed(isAuthed);
+        setLocalState((prev) => ({
+            ...prev,
+            authed: isAuthed,
+        }));
     }
 
-    const context: ContextObject = {
-        isDarkMode: isDarkMode,
-        authed: authed,
+    const context: ContextInterface = {
+        localState: localState,
         userData: userData,
 
         setCurrentUserData: setCurrentUserData,
         toggleDarkMode: toggleDarkMode,
         setAuthed: setCurrentUserAuthed,
+        cacheLocalState: cacheLocalState,
     };
 
     return (

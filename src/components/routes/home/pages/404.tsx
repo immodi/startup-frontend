@@ -1,19 +1,17 @@
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 import { FormEvent, useContext } from "react";
 
 const NotFound: React.FC = () => {
-    const context = useContext(Context) as ContextObject;
-    const generatorContext = useContext(
-        GeneratorContext,
-    ) as GeneratorContextObject;
+    const context = useContext(Context) as ContextInterface;
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
 
-    const { isDarkMode } = context;
-    const { isMenuOpen, navigateTo } = generatorContext;
+    const isDarkMode = context.localState.isDarkMode;
+    const { isMenuOpen, navigateTo } = homeContext;
 
     return (
         <div

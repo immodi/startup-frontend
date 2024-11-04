@@ -6,8 +6,8 @@ export default async function fileDownloader(
     vocabularyLevel: number,
     data: Map<string, string>,
     token: string,
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-) {
+    setIsLoading: (isLoading: boolean) => void,
+): Promise<void> {
     try {
         const response = await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/api/generate`,
@@ -22,7 +22,6 @@ export default async function fileDownloader(
                     Authorization: token,
                 },
                 responseType: "blob",
-                // Add this to capture error responses as JSON instead of blob
                 validateStatus: (status) => status === 200,
             },
         );

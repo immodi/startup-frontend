@@ -8,16 +8,16 @@ import Footer from "./Footer";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 
 const Home: React.FC = () => {
     const path = useLocation();
     const navigate = useNavigate();
-    const context = useContext(Context) as ContextObject;
-    const { isDarkMode } = context;
+    const context = useContext(Context) as ContextInterface;
+    const isDarkMode = context.localState.isDarkMode;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentPageName, setCurrentPageName] = useState(
@@ -37,7 +37,7 @@ const Home: React.FC = () => {
         navigate(`/${route}`, { replace: true });
     }
 
-    const generatorContext: GeneratorContextObject = {
+    const homeContext: HomeContextInterface = {
         isMenuOpen: isMenuOpen,
         currentPageName: currentPageName,
 
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <GeneratorContext.Provider value={generatorContext}>
+        <HomeContext.Provider value={homeContext}>
             <div
                 className={`${isDarkMode && "dark"} overflow-x-hidden flex w-screen h-screen flex-col`}
             >
@@ -59,7 +59,7 @@ const Home: React.FC = () => {
 
                 <Footer />
             </div>
-        </GeneratorContext.Provider>
+        </HomeContext.Provider>
     );
 };
 

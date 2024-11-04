@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PageProps } from "@/interfaces/pageProp";
 import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
 import {
@@ -26,20 +26,10 @@ type IconType = Map<
 const Profile: React.FC<
     PageProps & {
         setAuthed: (isAuthed: boolean) => void;
-        // setToken: React.Dispatch<
-        //     React.SetStateAction<UserAuthCookie | undefined>
-        // >;
         setUserData: (userData: UserModel | undefined) => void;
         userData: UserModel | undefined;
     }
-> = ({
-    isDarkMode,
-    isMenuOpen,
-    setAuthed,
-    // setToken,
-    setUserData,
-    userData,
-}) => {
+> = ({ isDarkMode, isMenuOpen, setAuthed, setUserData, userData }) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
     const [isLoading, _] = useState(false);
     const [currentComponent, setCurrentComponent] = useState(0);

@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import LandingPageHeader from "../routes/landing/landing-components/LandingHeader";
 import { Link } from "react-router-dom";
-import { Context, ContextObject } from "./context";
+import { Context, ContextInterface } from "./context";
 
 const ErrorPage: React.FC<{}> = () => {
-    const context = useContext(Context) as ContextObject;
-    const { isDarkMode, toggleDarkMode } = context;
+    const context = useContext(Context) as ContextInterface;
+    const { toggleDarkMode } = context;
+    const isDarkMode = context.localState.isDarkMode;
 
     return (
         <div className="w-dvw h-dvh">

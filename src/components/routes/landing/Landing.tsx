@@ -3,11 +3,12 @@ import LandingSummary from "./landing-components/LandingSummary";
 import LandingFeatures from "./landing-components/LandingFeatures";
 import LandingTitle from "./landing-components/LandingTitle";
 import { useContext } from "react";
-import { Context, ContextObject } from "@/components/util/context";
+import { Context, ContextInterface } from "@/components/util/context";
 
 const LandingPage: React.FC = () => {
-    const context = useContext(Context) as ContextObject;
-    const { isDarkMode, toggleDarkMode } = context;
+    const context = useContext(Context) as ContextInterface;
+    const { toggleDarkMode } = context;
+    const isDarkMode = context.localState.isDarkMode;
 
     return (
         <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>

@@ -1,17 +1,15 @@
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 import { useContext } from "react";
 
 const Footer: React.FC = () => {
-    const generatorContext = useContext(
-        GeneratorContext,
-    ) as GeneratorContextObject;
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
 
-    const { isMenuOpen, navigateTo } = generatorContext;
+    const { isMenuOpen, navigateTo } = homeContext;
 
     return (
         <footer

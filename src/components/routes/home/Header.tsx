@@ -3,19 +3,19 @@ import DarkModeIcon from "../../ui/DarkMode";
 import LightModeIcon from "../../ui/LightMode";
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 
 const Header: React.FC = () => {
-    const context = useContext(Context) as ContextObject;
-    const generatorContext = useContext(
-        GeneratorContext,
-    ) as GeneratorContextObject;
+    const context = useContext(Context) as ContextInterface;
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
 
-    const { isDarkMode, toggleDarkMode } = context;
-    const { isMenuOpen, setIsMenuOpen } = generatorContext;
+    const { toggleDarkMode } = context;
+    const isDarkMode = context.localState.isDarkMode;
+
+    const { isMenuOpen, setIsMenuOpen } = homeContext;
 
     return (
         <header

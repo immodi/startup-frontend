@@ -6,9 +6,9 @@ import { UserModel } from "@/interfaces/userModel";
 import Profile from "../home/pages/Profile";
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 
 export interface AuthPageProps extends PageProps {
@@ -21,14 +21,15 @@ export interface AuthPageProps extends PageProps {
 }
 
 export const AuthPage: React.FC = () => {
-    const context = useContext(Context) as ContextObject;
-    const generatorContext = useContext(
-        GeneratorContext,
-    ) as GeneratorContextObject;
+    const context = useContext(Context) as ContextInterface;
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
 
-    const { isDarkMode, userData, setAuthed, setCurrentUserData, authed } =
-        context;
-    const { isMenuOpen } = generatorContext;
+    const { userData, setAuthed, setCurrentUserData } = context;
+
+    const isDarkMode = context.localState.isDarkMode;
+    const authed = context.localState.authed;
+
+    const { isMenuOpen } = homeContext;
 
     const [hasAccount, setHasAccount] = useState<boolean>(false);
 

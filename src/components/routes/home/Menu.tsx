@@ -6,9 +6,9 @@ import BillingIcon from "../../ui/menu-icons/BillingIcon";
 import { useNavigate } from "react-router-dom";
 import {
     Context,
-    ContextObject,
-    GeneratorContext,
-    GeneratorContextObject,
+    ContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 
 // interface MenuProps {
@@ -20,16 +20,14 @@ import {
 // }
 
 const Menu: React.FC = () => {
-    const context = useContext(Context) as ContextObject;
-    const generatorContext = useContext(
-        GeneratorContext,
-    ) as GeneratorContextObject;
+    const context = useContext(Context) as ContextInterface;
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
 
     const navigate = useNavigate();
 
-    const { isDarkMode } = context;
+    const isDarkMode = context.localState.isDarkMode;
     const { currentPageName, isMenuOpen, setCurrentPageName, setIsMenuOpen } =
-        generatorContext;
+        homeContext;
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [menuState, setMenuState] = useState<Array<boolean>>([
         true,
