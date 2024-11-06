@@ -28,6 +28,7 @@ const Designer: React.FC = () => {
 
     return (
         <div className="w-full h-full relative flex flex-col items-center justify-center">
+            {/* need to work for the row flex as well //if you want// */}
             {components.map((component, index) => {
                 return (
                     <Draggable
@@ -49,7 +50,7 @@ const Designer: React.FC = () => {
                         }}
                     >
                         <div
-                            className={`w-10 h-10 bg-red-600 flex items-center justify-center select-none cursor-pointer transition-all ease-out ${component.state}`}
+                            className={`w-10 h-10 m-2 bg-red-600 flex items-center justify-center select-none cursor-pointer transition-all ease-out ${component.state}`}
                         >
                             {component.text}
                         </div>
@@ -74,7 +75,9 @@ function onMoveElement(
             y: computeOffset(
                 components.length,
                 componentIndex,
-                data.node.offsetHeight,
+                data.node.offsetHeight +
+                    parseInt(window.getComputedStyle(data.node).marginTop) +
+                    parseInt(window.getComputedStyle(data.node).marginBottom),
             ),
         },
     };
