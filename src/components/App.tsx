@@ -13,6 +13,7 @@ import getLocalUser from "@/helpers/getLocalUser";
 import Main from "./routes/home/pages/Main";
 import NotFound from "./routes/home/pages/404";
 import { AuthPage } from "./routes/auth/Auth";
+import Designer from "./routes/designer/Designer";
 
 const App: React.FC = () => {
     const [localState, setLocalState] = useLocalStorageState();
@@ -78,7 +79,7 @@ const App: React.FC = () => {
 
                     <Route path="/" element={<Home />}>
                         <Route path="home" element={<Main />} />
-                        <Route path="designer" element={<NotFound />} />
+                        <Route path="designer" element={<Designer />} />
                         <Route path="profile" element={<AuthPage />} />
                         <Route path="billing" element={<NotFound />} />
                     </Route>
