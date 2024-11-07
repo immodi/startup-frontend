@@ -4,7 +4,7 @@ import {
     GeneratorContext,
     GeneratorContextInterface,
 } from "@/components/util/context";
-import getTemplateData from "@/helpers/getTemplatesData";
+import getTemplateData from "@/helpers/generator/getTemplatesData";
 import { useContext } from "react";
 
 const KeyValuePopUp: React.FC = () => {

@@ -1,4 +1,4 @@
-import { UserModel } from "@/interfaces/userModel";
+import { UserModel } from "@/interfaces/auth/userModel";
 import PocketBase from "pocketbase";
 import { useGetToken, useSetToken } from "./useToken";
 

@@ -1,5 +1,6 @@
 import { LocalState } from "@/hooks/local-data/useLocalData";
-import { UserModel } from "@/interfaces/userModel";
+import { DesignerComponent } from "@/interfaces/designer/designerComponent";
+import { UserModel } from "@/interfaces/auth/userModel";
 import { createContext } from "react";
 
 export interface ContextInterface {
@@ -22,12 +23,8 @@ export interface HomeContextInterface {
 }
 
 export interface GeneratorContextInterface {
-    // topic: string;
     templates: Array<string>;
     isLoading: boolean;
-    // vocabulary: number;
-    // selectedTemplate: string;
-    // userTemplateData: Map<string, string>;
     token: string;
     errorMessage: string;
 
@@ -42,10 +39,14 @@ export interface GeneratorContextInterface {
     setUserTemplateData: (userTemplateData: Map<string, string>) => void;
 }
 
+export interface DesignerContextInterface {}
+
 type Option = ContextInterface | null;
 type HomeOption = HomeContextInterface | null;
 type GeneratorOption = GeneratorContextInterface | null;
+type DesignerOption = DesignerContextInterface | null;
 
 export const Context = createContext<Option>(null);
 export const HomeContext = createContext<HomeOption>(null);
 export const GeneratorContext = createContext<GeneratorOption>(null);
+export const DesignerContext = createContext<DesignerOption>(null);

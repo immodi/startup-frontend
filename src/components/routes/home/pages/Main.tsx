@@ -1,4 +1,4 @@
-import { getAllTemplates } from "@/helpers/getTemplates";
+import { getAllTemplates } from "@/helpers/generator/getTemplates";
 import React, { useContext, useEffect, useState } from "react";
 import {
     Context,

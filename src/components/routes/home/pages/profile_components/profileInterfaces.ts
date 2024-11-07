@@ -1,4 +1,4 @@
-import { PageProps } from "@/interfaces/pageProp";
+import { PageProps } from "@/interfaces/auth/pageProp";
 
 export interface UserProp {
     name: string;

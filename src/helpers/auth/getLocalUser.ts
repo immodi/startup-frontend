@@ -1,5 +1,5 @@
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
-import { UserModel } from "@/interfaces/userModel";
+import { UserModel } from "@/interfaces/auth/userModel";
 
 export default function getLocalUser() {
     const localUser: UserAuthCookie | undefined = useGetToken();

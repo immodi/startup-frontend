@@ -8,8 +8,8 @@ import {
     useLocalStorageState,
 } from "@/hooks/local-data/useLocalData";
 import { Context, ContextInterface } from "./util/context";
-import { UserModel } from "@/interfaces/userModel";
-import getLocalUser from "@/helpers/getLocalUser";
+import { UserModel } from "@/interfaces/auth/userModel";
+import getLocalUser from "@/helpers/auth/getLocalUser";
 import Main from "./routes/home/pages/Main";
 import NotFound from "./routes/home/pages/404";
 import { AuthPage } from "./routes/auth/Auth";

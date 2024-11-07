@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageProps } from "@/interfaces/pageProp";
+import { PageProps } from "@/interfaces/auth/pageProp";
 import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
 import {
     ComponentsProps,
@@ -11,7 +11,7 @@ import SettingsComponent from "./profile_components/Settings";
 import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 import useSignout from "@/hooks/auth/useSignout";
-import { UserModel } from "@/interfaces/userModel";
+import { UserModel } from "@/interfaces/auth/userModel";
 
 type IconType = Map<
     number,

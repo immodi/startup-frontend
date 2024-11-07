@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { LoginPage } from "./Login";
 import SignupPage from "./SignUp";
-import { PageProps } from "@/interfaces/pageProp";
-import { UserModel } from "@/interfaces/userModel";
+import { PageProps } from "@/interfaces/auth/pageProp";
+import { UserModel } from "@/interfaces/auth/userModel";
 import Profile from "../home/pages/Profile";
 import {
     Context,

@@ -5,10 +5,10 @@ import {
     GeneratorContext,
     GeneratorContextInterface,
 } from "@/components/util/context";
-import fileDownloader from "@/helpers/fileDownloader";
-import { capitalizeFirstChar } from "@/helpers/getTemplates";
+import fileDownloader from "@/helpers/generator/fileDownloader";
+import { capitalizeFirstChar } from "@/helpers/generator/getTemplates";
 import { INITAL_LOCAL_STATE } from "@/hooks/local-data/useLocalData";
-import { GenerateErrorResponse } from "@/interfaces/genrateResponses";
+import { GenerateErrorResponse } from "@/interfaces/generator/generateResponses";
 import { useContext } from "react";
 
 const MainContent: React.FC = () => {
