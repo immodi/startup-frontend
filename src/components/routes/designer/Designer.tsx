@@ -4,15 +4,22 @@ import {
     DesignerContext,
     DesignerContextInterface,
 } from "@/components/util/context";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Components from "./Components";
 
 const Designer: React.FC = () => {
-    const designerContext: DesignerContextInterface = {};
+    const designerComponentRef = useRef<HTMLDivElement>(null);
+    const designerContext: DesignerContextInterface = {
+        designerComponentRef: designerComponentRef,
+    };
 
     return (
         <DesignerContext.Provider value={designerContext}>
-            <div className="w-full h-full bg-gray-100 dark:bg-gray-800 relative flex flex-col items-center justify-center overflow-hidden">
+            <div
+                ref={designerComponentRef}
+                id="designerComponentRef"
+                className="w-full h-full bg-gray-100 dark:bg-gray-800 relative flex flex-col items-center justify-center overflow-hidden"
+            >
                 <Components />
             </div>
         </DesignerContext.Provider>

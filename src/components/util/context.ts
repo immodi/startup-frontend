@@ -39,7 +39,9 @@ export interface GeneratorContextInterface {
     setUserTemplateData: (userTemplateData: Map<string, string>) => void;
 }
 
-export interface DesignerContextInterface {}
+export interface DesignerContextInterface {
+    designerComponentRef: React.RefObject<HTMLDivElement>;
+}
 
 type Option = ContextInterface | null;
 type HomeOption = HomeContextInterface | null;
