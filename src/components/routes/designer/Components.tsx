@@ -8,9 +8,7 @@ import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Draggable from "react-draggable";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
+import Arrow from "./MoreComponetsArrow";
 
 const Components: React.FC = () => {
     const [components, setComponents] = useState<Array<DesignerComponent>>([]);
@@ -62,51 +60,38 @@ const Components: React.FC = () => {
     };
 
     return (
-        // <div
-        //     ref={containerRef}
-        //     className={`bg-white dark:bg-gray-800 shadow-lg w-80 h-full transition-all duration-300 transform border ${isDarkMode ? "border-gray-600" : "border-gray-300"} self-end relative`}
-        //     style={{
-        //         padding: "1rem",
-        //         boxSizing: "border-box",
-        //         overflowY: isSelecting ? "visible" : "scroll",
-        //     }}
-        // >
-        // </div>
-
-        // nned to be able to render the cards outside their parents
-        <div className="w-full h-full self-end bg-gray-100 dark:bg-gray-800 flex justify-end overflow-visible">
-            <Slider
-                {...settings}
-                className="w-48 bg-white dark:bg-gray-900 h-full relative self-end transition-all duration-300 overflow-visible"
-            >
-                {components.map((component, index) => (
-                    <div key={index}>
-                        <Draggable
-                            position={component.position}
-                            onDrag={(_, data) => {
-                                // onMoveElement(
-                                //     data,
-                                //     components,
-                                //     index,
-                                //     setComponents,
-                                // );
-                                // setIsSelecting(true);
-                            }}
-                            onStop={() => {
-                                // onStopDrag(components, index, setComponents);
-                                // setIsSelecting(false);
-                            }}
-                        >
-                            <div
-                                className="w-24 h-24 bg-gray-600 select-none cursor-pointer transition-all ease-out flex justify-center items-center left-1/2"
-                                style={{ position: component.state }}
-                            >
-                                {component.text}
-                            </div>
-                        </Draggable>
+        <div
+            ref={containerRef}
+            className={`bg-white dark:bg-gray-800 w-80 h-full transition-all border duration-300 transform self-end relative overflow-visible grid place-items-center gap-10`}
+            style={{
+                padding: "1rem",
+                boxSizing: "border-box",
+                // overflow: isSelecting ? "visible" : "scroll",
+            }}
+        >
+            {components.map((component, index) => (
+                <Draggable
+                    key={index}
+                    position={component.position}
+                    onDrag={() => {
+                        // onMoveElement(data, components, index, setComponents);
+                        // setIsSelecting(true);
+                    }}
+                    onStop={() => {
+                        // onStopDrag(components, index, setComponents);
+                        // setIsSelecting(false);
+                    }}
+                >
+                    <div
+                        className="w-24 h-24 bg-gray-600 flex items-center justify-center select-none cursor-pointer transition-all ease-out"
+                        style={{ position: component.state }}
+                    >
+                        {component.text}
                     </div>
-                ))}
-            </Slider>
+                </Draggable>
+            ))}
+
+            <Arrow />
         </div>
     );
 };
