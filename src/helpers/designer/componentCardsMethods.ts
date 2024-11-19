@@ -5,11 +5,12 @@ function onMoveElement(
     data: DraggableData,
     components: DesignerComponent[],
     componentIndex: number,
-    setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
+    // setNewComponent: () => void,
 ) {
-    const component = {
+    const component: DesignerComponent = {
         ...components[componentIndex],
         state: "absolute",
+
         positionOffset: {
             x: Math.abs(data.x),
             y: computeVerticalOffset(
@@ -21,10 +22,12 @@ function onMoveElement(
             ),
         },
     };
-    const newComponents = components
-        .slice(0, componentIndex)
-        .concat(components.slice(componentIndex + 1));
-    setComponents(insertAtIndex(newComponents, componentIndex, component));
+    // const newComponents = components
+    //     .slice(0, componentIndex)
+    //     .concat(components.slice(componentIndex + 1));
+    // insertAtIndex(newComponents, componentIndex, component)
+    // setNewComponent();
+    return component;
 }
 
 function computeVerticalOffset(
@@ -38,11 +41,15 @@ function computeVerticalOffset(
         let offsetHeight;
 
         if (index < middleIndex) {
-            offsetHeight = elementOffSetHeight * -(middleIndex - index);
+            offsetHeight =
+                elementOffSetHeight * -(middleIndex - index) -
+                elementOffSetHeight / 1.5;
         } else if (index === middleIndex) {
             offsetHeight = 0;
         } else {
-            offsetHeight = elementOffSetHeight * (index - middleIndex);
+            offsetHeight =
+                elementOffSetHeight * (index - middleIndex) +
+                elementOffSetHeight / 1.5;
         }
 
         return offsetHeight;
@@ -71,17 +78,19 @@ function computeVerticalOffset(
 function onStopDrag(
     components: DesignerComponent[],
     componentIndex: number,
-    setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
+    // setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
 ) {
-    const component = {
+    const component: DesignerComponent = {
         ...components[componentIndex],
         state: "relative",
         positionOffset: { x: 0, y: 0 },
     };
-    const newComponents = components
-        .slice(0, componentIndex)
-        .concat(components.slice(componentIndex + 1));
-    setComponents(insertAtIndex(newComponents, componentIndex, component));
+
+    return component;
+    // const newComponents = components
+    //     .slice(0, componentIndex)
+    //     .concat(components.slice(componentIndex + 1));
+    // setComponents(insertAtIndex(newComponents, componentIndex, component));
 }
 
 function insertAtIndex(arr: any[], index: number, element: any) {
