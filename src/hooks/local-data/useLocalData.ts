@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useGetToken } from "../auth/useToken";
 
 export interface LocalState {
     isDarkMode: boolean;
@@ -8,7 +9,7 @@ export interface LocalState {
 
 export const INITAL_LOCAL_STATE: LocalState = {
     isDarkMode: true,
-    authed: true,
+    authed: false,
     generator: {
         topic: "",
         vocabulary: 5,
@@ -26,6 +27,8 @@ interface GeneratorLocalState {
 
 export function useLocalStorageState() {
     const key = "localState";
+    const tokenCookie = useGetToken();
+
     // const [localState, setLocalState] = useState<LocalState>(() => {
     //     try {
     //         const item = window.localStorage.getItem(key);
@@ -39,14 +42,20 @@ export function useLocalStorageState() {
         try {
             const item = window.localStorage.getItem(key);
             if (item) {
-                const parsed = JSON.parse(item);
+                const parsed: LocalState = JSON.parse(item);
                 // Convert `userTemplateData` back to a Map
                 if (parsed.generator?.userTemplateData) {
                     parsed.generator.userTemplateData = new Map(
                         Object.entries(parsed.generator.userTemplateData),
                     );
                 }
-                return parsed;
+
+                //TODO: add a check to see if the token has expired, and make him signout
+                if (tokenCookie === undefined) {
+                    return { ...parsed, authed: false };
+                } else {
+                    return parsed;
+                }
             } else {
                 return INITAL_LOCAL_STATE;
             }

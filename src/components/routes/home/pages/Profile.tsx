@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { PageProps } from "@/interfaces/auth/pageProp";
 import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
 import {
@@ -12,6 +12,8 @@ import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
 import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 import useSignout from "@/hooks/auth/useSignout";
 import { UserModel } from "@/interfaces/auth/userModel";
+import { useNavigate } from "react-router-dom";
+import { HomeContext, HomeContextInterface } from "@/components/util/context";
 
 type IconType = Map<
     number,
@@ -31,6 +33,7 @@ const Profile: React.FC<
     }
 > = ({ isDarkMode, isMenuOpen, setAuthed, setUserData, userData }) => {
     const [isSigningOut, setIsSigningOut] = useState(false);
+
     const [isLoading, _] = useState(false);
     const [currentComponent, setCurrentComponent] = useState(0);
     const [selectedIcon, setSelectedIcon] = useState(0);
@@ -47,6 +50,7 @@ const Profile: React.FC<
     ];
 
     const userLocal = userData || (useGetToken() as UserAuthCookie);
+
     const user: UserProp = {
         name: userLocal.username,
         email: userLocal.email,
