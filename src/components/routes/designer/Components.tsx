@@ -1,65 +1,45 @@
 import {
-    Context,
-    ContextInterface,
-    DesignerContext,
-    DesignerContextInterface,
-} from "@/components/util/context";
+    animate,
+    AnimatingAction,
+    animatingReducer,
+    animationInitialState,
+    stopAnimating,
+} from "@/hooks/designer/animatingDispatcher";
+import {
+    componentsPagedArrayInitialState,
+    componentsReducer,
+    replaceComponentInSubArray,
+    setComponentsArray,
+} from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import Arrow from "./MoreComponetsArrow";
-import {
-    onMoveElement,
-    onStopDrag,
-} from "@/helpers/designer/componentCardsMethods";
+import { Flag } from "lucide-react";
 
 interface ComponentsIndexInterface {
     currentIndex: number;
     subArrayCount: number;
 }
 
-const initialState: Array<Array<DesignerComponent>> = [[]];
-
-type Action =
-    | {
-          type: "SET_COMPONENTS_PAGED_ARRAY";
-          payload: Array<Array<DesignerComponent>>;
-      }
-    | {
-          type: "REPLACE_SUB_ARRAY_COMPONENT";
-          arrayIndex: number;
-          subArrayIndex: number;
-          functionToRun: () => void;
-          component: DesignerComponent;
-      };
-
-const componentsReducer = (
-    state: Array<Array<DesignerComponent>>,
-    action: Action,
-): Array<Array<DesignerComponent>> => {
-    switch (action.type) {
-        case "SET_COMPONENTS_PAGED_ARRAY":
-            return action.payload;
-        case "REPLACE_SUB_ARRAY_COMPONENT":
-            action.functionToRun();
-            return updateSubarray<DesignerComponent>(
-                state,
-                action.arrayIndex,
-                action.subArrayIndex,
-                action.component,
-            );
-        default:
-            return state;
-    }
-};
 const Components: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [components, setComponents] = useState<Array<DesignerComponent>>([]);
     const [isStartDragging, setIsStartDragging] = useState(false);
-    const [componentsPagedArray, dispatch] = useReducer(
+    const [scrollingAnimationState, setScrollingAnimationState] = useState<
+        "down" | "up"
+    >("down");
+
+    const [componentsPagedArray, componentsPagedArraydispatch] = useReducer(
         componentsReducer,
-        initialState,
+        componentsPagedArrayInitialState,
     );
+
+    const [isAnimating, animatingDispatch] = useReducer(
+        animatingReducer,
+        animationInitialState,
+    );
+
     const [currentComponentsInterface, setCurrentComponentsInterface] =
         useState<ComponentsIndexInterface>({
             currentIndex: 0,
@@ -77,6 +57,8 @@ const Components: React.FC = () => {
             ...currentComponentsInterface,
             currentIndex: newIndex,
         });
+
+        setScrollingAnimationState("down");
     }
 
     function scrollUp() {
@@ -90,25 +72,7 @@ const Components: React.FC = () => {
             ...currentComponentsInterface,
             currentIndex: newIndex,
         });
-    }
-
-    function setComponentsArray(newArray: Array<Array<DesignerComponent>>) {
-        dispatch({ type: "SET_COMPONENTS_PAGED_ARRAY", payload: newArray });
-    }
-
-    function replaceComponentInSubArray(
-        currentArrayIndex: number,
-        subArrayIndex: number,
-        functionToRun: () => void,
-        component: DesignerComponent,
-    ) {
-        dispatch({
-            type: "REPLACE_SUB_ARRAY_COMPONENT",
-            arrayIndex: currentArrayIndex,
-            subArrayIndex: subArrayIndex,
-            component: component,
-            functionToRun: functionToRun,
-        });
+        setScrollingAnimationState("up");
     }
 
     useEffect(() => {
@@ -151,8 +115,12 @@ const Components: React.FC = () => {
             ...currentComponentsInterface,
             subArrayCount: subArrayNumber,
         });
-        setComponentsArray(pagedArray);
+        setComponentsArray(componentsPagedArraydispatch, pagedArray);
     }, [components]);
+
+    // useEffect(() => {
+    //     console.log(isAnimating);
+    // }, [isAnimating]);
 
     return (
         <div
@@ -167,67 +135,124 @@ const Components: React.FC = () => {
                 componentsPagedArray[
                     currentComponentsInterface.currentIndex
                 ].map((component, index) => {
+                    // console.log(
+                    //     isAnimating.index,
+                    //     component.index,
+                    //     isAnimating.payload,
+                    // );
+
                     return (
-                        <Draggable
-                            key={component.index}
-                            positionOffset={{
-                                x: 0,
-                                y: component.positionOffset.y,
-                            }}
-                            position={component.position}
-                            onStart={(_, data) => {
-                                setIsStartDragging(true);
-                                const newElement = onMoveElement(
-                                    data,
-                                    componentsPagedArray[
-                                        currentComponentsInterface.currentIndex
-                                    ],
-                                    index,
-                                );
-
-                                replaceComponentInSubArray(
-                                    currentComponentsInterface.currentIndex,
-                                    index,
-                                    () => {
-                                        setTimeout(() => {
-                                            setIsStartDragging(false);
-                                        }, 100);
-                                    },
-                                    newElement,
-                                );
-
-                                setTimeout(() => {
-                                    data.node.style.visibility = "visible";
-                                }, 0);
-                            }}
-                            onStop={(_, data) => {
-                                const newElement = onStopDrag(
-                                    componentsPagedArray[
-                                        currentComponentsInterface.currentIndex
-                                    ],
-                                    index,
-                                );
-
-                                replaceComponentInSubArray(
-                                    currentComponentsInterface.currentIndex,
-                                    index,
-                                    () => {
-                                        data.node.style.display = "none";
-                                        setTimeout(() => {
-                                            data.node.style.display = "flex";
-                                        }, 200);
-                                    },
-                                    newElement,
-                                );
-                            }}
+                        <div
+                            className={`
+                                w-fit h-fit ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}
+                                 
+                            `}
                         >
-                            <div
-                                className={`w-24 h-24 bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"}`}
-                                style={{ position: component.state }}
+                            <Draggable
+                                key={component.index}
+                                positionOffset={{
+                                    x: 0,
+                                    y: component.positionOffset.y,
+                                }}
+                                position={component.position}
+                                onStart={(_, data) => {
+                                    // setIsStartDragging(true);
+                                    // const newElement = onMoveElement(
+                                    //     data,
+                                    //     componentsPagedArray[
+                                    //         currentComponentsInterface.currentIndex
+                                    //     ],
+                                    //     index,
+                                    // );
+                                    // replaceComponentInSubArray(
+                                    //     currentComponentsInterface.currentIndex,
+                                    //     index,
+                                    //     () => {
+                                    //         setTimeout(() => {
+                                    //             setIsStartDragging(false);
+                                    //         }, 100);
+                                    //     },
+                                    //     newElement,
+                                    // );
+                                    // setTimeout(() => {
+                                    //     data.node.style.visibility = "visible";
+                                    // }, 0);
+                                }}
+                                onDrag={(_, data) => {
+                                    const newElement: DesignerComponent = {
+                                        ...component,
+                                        position: { x: data.x, y: data.y },
+                                    };
+
+                                    replaceComponentInSubArray(
+                                        componentsPagedArraydispatch,
+                                        currentComponentsInterface.currentIndex,
+                                        index,
+                                        () => {},
+                                        newElement,
+                                    );
+                                }}
+                                onStop={(_, data) => {
+                                    // const newElement = onStopDrag(
+                                    //     componentsPagedArray[
+                                    //         currentComponentsInterface.currentIndex
+                                    //     ],
+                                    //     index,
+                                    // );
+                                    // replaceComponentInSubArray(
+                                    //     currentComponentsInterface.currentIndex,
+                                    //     index,
+                                    //     () => {
+                                    //         data.node.style.display = "none";
+                                    //         setTimeout(() => {
+                                    //             data.node.style.display = "flex";
+                                    //         }, 200);
+                                    //     },
+                                    //     newElement,
+                                    // );
+
+                                    animate(animatingDispatch, component.index);
+                                    setIsStartDragging(true);
+
+                                    setTimeout(() => {
+                                        const newElement: DesignerComponent = {
+                                            ...component,
+                                            position: { x: 0, y: 0 },
+                                        };
+
+                                        replaceComponentInSubArray(
+                                            componentsPagedArraydispatch,
+                                            currentComponentsInterface.currentIndex,
+                                            index,
+                                            () => {
+                                                stopAnimating(
+                                                    animatingDispatch,
+                                                    component.index,
+                                                );
+                                                setIsStartDragging(false);
+                                            },
+                                            newElement,
+                                        );
+                                        // Optional: Remove the class after animation ends
+                                        // data.node.addEventListener(
+                                        //     "animationend",
+                                        //     () => {
+                                        //         data.node.classList.remove(
+                                        //             "animate-scale-down-fade",
+                                        //         );
+                                        //     },
+                                        // );
+                                    }, 301);
+                                }}
                             >
-                                {component.text}
-                            </div>
-                        </Draggable>
+                                <div
+                                    className={`w-24 h-24 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : "animate-scroll-up"}`}
+                                    style={{ position: component.state }}
+                                >
+                                    {component.text}
+                                </div>
+                            </Draggable>
+                        </div>
                     );
                 })}
 
@@ -236,20 +261,5 @@ const Components: React.FC = () => {
         </div>
     );
 };
-
-function updateSubarray<T>(
-    bigArray: T[][],
-    bigIndex: number,
-    subIndex: number,
-    newElement: T,
-): T[][] {
-    return bigArray.map((subarray, index) =>
-        index === bigIndex
-            ? subarray.map((element, i) =>
-                  i === subIndex ? newElement : element,
-              )
-            : subarray,
-    );
-}
 
 export default Components;
