@@ -1,7 +1,14 @@
+import { ComponentsIndexInterface } from "@/helpers/designer/scrollBehaviors";
+import {
+    AnimatingAction,
+    AnimatingState,
+} from "@/hooks/designer/animatingDispatcher";
+import { Action } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { LocalState } from "@/hooks/local-data/useLocalData";
-import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { UserModel } from "@/interfaces/auth/userModel";
+import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { createContext } from "react";
+import { AnimationState } from "../routes/designer/Elements";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -39,16 +46,24 @@ export interface GeneratorContextInterface {
     setUserTemplateData: (userTemplateData: Map<string, string>) => void;
 }
 
-export interface DesignerContextInterface {
-    designerComponentRef: React.RefObject<HTMLDivElement>;
+export interface DesignerElementsContextInterface {
+    componentsPagedArray: DesignerComponent[][];
+    currentComponentsInterface: ComponentsIndexInterface;
+    isAnimating: AnimatingState;
+    isStartDragging: boolean;
+    scrollingAnimationState: AnimationState;
+    componentsPagedArraydispatch: React.Dispatch<Action>;
+    animatingDispatch: React.Dispatch<AnimatingAction>;
+    setIsStartDragging: (state: boolean) => void;
 }
 
 type Option = ContextInterface | null;
 type HomeOption = HomeContextInterface | null;
 type GeneratorOption = GeneratorContextInterface | null;
-type DesignerOption = DesignerContextInterface | null;
+type DesignerElementsOption = DesignerElementsContextInterface | null;
 
 export const Context = createContext<Option>(null);
 export const HomeContext = createContext<HomeOption>(null);
 export const GeneratorContext = createContext<GeneratorOption>(null);
-export const DesignerContext = createContext<DesignerOption>(null);
+export const DesignerElementsContext =
+    createContext<DesignerElementsOption>(null);

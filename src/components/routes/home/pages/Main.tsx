@@ -17,10 +17,10 @@ import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 const Main: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
     const homeContext = useContext(HomeContext) as HomeContextInterface;
+    const { isMenuOpen } = homeContext;
 
     const { localState, cacheLocalState } = context;
     const authed = context.localState.authed;
-    const { isMenuOpen } = homeContext;
 
     const token = context.userData?.token;
     const [templates, setTemplates] = useState<Array<string>>([]);

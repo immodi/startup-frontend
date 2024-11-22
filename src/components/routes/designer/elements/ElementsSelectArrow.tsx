@@ -2,12 +2,14 @@ import React from "react";
 
 interface ArrowProps {
     direction?: "up" | "down";
+    className?: string;
     onHover?: () => void;
     onClick?: () => void;
 }
 
 const Arrow: React.FC<ArrowProps> = ({
     direction = "down",
+    className,
     onHover,
     onClick,
 }) => {
@@ -24,7 +26,7 @@ const Arrow: React.FC<ArrowProps> = ({
 
     return (
         <div
-            className={`${arrowStyles.base} ${arrowStyles.hover} ${arrowStyles.active} absolute cursor-pointer ${direction === "up" ? "top-0" : "bottom-0"}`}
+            className={`${className ?? ""} ${arrowStyles.base} ${arrowStyles.hover} ${arrowStyles.active} static cursor-pointer ${direction === "up" ? "top-0" : "bottom-0"}`}
             onMouseEnter={() => {
                 onHover?.();
             }}
