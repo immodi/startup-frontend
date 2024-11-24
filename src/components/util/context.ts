@@ -46,6 +46,10 @@ export interface GeneratorContextInterface {
     setUserTemplateData: (userTemplateData: Map<string, string>) => void;
 }
 
+export interface DesignerContextInterface {
+    canvasRef: React.RefObject<HTMLDivElement>;
+}
+
 export interface DesignerElementsContextInterface {
     componentsPagedArray: DesignerComponent[][];
     currentComponentsInterface: ComponentsIndexInterface;
@@ -60,10 +64,12 @@ export interface DesignerElementsContextInterface {
 type Option = ContextInterface | null;
 type HomeOption = HomeContextInterface | null;
 type GeneratorOption = GeneratorContextInterface | null;
+type DesignerOption = DesignerContextInterface | null;
 type DesignerElementsOption = DesignerElementsContextInterface | null;
 
 export const Context = createContext<Option>(null);
 export const HomeContext = createContext<HomeOption>(null);
 export const GeneratorContext = createContext<GeneratorOption>(null);
+export const DesignerContext = createContext<DesignerOption>(null);
 export const DesignerElementsContext =
     createContext<DesignerElementsOption>(null);

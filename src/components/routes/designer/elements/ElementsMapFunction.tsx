@@ -1,7 +1,10 @@
 import {
+    DesignerContext,
+    DesignerContextInterface,
     DesignerElementsContext,
     DesignerElementsContextInterface,
 } from "@/components/util/context";
+import checkCollision from "@/helpers/designer/checkCollision";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
@@ -12,6 +15,11 @@ const ElementsMapper: React.FC = () => {
     const designerElementsContext = useContext(
         DesignerElementsContext,
     ) as DesignerElementsContextInterface;
+
+    const designerContext = useContext(
+        DesignerContext,
+    ) as DesignerContextInterface;
+    const { canvasRef } = designerContext;
 
     const {
         componentsPagedArray,
@@ -41,7 +49,21 @@ const ElementsMapper: React.FC = () => {
                                     y: component.positionOffset.y,
                                 }}
                                 position={component.position}
-                                onStop={() => {
+                                onDrag={(_, data) => {
+                                    const newElement: DesignerComponent = {
+                                        ...component,
+                                        position: { x: data.x, y: data.y },
+                                    };
+
+                                    replaceComponentInSubArray(
+                                        componentsPagedArraydispatch,
+                                        currentComponentsInterface.currentIndex,
+                                        index,
+                                        () => {},
+                                        newElement,
+                                    );
+                                }}
+                                onStop={(_, data) => {
                                     animate(animatingDispatch, component.index);
                                     setIsStartDragging(true);
 
@@ -65,20 +87,15 @@ const ElementsMapper: React.FC = () => {
                                             newElement,
                                         );
                                     }, 301);
-                                }}
-                                onDrag={(_, data) => {
-                                    const newElement: DesignerComponent = {
-                                        ...component,
-                                        position: { x: data.x, y: data.y },
-                                    };
 
-                                    replaceComponentInSubArray(
-                                        componentsPagedArraydispatch,
-                                        currentComponentsInterface.currentIndex,
-                                        index,
-                                        () => {},
-                                        newElement,
-                                    );
+                                    if (canvasRef.current) {
+                                        const isCollidingWithCanvas =
+                                            checkCollision(
+                                                data.node,
+                                                canvasRef,
+                                            );
+                                        // console.log(isCollidingWithCanvas);
+                                    }
                                 }}
                             >
                                 <div
