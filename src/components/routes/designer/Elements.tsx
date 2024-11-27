@@ -1,4 +1,6 @@
 import {
+    DesignerContext,
+    DesignerContextInterface,
     DesignerElementsContext,
     DesignerElementsContextInterface,
     HomeContext,
@@ -22,21 +24,37 @@ import {
     componentsReducer,
 } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, {
+    ReactElement,
+    useContext,
+    useEffect,
+    useReducer,
+    useState,
+} from "react";
 import ElementsMapper from "./elements/ElementsMapFunction";
 import Arrow from "./elements/ElementsSelectArrow";
 import { LoadingSpinner } from "@/components/ui/Spinner";
+import { createPortal } from "react-dom";
+import {
+    CanvasElement,
+    ElementsRenderer,
+} from "./elements/CanvasElementsRenderer";
 
 export type AnimationState = "down" | "up" | "none";
 
 const Elements: React.FC = () => {
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
+    const designerContext = useContext(
+        DesignerContext,
+    ) as DesignerContextInterface;
+    const { canvasRef } = designerContext;
 
     const [components, setComponents] = useState<Array<DesignerComponent>>([]);
     const [isStartDragging, setIsStartDragging] = useState(false);
     const [scrollingAnimationState, setScrollingAnimationState] =
         useState<AnimationState>("none");
+    const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
 
     const [componentsPagedArray, componentsPagedArraydispatch] = useReducer(
         componentsReducer,
@@ -88,10 +106,23 @@ const Elements: React.FC = () => {
         componentsPagedArraydispatch: componentsPagedArraydispatch,
         animatingDispatch: animatingDispatch,
         setIsStartDragging: setStartDragging,
+        addCanvasElement: addCanvasElement,
     };
+
+    function addCanvasElement(element: CanvasElement) {
+        const elements = canvasElements;
+        elements.push(element);
+
+        setCanvasElements(elements);
+    }
 
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
+            {canvasRef.current &&
+                createPortal(
+                    ElementsRenderer(canvasElements),
+                    canvasRef.current,
+                )}
             <div
                 className={`bg-white ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 w-80 h-full transform self-end relative overflow-visible grid place-items-center`}
                 style={{

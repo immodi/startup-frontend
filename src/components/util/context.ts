@@ -9,6 +9,7 @@ import { UserModel } from "@/interfaces/auth/userModel";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { createContext } from "react";
 import { AnimationState } from "../routes/designer/Elements";
+import { CanvasElement } from "../routes/designer/elements/CanvasElementsRenderer";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -59,6 +60,7 @@ export interface DesignerElementsContextInterface {
     componentsPagedArraydispatch: React.Dispatch<Action>;
     animatingDispatch: React.Dispatch<AnimatingAction>;
     setIsStartDragging: (state: boolean) => void;
+    addCanvasElement: (element: CanvasElement) => void;
 }
 
 type Option = ContextInterface | null;

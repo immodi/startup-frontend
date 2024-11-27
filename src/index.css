@@ -98,17 +98,17 @@
 @keyframes scroll-down {
     0% {
         top: 0%;
-        opacity: 0.5;
+        opacity: 1;
     }
 
     50% {
         opacity: 0;
-        top: 1000%;
+        top: 100%;
     }
 
     75% {
         opacity: 0;
-        top: -1000%;
+        top: -100%;
     }
 
     100% {
@@ -120,17 +120,17 @@
 @keyframes scroll-up {
     0% {
         top: 0%;
-        opacity: 0.5;
+        opacity: 1;
     }
 
     50% {
         opacity: 0;
-        top: -500%;
+        top: -100%;
     }
 
     75% {
         opacity: 0;
-        top: 500%;
+        top: 100%;
     }
 
     100% {
@@ -148,9 +148,9 @@
 }
 
 .animate-scroll-down {
-    animation: scroll-down 0.4s ease-in-out forwards;
+    animation: scroll-down 0.3s ease-in-out forwards;
 }
 
 .animate-scroll-up {
-    animation: scroll-up 0.4s ease-in-out forwards;
+    animation: scroll-up 0.3s ease-in-out forwards;
 }

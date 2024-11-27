@@ -21,6 +21,13 @@ export function populateDummyElements(
             },
             state: "relative",
             positionOffset: { x: 0, y: 0 },
+            element: {
+                element: "div",
+                id: i,
+                text: i.toString(),
+                customClasses:
+                    "w-full h-20 bg-red-200 text-black flex justify-center items-center text-7xl",
+            },
         });
     }
 

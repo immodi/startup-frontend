@@ -9,6 +9,7 @@ import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useContext } from "react";
+import { createPortal } from "react-dom";
 import Draggable from "react-draggable";
 
 const ElementsMapper: React.FC = () => {
@@ -30,6 +31,7 @@ const ElementsMapper: React.FC = () => {
         isStartDragging,
         scrollingAnimationState,
         setIsStartDragging,
+        addCanvasElement,
     } = designerElementsContext;
 
     return (
@@ -94,7 +96,9 @@ const ElementsMapper: React.FC = () => {
                                                 data.node,
                                                 canvasRef,
                                             );
-                                        // console.log(isCollidingWithCanvas);
+                                        if (isCollidingWithCanvas) {
+                                            addCanvasElement(component.element);
+                                        }
                                     }
                                 }}
                             >
