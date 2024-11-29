@@ -9,7 +9,6 @@ import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useContext } from "react";
-import { createPortal } from "react-dom";
 import Draggable from "react-draggable";
 
 const ElementsMapper: React.FC = () => {
@@ -36,7 +35,7 @@ const ElementsMapper: React.FC = () => {
 
     return (
         <div className="elements w-fit h-full overflow-visible grid place-items-start">
-            {componentsPagedArray.length > 1 &&
+            {componentsPagedArray.length > 0 &&
                 componentsPagedArray[
                     currentComponentsInterface.currentIndex
                 ].map((component, index) => {

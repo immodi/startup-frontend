@@ -1,7 +1,7 @@
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 
 export const componentsPagedArrayInitialState: Array<Array<DesignerComponent>> =
-    [[]];
+    [];
 
 export type Action =
     | {

@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React, { ReactNode } from "react";
 
 export type ElementsType = "div" | Headers | "p";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
@@ -10,20 +10,39 @@ export interface CanvasElement {
     customClasses?: string;
 }
 
-export function ElementsRenderer(elements: CanvasElement[]): ReactElement {
+export function ElementsRenderer(elements: CanvasElement[]): ReactNode {
     return (
         <>
             {elements.map((element) => {
                 const className = element.customClasses ?? "";
-                switch (element.element) {
-                    case "div":
-                        return <div className={className}>{element.text}</div>;
-                    case "h1":
-                        return <h1 className={className}>{element.text}</h1>;
-                    default:
-                        return <div className={className}>Default Text</div>;
-                }
+                return convertHTMLElementToReactNode(
+                    element.element,
+                    className,
+                    element.text,
+                );
             })}
         </>
     );
+}
+
+function convertHTMLElementToReactNode(
+    tagName: string,
+    className: string,
+    text: string,
+): ReactNode {
+    const canvasElement = document.createElement(tagName);
+    const classes = className.split(" ");
+    classes.forEach((className) => {
+        if (className.trim() !== "") {
+            canvasElement.classList.add(className.trim());
+        }
+    });
+    canvasElement.innerHTML = text;
+
+    return React.createElement(tagName, {
+        className: canvasElement.className,
+        dangerouslySetInnerHTML: {
+            __html: canvasElement.innerHTML,
+        },
+    });
 }

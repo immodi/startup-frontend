@@ -141,7 +141,7 @@ const Elements: React.FC = () => {
                     }}
                 />
 
-                {componentsPagedArray.length <= 1 ? (
+                {componentsPagedArray.length < 0 ? (
                     <LoadingSpinner className="w-16 h-16" />
                 ) : (
                     <ElementsMapper />

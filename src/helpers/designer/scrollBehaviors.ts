@@ -16,12 +16,17 @@ export function scrollDown(
             ? currentComponentsInterface.currentIndex + 1
             : maxIndex;
 
-    setCurrentComponentsInterface({
-        ...currentComponentsInterface,
-        currentIndex: newIndex,
-    });
+    if (
+        newIndex <= maxIndex &&
+        currentComponentsInterface.currentIndex !== maxIndex
+    ) {
+        setCurrentComponentsInterface({
+            ...currentComponentsInterface,
+            currentIndex: newIndex,
+        });
 
-    setScrollingAnimationState("down");
+        setScrollingAnimationState("down");
+    }
 }
 
 export function scrollUp(
@@ -34,10 +39,12 @@ export function scrollUp(
             ? 0
             : currentComponentsInterface.currentIndex - 1;
 
-    setCurrentComponentsInterface({
-        ...currentComponentsInterface,
-        currentIndex: newIndex,
-    });
+    if (newIndex >= 0 && currentComponentsInterface.currentIndex !== 0) {
+        setCurrentComponentsInterface({
+            ...currentComponentsInterface,
+            currentIndex: newIndex,
+        });
 
-    setScrollingAnimationState("up");
+        setScrollingAnimationState("up");
+    }
 }
