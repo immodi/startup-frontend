@@ -61,6 +61,15 @@ export interface DesignerElementsContextInterface {
     animatingDispatch: React.Dispatch<AnimatingAction>;
     setIsStartDragging: (state: boolean) => void;
     addCanvasElement: (element: CanvasElement) => void;
+    removeCanvasElement: (elementId: number) => void;
+
+    updateCanvasElement: (
+        elementIndex: number,
+        newElement: {
+            text?: string;
+            customClasses?: string;
+        },
+    ) => void;
 }
 
 type Option = ContextInterface | null;

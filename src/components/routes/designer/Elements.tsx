@@ -38,6 +38,7 @@ import { createPortal } from "react-dom";
 import {
     CanvasElement,
     ElementsRenderer,
+    ElementsType,
 } from "./elements/CanvasElementsRenderer";
 
 export type AnimationState = "down" | "up" | "none";
@@ -77,6 +78,10 @@ const Elements: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        console.log(canvasElements);
+    }, [canvasElements.length]);
+
+    useEffect(() => {
         indexAndDisplayElements(
             components,
             currentComponentsInterface,
@@ -107,7 +112,13 @@ const Elements: React.FC = () => {
         animatingDispatch: animatingDispatch,
         setIsStartDragging: setStartDragging,
         addCanvasElement: addCanvasElement,
+        removeCanvasElement: removeCanvasElement,
+        updateCanvasElement: updateCanvasElement,
     };
+
+    // useEffect(() => {
+    //     console.log(canvasElements);
+    // }, [canvasElements.length]);
 
     function addCanvasElement(element: CanvasElement) {
         const elements = canvasElements;
@@ -116,11 +127,39 @@ const Elements: React.FC = () => {
         setCanvasElements(elements);
     }
 
+    function removeCanvasElement(elementIndex: number) {
+        const newElements = canvasElements.filter((_, index) => {
+            return index !== elementIndex;
+        });
+
+        setCanvasElements(newElements);
+    }
+
+    function updateCanvasElement(
+        elementId: number,
+        newElement: {
+            text?: string;
+            customClasses?: string;
+        },
+    ) {
+        const newElements = canvasElements.map((element) => {
+            return element.id === elementId
+                ? { ...element, ...newElement }
+                : element;
+        });
+
+        setCanvasElements(newElements);
+    }
+
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
             {canvasRef.current &&
                 createPortal(
-                    ElementsRenderer(canvasElements),
+                    ElementsRenderer(
+                        canvasElements,
+                        removeCanvasElement,
+                        updateCanvasElement,
+                    ),
                     canvasRef.current,
                 )}
             <div

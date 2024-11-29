@@ -41,6 +41,7 @@ const ElementsMapper: React.FC = () => {
                 ].map((component, index) => {
                     return (
                         <div
+                            key={index}
                             className={`w-fit h-fit ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}`}
                         >
                             <Draggable
@@ -96,7 +97,23 @@ const ElementsMapper: React.FC = () => {
                                                 canvasRef,
                                             );
                                         if (isCollidingWithCanvas) {
-                                            addCanvasElement(component.element);
+                                            addCanvasElement({
+                                                id: Math.floor(
+                                                    Math.random() *
+                                                        Math.floor(
+                                                            Math.random() *
+                                                                Date.now(),
+                                                        ),
+                                                ),
+                                                element:
+                                                    component.element.element,
+                                                text: component.element.text,
+                                                customClasses:
+                                                    component.element
+                                                        .customClasses,
+
+                                                selected: false,
+                                            });
                                         }
                                     }
                                 }}

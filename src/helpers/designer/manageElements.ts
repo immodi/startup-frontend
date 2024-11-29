@@ -9,28 +9,6 @@ import { CanvasElement } from "@/components/routes/designer/elements/CanvasEleme
 export function populateDummyElements(
     setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
 ) {
-    // const componentsArray: DesignerComponent[] = [];
-    // const elementsNumber = 3;
-    // for (let i = 0; i < elementsNumber; i++) {
-    //     componentsArray.push({
-    //         index: i,
-    //         text: `DIV ${i}`,
-    //         position: {
-    //             x: 0,
-    //             y: 0,
-    //         },
-    //         state: "relative",
-    //         positionOffset: { x: 0, y: 0 },
-    //         element: {
-    //             element: "div",
-    //             id: i,
-    //             text: i.toString(),
-    //             customClasses:
-    //                 "w-full h-20 bg-red-200 text-black flex justify-center items-center text-7xl",
-    //         },
-    //     });
-    // }
-
     const componentsArray: DesignerComponent[] = [
         getDefaultDesignerComponent({
             index: 0,
@@ -41,7 +19,8 @@ export function populateDummyElements(
                 text: "Default H1",
                 customClasses:
                     "w-full " +
-                    "text-4xl font-bold text-gray-800 leading-tight ",
+                    "text-4xl font-bold text-gray-800 leading-tight",
+                selected: false,
             },
         }),
         getDefaultDesignerComponent({
@@ -54,6 +33,7 @@ export function populateDummyElements(
                 customClasses:
                     "w-full " +
                     "text-2xl font-semibold text-gray-700 leading-snug",
+                selected: false,
             },
         }),
         getDefaultDesignerComponent({
@@ -66,16 +46,18 @@ export function populateDummyElements(
                 customClasses:
                     "w-full " +
                     "text-xl font-semibold text-gray-600 leading-snug",
+                selected: false,
             },
         }),
         getDefaultDesignerComponent({
             index: 3,
             text: "Text Area",
             element: {
-                element: "div",
+                element: "p",
                 id: 3,
                 text: "Default Text",
                 customClasses: "w-full " + "text-white",
+                selected: false,
             },
         }),
     ];

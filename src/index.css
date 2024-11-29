@@ -30,6 +30,17 @@
     align-items: center;
 }
 
+.selected {
+    border: 2px solid hsl(210, 100%, 50%); /* Blue color */
+    outline: none; /* Removes default outline */
+}
+
+.x-button-elements:hover {
+    background-color: black;
+    color: white;
+    transform: scale(1.1, 1.1);
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
