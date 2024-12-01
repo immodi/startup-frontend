@@ -70,6 +70,8 @@ export interface DesignerElementsContextInterface {
             customClasses?: string;
         },
     ) => void;
+
+    // updateKeyBoardString: (text: string) => void;
 }
 
 type Option = ContextInterface | null;

@@ -39,6 +39,7 @@ import {
     CanvasElement,
     ElementsRenderer,
     ElementsType,
+    SelectionNodeModes,
 } from "./elements/CanvasElementsRenderer";
 
 export type AnimationState = "down" | "up" | "none";
@@ -73,13 +74,15 @@ const Elements: React.FC = () => {
             subArrayCount: 0,
         });
 
+    const [keyboardString, setKeyBoardString] = useState("");
+
     useEffect(() => {
         populateDummyElements(setComponents);
     }, []);
 
-    useEffect(() => {
-        console.log(canvasElements);
-    }, [canvasElements.length]);
+    // useEffect(() => {
+    //     console.log(canvasElements);
+    // }, [canvasElements.length]);
 
     useEffect(() => {
         indexAndDisplayElements(
@@ -102,6 +105,10 @@ const Elements: React.FC = () => {
         setIsStartDragging(state);
     }
 
+    function updateKeyBoardString(text: string) {
+        setKeyBoardString(text);
+    }
+
     const designerElementsContext: DesignerElementsContextInterface = {
         componentsPagedArray: componentsPagedArray,
         currentComponentsInterface: currentComponentsInterface,
@@ -114,11 +121,12 @@ const Elements: React.FC = () => {
         addCanvasElement: addCanvasElement,
         removeCanvasElement: removeCanvasElement,
         updateCanvasElement: updateCanvasElement,
+        // updateKeyBoardString: updateKeyBoardString,
     };
 
-    // useEffect(() => {
-    //     console.log(canvasElements);
-    // }, [canvasElements.length]);
+    useEffect(() => {
+        console.log(canvasElements);
+    }, [canvasElements.length]);
 
     function addCanvasElement(element: CanvasElement) {
         const elements = canvasElements;
@@ -140,11 +148,18 @@ const Elements: React.FC = () => {
         newElement: {
             text?: string;
             customClasses?: string;
+            selectMode?: SelectionNodeModes;
         },
     ) {
         const newElements = canvasElements.map((element) => {
             return element.id === elementId
-                ? { ...element, ...newElement }
+                ? {
+                      ...element,
+                      customClasses:
+                          newElement.customClasses ?? element.customClasses,
+                      text: newElement.text ?? element.text,
+                      selectMode: newElement.selectMode ?? element.selectMode,
+                  }
                 : element;
         });
 

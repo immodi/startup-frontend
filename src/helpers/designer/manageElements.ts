@@ -20,7 +20,7 @@ export function populateDummyElements(
                 customClasses:
                     "w-full " +
                     "text-4xl font-bold text-gray-800 leading-tight",
-                selected: false,
+                selectMode: "idle",
             },
         }),
         getDefaultDesignerComponent({
@@ -33,7 +33,7 @@ export function populateDummyElements(
                 customClasses:
                     "w-full " +
                     "text-2xl font-semibold text-gray-700 leading-snug",
-                selected: false,
+                selectMode: "idle",
             },
         }),
         getDefaultDesignerComponent({
@@ -46,7 +46,7 @@ export function populateDummyElements(
                 customClasses:
                     "w-full " +
                     "text-xl font-semibold text-gray-600 leading-snug",
-                selected: false,
+                selectMode: "idle",
             },
         }),
         getDefaultDesignerComponent({
@@ -57,7 +57,7 @@ export function populateDummyElements(
                 id: 3,
                 text: "Default Text",
                 customClasses: "w-full " + "text-white",
-                selected: false,
+                selectMode: "idle",
             },
         }),
     ];

@@ -112,7 +112,7 @@ const ElementsMapper: React.FC = () => {
                                                     component.element
                                                         .customClasses,
 
-                                                selected: false,
+                                                selectMode: "idle",
                                             });
                                         }
                                     }
