@@ -124,9 +124,9 @@ const Elements: React.FC = () => {
         // updateKeyBoardString: updateKeyBoardString,
     };
 
-    useEffect(() => {
-        console.log(canvasElements);
-    }, [canvasElements.length]);
+    // useEffect(() => {
+    //     console.log(canvasElements);
+    // }, [canvasElements.length]);
 
     function addCanvasElement(element: CanvasElement) {
         const elements = canvasElements;
@@ -143,6 +143,29 @@ const Elements: React.FC = () => {
         setCanvasElements(newElements);
     }
 
+    // function updateCanvasElement(
+    //     elementId: number,
+    //     newElement: {
+    //         text?: string;
+    //         customClasses?: string;
+    //         selectMode?: SelectionNodeModes;
+    //     },
+    // ) {
+    //     const newElements = canvasElements.map((element) => {
+    //         return element.id === elementId
+    //             ? {
+    //                   ...element,
+    //                   customClasses:
+    //                       newElement.customClasses ?? element.customClasses,
+    //                   text: newElement.text ?? element.text,
+    //                   selectMode: newElement.selectMode ?? element.selectMode,
+    //               }
+    //             : element;
+    //     });
+
+    //     setCanvasElements(newElements);
+    // }
+
     function updateCanvasElement(
         elementId: number,
         newElement: {
@@ -151,19 +174,16 @@ const Elements: React.FC = () => {
             selectMode?: SelectionNodeModes;
         },
     ) {
-        const newElements = canvasElements.map((element) => {
-            return element.id === elementId
-                ? {
-                      ...element,
-                      customClasses:
-                          newElement.customClasses ?? element.customClasses,
-                      text: newElement.text ?? element.text,
-                      selectMode: newElement.selectMode ?? element.selectMode,
-                  }
-                : element;
-        });
-
-        setCanvasElements(newElements);
+        setCanvasElements((prevElements) =>
+            prevElements.map((element) =>
+                element.id === elementId
+                    ? {
+                          ...element,
+                          ...newElement,
+                      }
+                    : element,
+            ),
+        );
     }
 
     return (

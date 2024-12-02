@@ -61,6 +61,8 @@ function convertHTMLElementToReactNode(
     ) => void,
 ): ReactNode {
     function clickManager(element: HTMLElement) {
+        console.log(element);
+
         if (element.children.length > 0) {
             // main element
             switch (selectMode) {
@@ -73,9 +75,12 @@ function convertHTMLElementToReactNode(
                         selectMode: "idle",
                     });
             }
-        } else if (element.nodeName === "SPAN") {
+        } else if (element.id === "deleteElementButton") {
             removeCanvasElement();
-        } else {
+        } else if (element.id === "saveElementButton") {
+            return updateCanvasElement(id, {
+                selectMode: "idle",
+            });
         }
     }
 
@@ -89,6 +94,27 @@ function convertHTMLElementToReactNode(
         }
     }
 
+    function handleEditText(node: HTMLElement) {
+        if (node.children.length > 0) {
+            clickManager(node);
+
+            const textInput = node.children[1] as HTMLElement;
+            textInput.focus();
+
+            updateCanvasElement(id, {
+                selectMode: "editing",
+            });
+
+            document.addEventListener("keyup", (e: KeyboardEvent) => {
+                handleSaveText(e, () => {
+                    updateCanvasElement(id, {
+                        selectMode: "idle",
+                    });
+                });
+            });
+        }
+    }
+
     return React.createElement(tagName, {
         id: id,
         className: `${className} relative ${selectMode !== "idle" ? "selected" : ""}`,
@@ -99,32 +125,22 @@ function convertHTMLElementToReactNode(
 
         onDoubleClick: (e: React.MouseEvent<HTMLElement>) => {
             const node = e.target as HTMLElement;
-
-            if (node.children.length > 0) {
-                console.log(node);
-
-                clickManager(node);
-
-                updateCanvasElement(id, {
-                    selectMode: "editing",
-                });
-
-                document.addEventListener("keyup", (e: KeyboardEvent) => {
-                    handleSaveText(e, () => {
-                        updateCanvasElement(id, {
-                            selectMode: "idle",
-                        });
-                    });
-                });
-            }
+            handleEditText(node);
         },
 
         children: [
             text,
             <span
-                className={`x-button-elements z-10 w-7 h-7 text-center text-base text-black absolute top-0 right-0 m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                id="deleteElementButton"
+                className={`x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
             >
-                x
+                🗑
+            </span>,
+            <span
+                id="saveElementButton"
+                className={`x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode === "editing" ? "" : "hidden"}`}
+            >
+                ✔
             </span>,
             <input
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
