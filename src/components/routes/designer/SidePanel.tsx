@@ -10,11 +10,7 @@ import {
     indexAndDisplayElements,
     populateDummyElements,
 } from "@/helpers/designer/manageElements";
-import {
-    ComponentsIndexInterface,
-    scrollDown,
-    scrollUp,
-} from "@/helpers/designer/scrollBehaviors";
+import { ComponentsIndexInterface } from "@/helpers/designer/scrollBehaviors";
 import {
     animatingReducer,
     animationInitialState,
@@ -24,27 +20,16 @@ import {
     componentsReducer,
 } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, {
-    ReactElement,
-    useContext,
-    useEffect,
-    useReducer,
-    useState,
-} from "react";
-import ElementsMapper from "./elements/ElementsMapFunction";
-import Arrow from "./elements/ElementsSelectArrow";
-import { LoadingSpinner } from "@/components/ui/Spinner";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { createPortal } from "react-dom";
+import { AnimationState } from "./Elements";
 import {
     CanvasElement,
     ElementsRenderer,
-    ElementsType,
     SelectionNodeModes,
 } from "./elements/CanvasElementsRenderer";
 
-export type AnimationState = "down" | "up" | "none";
-
-const Elements: React.FC = () => {
+const SidePanel: React.FC = () => {
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
     const designerContext = useContext(
@@ -74,8 +59,6 @@ const Elements: React.FC = () => {
             subArrayCount: 0,
         });
 
-    const [keyboardString, setKeyBoardString] = useState("");
-
     useEffect(() => {
         populateDummyElements(setComponents);
     }, []);
@@ -97,36 +80,9 @@ const Elements: React.FC = () => {
         setCurrentComponentsInterface(ci);
     }
 
-    function setScrollAnimationState(animationState: AnimationState) {
-        setScrollingAnimationState(animationState);
-    }
-
     function setStartDragging(state: boolean) {
         setIsStartDragging(state);
     }
-
-    function updateKeyBoardString(text: string) {
-        setKeyBoardString(text);
-    }
-
-    const designerElementsContext: DesignerElementsContextInterface = {
-        componentsPagedArray: componentsPagedArray,
-        currentComponentsInterface: currentComponentsInterface,
-        isAnimating: isAnimating,
-        isStartDragging: isStartDragging,
-        scrollingAnimationState: scrollingAnimationState,
-        componentsPagedArraydispatch: componentsPagedArraydispatch,
-        animatingDispatch: animatingDispatch,
-        setIsStartDragging: setStartDragging,
-        addCanvasElement: addCanvasElement,
-        removeCanvasElement: removeCanvasElement,
-        updateCanvasElement: updateCanvasElement,
-        // updateKeyBoardString: updateKeyBoardString,
-    };
-
-    // useEffect(() => {
-    //     console.log(canvasElements);
-    // }, [canvasElements.length]);
 
     function addCanvasElement(element: CanvasElement) {
         const elements = canvasElements;
@@ -163,6 +119,21 @@ const Elements: React.FC = () => {
         );
     }
 
+    const designerElementsContext: DesignerElementsContextInterface = {
+        componentsPagedArray: componentsPagedArray,
+        currentComponentsInterface: currentComponentsInterface,
+        isAnimating: isAnimating,
+        isStartDragging: isStartDragging,
+        scrollingAnimationState: scrollingAnimationState,
+        componentsPagedArraydispatch: componentsPagedArraydispatch,
+        animatingDispatch: animatingDispatch,
+        setIsStartDragging: setStartDragging,
+        addCanvasElement: addCanvasElement,
+        removeCanvasElement: removeCanvasElement,
+        updateCanvasElement: updateCanvasElement,
+        // updateKeyBoardString: updateKeyBoardString,
+    };
+
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
             {canvasRef.current &&
@@ -180,37 +151,7 @@ const Elements: React.FC = () => {
                     padding: "1rem",
                     boxSizing: "border-box",
                 }}
-            >
-                <Arrow
-                    direction="up"
-                    onClick={() => {
-                        scrollUp(
-                            currentComponentsInterface,
-                            setComponentsInterface,
-                            setScrollAnimationState,
-                        );
-                    }}
-                />
-
-                {componentsPagedArray.length < 0 ? (
-                    <LoadingSpinner className="w-16 h-16" />
-                ) : (
-                    <ElementsMapper />
-                )}
-
-                <Arrow
-                    direction="down"
-                    onClick={() => {
-                        scrollDown(
-                            currentComponentsInterface,
-                            setComponentsInterface,
-                            setScrollAnimationState,
-                        );
-                    }}
-                />
-            </div>
+            ></div>
         </DesignerElementsContext.Provider>
     );
 };
-
-export default Elements;

@@ -5,73 +5,21 @@ import {
     setComponentsArray,
 } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
+import { CanvasElements } from "@/components/routes/designer/elements/CanvasElementsConstant";
 
 export function populateDummyElements(
     setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
 ) {
-    const componentsArray: DesignerComponent[] = [
-        getDefaultDesignerComponent({
-            index: 0,
-            text: "Header",
-            element: {
-                element: "h1",
-                id: 0,
-                text: "Default H1",
-                customClasses:
-                    "w-full " +
-                    "text-4xl font-bold text-gray-800 leading-tight",
-                selectMode: "idle",
-            },
-        }),
-        getDefaultDesignerComponent({
-            index: 1,
-            text: "Header 2",
-            element: {
-                element: "h2",
-                id: 1,
-                text: "Default H2",
-                customClasses:
-                    "w-full " +
-                    "text-2xl font-semibold text-gray-700 leading-snug",
-                selectMode: "idle",
-            },
-        }),
-        getDefaultDesignerComponent({
-            index: 2,
-            text: "Header 3",
-            element: {
-                element: "h3",
-                id: 2,
-                text: "Default H3",
-                customClasses:
-                    "w-full " +
-                    "text-xl font-semibold text-gray-600 leading-snug",
-                selectMode: "idle",
-            },
-        }),
-        getDefaultDesignerComponent({
-            index: 3,
-            text: "Text Area",
-            element: {
-                element: "p",
-                id: 3,
-                text: "Default Text",
-                customClasses: "w-full " + "text-white",
-                selectMode: "idle",
-            },
-        }),
-    ];
-
-    setComponents(componentsArray);
+    setComponents(CanvasElements);
 }
 
-interface PartialDesignerComponent {
+export interface PartialDesignerComponent {
     index: number;
     text: string;
     element: CanvasElement;
 }
 
-function getDefaultDesignerComponent(
+export function getDefaultDesignerComponent(
     cp: PartialDesignerComponent,
 ): DesignerComponent {
     return {

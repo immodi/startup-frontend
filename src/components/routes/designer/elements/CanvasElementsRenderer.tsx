@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
-
-export type ElementsType = "div" | Headers | "p";
+``;
+export type ElementsType = Headers | "p";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
 export type SelectionNodeModes = "selected" | "editing" | "idle";
 
@@ -117,7 +117,7 @@ function convertHTMLElementToReactNode(
 
     return React.createElement(tagName, {
         id: id,
-        className: `${className} relative ${selectMode !== "idle" ? "selected" : ""}`,
+        className: `${className} w-full h-12 flex left items-center relative ${selectMode !== "idle" ? "selected" : ""}`,
         onClick: (e: React.MouseEvent<HTMLElement>) => {
             const node = e.target as HTMLElement;
             clickManager(node);
@@ -143,9 +143,9 @@ function convertHTMLElementToReactNode(
                 ✔
             </span>,
             <input
+                defaultValue={text}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     // updateKeyBoardString(event.target.value);
-                    /// TODO: thtis doesnt change the state and thus doesn't change the vlaues, fix it
                     updateCanvasElement(id, {
                         text: event.target.value,
                     });
