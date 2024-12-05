@@ -17,8 +17,9 @@ const Canvas: React.FC = () => {
 
     return (
         <div
+            id="calbas"
             ref={canvasRef}
-            className={`${isMenuOpen && "translate-x-24"} bg-gray-500 h-full w-full transition-all ease-in-out duration-300 overflow-y-scroll select-none`}
+            className={`${isMenuOpen && "translate-x-24"} bg-gray-500 h-full w-full transition-all ease-in-out duration-300 overflow-y-scroll flex-grow select-none`}
         ></div>
     );
 };

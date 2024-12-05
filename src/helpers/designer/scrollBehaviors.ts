@@ -1,4 +1,4 @@
-import { AnimationState } from "@/components/routes/designer/Elements";
+import { AnimationState } from "@/components/routes/designer/panels/Elements";
 
 export interface ComponentsIndexInterface {
     currentIndex: number;

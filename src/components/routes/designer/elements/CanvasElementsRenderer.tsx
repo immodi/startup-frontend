@@ -3,13 +3,29 @@ import React, { ReactNode, useState } from "react";
 export type ElementsType = Headers | "p";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
 export type SelectionNodeModes = "selected" | "editing" | "idle";
+export type UserFont =
+    | "Arial"
+    | "Verdana"
+    | "Georgia"
+    | "Times New Roman"
+    | "Courier New";
 
 export interface CanvasElement {
     id: number;
     element: ElementsType;
     text: string;
-    customClasses?: string;
     selectMode: SelectionNodeModes;
+    userStyle: CanvasElementStyles;
+    customClasses?: string;
+}
+
+export interface CanvasElementStyles {
+    textColor: string;
+    fontFamily: UserFont;
+    isBold: boolean;
+    isItalic: boolean;
+    isUnderline: boolean;
+    textContent: string;
 }
 
 export function ElementsRenderer(
@@ -23,6 +39,8 @@ export function ElementsRenderer(
             selectMode?: SelectionNodeModes;
         },
     ) => void,
+    updateCurrentEditableIndex: (index: number) => void,
+    updateActivePanel: (id: "elements" | "customize") => void,
 ): ReactNode {
     return (
         <>
@@ -38,6 +56,10 @@ export function ElementsRenderer(
                         removeCanvasElement(index);
                     },
                     updateCanvasElement,
+                    () => {
+                        updateCurrentEditableIndex(index);
+                        updateActivePanel("customize");
+                    },
                 );
             })}
         </>
@@ -59,10 +81,9 @@ function convertHTMLElementToReactNode(
             selectMode?: SelectionNodeModes;
         },
     ) => void,
+    updateCurrentEditableIndex: () => void,
 ): ReactNode {
     function clickManager(element: HTMLElement) {
-        console.log(element);
-
         if (element.children.length > 0) {
             // main element
             switch (selectMode) {
@@ -81,6 +102,8 @@ function convertHTMLElementToReactNode(
             return updateCanvasElement(id, {
                 selectMode: "idle",
             });
+        } else if (element.id === "editElementButton") {
+            updateCurrentEditableIndex();
         }
     }
 
@@ -141,6 +164,12 @@ function convertHTMLElementToReactNode(
                 className={`x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode === "editing" ? "" : "hidden"}`}
             >
                 ✔
+            </span>,
+            <span
+                id="editElementButton"
+                className={`x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode === "editing" ? "" : "hidden"}`}
+            >
+                ✎
             </span>,
             <input
                 defaultValue={text}

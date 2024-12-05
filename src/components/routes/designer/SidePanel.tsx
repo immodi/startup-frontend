@@ -1,33 +1,24 @@
 import {
     DesignerContext,
     DesignerContextInterface,
-    DesignerElementsContext,
-    DesignerElementsContextInterface,
     HomeContext,
     HomeContextInterface,
+    SidelPanelContextInterface,
+    SidePanelContext,
 } from "@/components/util/context";
-import {
-    indexAndDisplayElements,
-    populateDummyElements,
-} from "@/helpers/designer/manageElements";
-import { ComponentsIndexInterface } from "@/helpers/designer/scrollBehaviors";
-import {
-    animatingReducer,
-    animationInitialState,
-} from "@/hooks/designer/animatingDispatcher";
-import {
-    componentsPagedArrayInitialState,
-    componentsReducer,
-} from "@/hooks/designer/componentsPagedArrayDispatcher";
-import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import { faL, faShapes, faWrench } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimationState } from "./Elements";
 import {
     CanvasElement,
     ElementsRenderer,
     SelectionNodeModes,
 } from "./elements/CanvasElementsRenderer";
+import Elements from "./panels/Elements";
+import Customize from "./panels/Customize";
+import StyledElements from "./panels/StyledElements";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 const SidePanel: React.FC = () => {
     const homeContext = useContext(HomeContext) as HomeContextInterface;
@@ -35,57 +26,36 @@ const SidePanel: React.FC = () => {
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
-    const { canvasRef } = designerContext;
+    const {
+        canvasRef,
+        isSidePanelOpen,
+        panelDisplay,
+        toggleSidePanel,
+        changePanelDisplay,
+    } = designerContext;
 
-    const [components, setComponents] = useState<Array<DesignerComponent>>([]);
-    const [isStartDragging, setIsStartDragging] = useState(false);
-    const [scrollingAnimationState, setScrollingAnimationState] =
-        useState<AnimationState>("none");
+    const [activePanel, setActivePanel] = useState("elements");
     const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
+    const [
+        currentEditableIndexInCanvasElements,
+        setCurrentEditableIndexInCanvasElements,
+    ] = useState<number | undefined>();
 
-    const [componentsPagedArray, componentsPagedArraydispatch] = useReducer(
-        componentsReducer,
-        componentsPagedArrayInitialState,
-    );
+    const panels = new Map<string, React.ReactNode>([
+        ["elements", <Elements />],
+        ["customize", <Customize />],
+    ]);
 
-    const [isAnimating, animatingDispatch] = useReducer(
-        animatingReducer,
-        animationInitialState,
-    );
+    function getCanvasElementByIndex(index: number): CanvasElement | null {
+        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
+            return null;
+        }
 
-    const [currentComponentsInterface, setCurrentComponentsInterface] =
-        useState<ComponentsIndexInterface>({
-            currentIndex: 0,
-            subArrayCount: 0,
-        });
-
-    useEffect(() => {
-        populateDummyElements(setComponents);
-    }, []);
-
-    // useEffect(() => {
-    //     console.log(canvasElements);
-    // }, [canvasElements.length]);
-
-    useEffect(() => {
-        indexAndDisplayElements(
-            components,
-            currentComponentsInterface,
-            setComponentsInterface,
-            componentsPagedArraydispatch,
-        );
-    }, [components]);
-
-    function setComponentsInterface(ci: ComponentsIndexInterface) {
-        setCurrentComponentsInterface(ci);
-    }
-
-    function setStartDragging(state: boolean) {
-        setIsStartDragging(state);
+        return canvasElements[index];
     }
 
     function addCanvasElement(element: CanvasElement) {
-        const elements = canvasElements;
+        const elements = structuredClone(canvasElements);
         elements.push(element);
 
         setCanvasElements(elements);
@@ -119,39 +89,101 @@ const SidePanel: React.FC = () => {
         );
     }
 
-    const designerElementsContext: DesignerElementsContextInterface = {
-        componentsPagedArray: componentsPagedArray,
-        currentComponentsInterface: currentComponentsInterface,
-        isAnimating: isAnimating,
-        isStartDragging: isStartDragging,
-        scrollingAnimationState: scrollingAnimationState,
-        componentsPagedArraydispatch: componentsPagedArraydispatch,
-        animatingDispatch: animatingDispatch,
-        setIsStartDragging: setStartDragging,
+    function updateActivePanel(id: "elements" | "customize") {
+        setActivePanel(id);
+    }
+
+    function updateCurrentEditableIndex(index: number) {
+        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
+            return;
+        }
+
+        setCurrentEditableIndexInCanvasElements(index);
+    }
+
+    const sidePanelContext: SidelPanelContextInterface = {
         addCanvasElement: addCanvasElement,
         removeCanvasElement: removeCanvasElement,
         updateCanvasElement: updateCanvasElement,
-        // updateKeyBoardString: updateKeyBoardString,
+
+        activePanel: activePanel,
+        currentEditableIndexInCanvasElements:
+            currentEditableIndexInCanvasElements,
+        updateActivePanel: updateActivePanel,
+        getCanvasElementByIndex: getCanvasElementByIndex,
     };
 
     return (
-        <DesignerElementsContext.Provider value={designerElementsContext}>
+        <SidePanelContext.Provider value={sidePanelContext}>
             {canvasRef.current &&
                 createPortal(
                     ElementsRenderer(
                         canvasElements,
                         removeCanvasElement,
                         updateCanvasElement,
+                        updateCurrentEditableIndex,
+                        updateActivePanel,
                     ),
                     canvasRef.current,
                 )}
             <div
-                className={`bg-white ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 w-80 h-full transform self-end relative overflow-visible grid place-items-center`}
+                className={`bg-white ${isSidePanelOpen ? "translate-x-0 w-80" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
                 style={{
                     padding: "1rem",
                     boxSizing: "border-box",
                 }}
-            ></div>
-        </DesignerElementsContext.Provider>
+            >
+                <ArrowBigRight
+                    onClick={() => {
+                        toggleSidePanel(false);
+                        setTimeout(() => {
+                            changePanelDisplay("hidden");
+                        }, 170);
+                    }}
+                    className="absolute w-10 h-10 -left-5 z-0 transition-all ease-in-out duration-300 cursor-pointer bg-gray-700 first:rounded-full"
+                />
+                <HorizontalMenu />
+                {panels.get(activePanel)}
+            </div>
+        </SidePanelContext.Provider>
     );
 };
+
+const HorizontalMenu: React.FC = () => {
+    const sidePanelContext = useContext(
+        SidePanelContext,
+    ) as SidelPanelContextInterface;
+    const { activePanel, updateActivePanel } = sidePanelContext;
+
+    const menuItems = [
+        { id: "elements", icon: faShapes },
+        { id: "customize", icon: faWrench },
+    ];
+
+    return (
+        <div className="flex items-center mb-5 justify-around space-x-4 py-4 rounded-md w-full h-fit shadow-sm">
+            {menuItems.map((item) => (
+                <button
+                    key={item.id}
+                    onClick={() =>
+                        updateActivePanel(item.id as "elements" | "customize")
+                    }
+                    className={`flex flex-col items-center justify-center px-4 py-2 
+          text-sm font-medium rounded-md transition-colors 
+          ${
+              activePanel === item.id
+                  ? "bg-purple-500 text-white"
+                  : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+                >
+                    <FontAwesomeIcon
+                        icon={item.icon}
+                        className="text-lg mb-1"
+                    />
+                </button>
+            ))}
+        </div>
+    );
+};
+
+export default SidePanel;

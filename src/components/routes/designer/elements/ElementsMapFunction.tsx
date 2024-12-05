@@ -3,11 +3,14 @@ import {
     DesignerContextInterface,
     DesignerElementsContext,
     DesignerElementsContextInterface,
+    SidelPanelContextInterface,
+    SidePanelContext,
 } from "@/components/util/context";
 import checkCollision from "@/helpers/designer/checkCollision";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import React, { useContext } from "react";
 import Draggable from "react-draggable";
 
@@ -21,6 +24,11 @@ const ElementsMapper: React.FC = () => {
     ) as DesignerContextInterface;
     const { canvasRef } = designerContext;
 
+    const sidePanelContext = useContext(
+        SidePanelContext,
+    ) as SidelPanelContextInterface;
+    const { addCanvasElement } = sidePanelContext;
+
     const {
         componentsPagedArray,
         currentComponentsInterface,
@@ -30,11 +38,10 @@ const ElementsMapper: React.FC = () => {
         isStartDragging,
         scrollingAnimationState,
         setIsStartDragging,
-        addCanvasElement,
     } = designerElementsContext;
 
     return (
-        <div className="elements w-fit h-full overflow-visible grid place-items-start">
+        <div className="elements w-fit h-full overflow-visible grid place-items-center">
             {componentsPagedArray.length > 0 &&
                 componentsPagedArray[
                     currentComponentsInterface.currentIndex
@@ -113,13 +120,22 @@ const ElementsMapper: React.FC = () => {
                                                         .customClasses,
 
                                                 selectMode: "idle",
+                                                userStyle: {
+                                                    fontFamily: "Arial",
+                                                    textColor: "black",
+                                                    isBold: false,
+                                                    isItalic: false,
+                                                    isUnderline: false,
+                                                    textContent:
+                                                        component.element.text,
+                                                },
                                             });
                                         }
                                     }
                                 }}
                             >
                                 <div
-                                    className={`w-24 h-24 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
+                                    className={`w-fit h-12 text-lg rounded-full p-10 my-2 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
                                     style={{ position: component.state }}
                                 >
                                     {component.text}
