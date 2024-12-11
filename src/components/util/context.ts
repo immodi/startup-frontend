@@ -9,7 +9,10 @@ import { UserModel } from "@/interfaces/auth/userModel";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { createContext } from "react";
 import { AnimationState } from "../routes/designer/panels/Elements";
-import { CanvasElement } from "../routes/designer/elements/CanvasElementsRenderer";
+import {
+    CanvasElement,
+    SelectionNodeModes,
+} from "../routes/designer/elements/CanvasElementsRenderer";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -60,17 +63,19 @@ export interface SidelPanelContextInterface {
     removeCanvasElement: (elementId: number) => void;
 
     updateCanvasElement: (
-        elementIndex: number,
+        elementId: number,
         newElement: {
             text?: string;
             customClasses?: string;
+            selectMode?: SelectionNodeModes;
         },
     ) => void;
 
     activePanel: string;
     currentEditableIndexInCanvasElements: number | undefined;
+    recentlySelectedActiveElement: CanvasElement | null;
     updateActivePanel: (itemId: "elements" | "customize") => void;
-    getCanvasElementByIndex: (index: number) => CanvasElement | null;
+    // getCanvasElementByIndex: (index: number) => CanvasElement | null;
 }
 
 export interface DesignerElementsContextInterface {

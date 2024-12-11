@@ -25,7 +25,7 @@ export interface CanvasElementStyles {
     isBold: boolean;
     isItalic: boolean;
     isUnderline: boolean;
-    textContent: string;
+    // textContent: string;
 }
 
 export function ElementsRenderer(
@@ -121,7 +121,8 @@ function convertHTMLElementToReactNode(
         if (node.children.length > 0) {
             clickManager(node);
 
-            const textInput = node.children[1] as HTMLElement;
+            const textInput = node.children[3] as HTMLInputElement;
+            textInput.value = text;
             textInput.focus();
 
             updateCanvasElement(id, {
@@ -139,6 +140,7 @@ function convertHTMLElementToReactNode(
     }
 
     return React.createElement(tagName, {
+        key: id,
         id: id,
         className: `${className} w-full h-12 flex left items-center relative ${selectMode !== "idle" ? "selected" : ""}`,
         onClick: (e: React.MouseEvent<HTMLElement>) => {

@@ -14,8 +14,8 @@ const Arrow: React.FC<ArrowProps> = ({
     onClick,
 }) => {
     const arrowStyles = {
-        base: `w-8/12 h-10 flex items-center justify-center rounded-sm bg-gray-500 bg-opacity-50 transition-all duration-300`,
-        hover: `hover:bg-gray-700 hover:bg-opacity-70 hover:scale-110`,
+        base: `w-8/12 h-10 flex items-center justify-center rounded-sm bg-opacity-50 transition-all duration-300`,
+        hover: `hover:bg-opacity-70 hover:scale-150`,
         active: `active:scale-90`,
     };
 

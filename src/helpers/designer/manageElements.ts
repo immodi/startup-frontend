@@ -40,11 +40,11 @@ export function indexAndDisplayElements(
     componentsPagedArraydispatch: React.Dispatch<Action>,
 ) {
     const pagedArray: DesignerComponent[][] = [];
-    const indexer = 3;
+    const indexer = 6;
     const subArrayNumber =
-        components.length % 3 === 0
-            ? Math.trunc(components.length / 3)
-            : Math.trunc(components.length / 3) + 1;
+        components.length % indexer === 0
+            ? Math.trunc(components.length / indexer)
+            : Math.trunc(components.length / indexer) + 1;
 
     for (let i = 0; i < subArrayNumber; i++) {
         pagedArray.push(

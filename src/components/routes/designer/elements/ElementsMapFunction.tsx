@@ -10,7 +10,6 @@ import checkCollision from "@/helpers/designer/checkCollision";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import React, { useContext } from "react";
 import Draggable from "react-draggable";
 
@@ -41,7 +40,7 @@ const ElementsMapper: React.FC = () => {
     } = designerElementsContext;
 
     return (
-        <div className="elements w-fit h-full overflow-visible grid place-items-center">
+        <div className="elements w-full h-full overflow-visible relative grid grid-cols-2 grid-rows-3 gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow-md">
             {componentsPagedArray.length > 0 &&
                 componentsPagedArray[
                     currentComponentsInterface.currentIndex
@@ -49,7 +48,7 @@ const ElementsMapper: React.FC = () => {
                     return (
                         <div
                             key={index}
-                            className={`w-fit h-fit ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}`}
+                            className={`w-full h-full transition-all ease-in-out duration-150 hover:scale-105 ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}`}
                         >
                             <Draggable
                                 key={component.index}
@@ -126,8 +125,8 @@ const ElementsMapper: React.FC = () => {
                                                     isBold: false,
                                                     isItalic: false,
                                                     isUnderline: false,
-                                                    textContent:
-                                                        component.element.text,
+                                                    // textContent:
+                                                    //     component.element.text,
                                                 },
                                             });
                                         }
@@ -135,7 +134,7 @@ const ElementsMapper: React.FC = () => {
                                 }}
                             >
                                 <div
-                                    className={`w-fit h-12 text-lg rounded-full p-10 my-2 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
+                                    className={`w-full gap-2 min-h-fit h-full anton-regular md:text-2xl lg:text-4xl rounded-md text-center my-2 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
                                     style={{ position: component.state }}
                                 >
                                     {component.text}

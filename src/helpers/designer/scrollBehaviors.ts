@@ -24,7 +24,6 @@ export function scrollDown(
             ...currentComponentsInterface,
             currentIndex: newIndex,
         });
-
         setScrollingAnimationState("down");
     }
 }
@@ -44,7 +43,6 @@ export function scrollUp(
             ...currentComponentsInterface,
             currentIndex: newIndex,
         });
-
         setScrollingAnimationState("up");
     }
 }

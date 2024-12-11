@@ -8,7 +8,7 @@ import {
 } from "@/components/util/context";
 import { faL, faShapes, faWrench } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
     CanvasElement,
@@ -46,6 +46,12 @@ const SidePanel: React.FC = () => {
         ["customize", <Customize />],
     ]);
 
+    useEffect(() => {
+        if (canvasElements.length > 0) {
+            console.log(canvasElements[0].text);
+        }
+    }, [canvasElements]);
+
     function getCanvasElementByIndex(index: number): CanvasElement | null {
         if (index > canvasElements.length - 1 || canvasElements.length === 0) {
             return null;
@@ -69,7 +75,7 @@ const SidePanel: React.FC = () => {
         setCanvasElements(newElements);
     }
 
-    function updateCanvasElement(
+    function updateCanvasElementByItsId(
         elementId: number,
         newElement: {
             text?: string;
@@ -104,13 +110,16 @@ const SidePanel: React.FC = () => {
     const sidePanelContext: SidelPanelContextInterface = {
         addCanvasElement: addCanvasElement,
         removeCanvasElement: removeCanvasElement,
-        updateCanvasElement: updateCanvasElement,
+        updateCanvasElement: updateCanvasElementByItsId,
 
         activePanel: activePanel,
         currentEditableIndexInCanvasElements:
             currentEditableIndexInCanvasElements,
         updateActivePanel: updateActivePanel,
-        getCanvasElementByIndex: getCanvasElementByIndex,
+        recentlySelectedActiveElement: getCanvasElementByIndex(
+            currentEditableIndexInCanvasElements ?? 0,
+        ),
+        // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 
     return (
@@ -120,7 +129,7 @@ const SidePanel: React.FC = () => {
                     ElementsRenderer(
                         canvasElements,
                         removeCanvasElement,
-                        updateCanvasElement,
+                        updateCanvasElementByItsId,
                         updateCurrentEditableIndex,
                         updateActivePanel,
                     ),
@@ -140,7 +149,7 @@ const SidePanel: React.FC = () => {
                             changePanelDisplay("hidden");
                         }, 170);
                     }}
-                    className="absolute w-10 h-10 -left-5 z-0 transition-all ease-in-out duration-300 cursor-pointer bg-gray-700 first:rounded-full"
+                    className="absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-gray-700 first:rounded-full"
                 />
                 <HorizontalMenu />
                 {panels.get(activePanel)}
@@ -169,7 +178,7 @@ const HorizontalMenu: React.FC = () => {
                         updateActivePanel(item.id as "elements" | "customize")
                     }
                     className={`flex flex-col items-center justify-center px-4 py-2 
-          text-sm font-medium rounded-md transition-colors 
+          text-sm font-medium rounded-md transition-colors
           ${
               activePanel === item.id
                   ? "bg-purple-500 text-white"

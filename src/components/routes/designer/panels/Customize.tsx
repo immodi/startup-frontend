@@ -8,34 +8,44 @@ import {
     faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { CanvasElement } from "../elements/CanvasElementsRenderer";
 
 const Customize: React.FC = () => {
     const sidePanelContext = useContext(
         SidePanelContext,
     ) as SidelPanelContextInterface;
-    const { getCanvasElementByIndex, currentEditableIndexInCanvasElements } =
-        sidePanelContext;
+    const {
+        recentlySelectedActiveElement,
+        updateCanvasElement,
+        // currentEditableIndexInCanvasElements,
+    } = sidePanelContext;
 
-    const element = getCanvasElementByIndex(
-        currentEditableIndexInCanvasElements ?? 0,
-    );
+    const [element, setElement] = useState(recentlySelectedActiveElement);
+    const [key, setKey] = useState(getRandomKey());
 
-    // const handleChange = (
-    //     field: keyof CanvasElement,
-    //     value: string | boolean,
-    // ) => {
-    //     setElement((prev) => ({ ...prev, [field]: value }));
-    // };
+    function getRandomKey(): number {
+        return Math.floor(Math.random() * Math.pow(9, 99));
+    }
 
-    // const handleSave = () => {
-    //     onSave(element);
-    // };
+    useEffect(() => {
+        setKey(getRandomKey());
+    }, [recentlySelectedActiveElement, recentlySelectedActiveElement?.text]);
+
+    function handleChange(newElement: CanvasElement) {
+        setElement(newElement);
+    }
+
+    function handleSave() {
+        if (element !== null) {
+            setKey(getRandomKey());
+            updateCanvasElement(element.id, { ...element, selectMode: "idle" });
+        }
+    }
 
     return (
         <div
-            key={currentEditableIndexInCanvasElements}
+            key={key}
             className="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md w-full h-full overflow-y-scroll"
         >
             <h2 className="text-xl text-center font-semibold mb-4 text-gray-800 dark:text-gray-200">
@@ -50,11 +60,12 @@ const Customize: React.FC = () => {
                     <input
                         type="text"
                         className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
-                        defaultValue={element?.text ?? ""}
-                        // onChange={(e) => handleChange("text", e.target.value)}
+                        defaultValue={recentlySelectedActiveElement?.text ?? ""}
+                        onChange={(e) => {
+                            handleChange({ ...element!, text: e.target.value });
+                        }}
                     />
                 </div>
-
                 {/* Font Styles (Bold, Italic, Underline) */}
                 <div className="">
                     <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
@@ -65,7 +76,7 @@ const Customize: React.FC = () => {
                             // onClick={() =>
                             // handleChange("isBold", !element?.isBold)
                             // }
-                            className={`p-2 ${element?.userStyle.isBold ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isBold ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faBold} />
                         </button>
@@ -73,7 +84,7 @@ const Customize: React.FC = () => {
                             // onClick={() =>
                             // handleChange("isItalic", !element.isItalic)
                             // }
-                            className={`p-2 ${element?.userStyle.isItalic ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isItalic ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faItalic} />
                         </button>
@@ -84,13 +95,12 @@ const Customize: React.FC = () => {
                             //     !element.isUnderline,
                             // )
                             // }
-                            className={`p-2 ${element?.userStyle.isUnderline ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isUnderline ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faUnderline} />
                         </button>
                     </div>
                 </div>
-
                 {/* Text Color */}
                 <div>
                     <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
@@ -98,14 +108,16 @@ const Customize: React.FC = () => {
                     </label>
                     <input
                         type="color"
-                        value={element?.userStyle.textColor ?? "black"}
+                        defaultValue={
+                            recentlySelectedActiveElement?.userStyle
+                                .textColor ?? "black"
+                        }
                         // onChange={(e) =>
                         // handleChange("textColor", e.target.value)
                         // }
                         className="w-full p-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                     />
                 </div>
-
                 {/* Font Family Selector */}
                 <div>
                     <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
@@ -113,7 +125,10 @@ const Customize: React.FC = () => {
                     </label>
                     <select
                         className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
-                        value={element?.userStyle.fontFamily ?? "Arial"}
+                        defaultValue={
+                            recentlySelectedActiveElement?.userStyle
+                                .fontFamily ?? "Arial"
+                        }
                         // onChange={(e) =>
                         //     handleChange("fontFamily", e.target.value)
                         // }
@@ -129,7 +144,7 @@ const Customize: React.FC = () => {
 
             {/* Save Button */}
             <button
-                // onClick={handleSave}
+                onClick={handleSave}
                 className="mt-4 w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600"
             >
                 Save

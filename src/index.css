@@ -41,6 +41,12 @@
     transform: scale(1.1, 1.1);
 }
 
+.anton-regular {
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .unset {
     all: unset;
 }
@@ -130,11 +136,11 @@
 
 @keyframes scroll-down {
     0% {
-        top: 0%;
+        /* top: 0%; */
         opacity: 1;
     }
 
-    50% {
+    /* 50% {
         opacity: 0;
         top: 100%;
     }
@@ -142,21 +148,21 @@
     75% {
         opacity: 0;
         top: -100%;
-    }
+    } */
 
     100% {
         opacity: 1;
-        top: 0;
+        /* top: 0; */
     }
 }
 
 @keyframes scroll-up {
     0% {
-        top: 0%;
+        /* top: 0%; */
         opacity: 1;
     }
 
-    50% {
+    /* 50% {
         opacity: 0;
         top: -100%;
     }
@@ -164,11 +170,11 @@
     75% {
         opacity: 0;
         top: 100%;
-    }
+    } */
 
     100% {
         opacity: 1;
-        top: 0;
+        /* top: 0; */
     }
 }
 
