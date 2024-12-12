@@ -3,13 +3,20 @@ import {
     SidePanelContext,
 } from "@/components/util/context";
 import {
+    faAlignCenter,
+    faAlignLeft,
+    faAlignRight,
     faBold,
     faItalic,
     faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { CanvasElement } from "../elements/CanvasElementsRenderer";
+import React, { useContext, useEffect, useState } from "react";
+import {
+    CanvasElement,
+    CanvasElementStyles,
+    UserFont,
+} from "../elements/CanvasElementsRenderer";
 
 const Customize: React.FC = () => {
     const sidePanelContext = useContext(
@@ -21,25 +28,54 @@ const Customize: React.FC = () => {
         // currentEditableIndexInCanvasElements,
     } = sidePanelContext;
 
-    const [element, setElement] = useState(recentlySelectedActiveElement);
+    const [element, setElement] = useState<CanvasElement | null>(
+        recentlySelectedActiveElement,
+    );
+    const [userStyle, setUserStyle] = useState<CanvasElementStyles | undefined>(
+        recentlySelectedActiveElement?.userStyle,
+    );
     const [key, setKey] = useState(getRandomKey());
 
     function getRandomKey(): number {
         return Math.floor(Math.random() * Math.pow(9, 99));
     }
 
+    function refreshElement() {
+        setElement(recentlySelectedActiveElement);
+        setUserStyle({
+            fontFamily: recentlySelectedActiveElement!.userStyle.fontFamily,
+            isBold: recentlySelectedActiveElement!.userStyle.isBold,
+            isItalic: recentlySelectedActiveElement!.userStyle.isItalic,
+            isUnderline: recentlySelectedActiveElement!.userStyle.isUnderline,
+            textColor: recentlySelectedActiveElement!.userStyle.textColor,
+            textAlignment:
+                recentlySelectedActiveElement!.userStyle.textAlignment,
+        });
+    }
+
     useEffect(() => {
         setKey(getRandomKey());
-    }, [recentlySelectedActiveElement, recentlySelectedActiveElement?.text]);
+        if (recentlySelectedActiveElement !== null) {
+            refreshElement();
+        }
+    }, [
+        recentlySelectedActiveElement,
+        recentlySelectedActiveElement?.text,
+        recentlySelectedActiveElement?.id,
+    ]);
 
     function handleChange(newElement: CanvasElement) {
         setElement(newElement);
     }
 
     function handleSave() {
-        if (element !== null) {
+        if (element !== null && userStyle !== undefined) {
             setKey(getRandomKey());
-            updateCanvasElement(element.id, { ...element, selectMode: "idle" });
+            updateCanvasElement(element.id, {
+                ...element,
+                selectMode: "idle",
+                userStyle: userStyle,
+            });
         }
     }
 
@@ -62,7 +98,12 @@ const Customize: React.FC = () => {
                         className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                         defaultValue={recentlySelectedActiveElement?.text ?? ""}
                         onChange={(e) => {
-                            handleChange({ ...element!, text: e.target.value });
+                            if (element !== null) {
+                                handleChange({
+                                    ...element,
+                                    text: e.target.value,
+                                });
+                            }
                         }}
                     />
                 </div>
@@ -73,34 +114,119 @@ const Customize: React.FC = () => {
                     </label>
                     <div className="grid grid-cols-3">
                         <button
-                            // onClick={() =>
-                            // handleChange("isBold", !element?.isBold)
-                            // }
-                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isBold ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            onClick={() => {
+                                if (userStyle !== undefined) {
+                                    setUserStyle((prev) => {
+                                        return {
+                                            ...prev!,
+                                            isBold: !userStyle.isBold,
+                                        };
+                                    });
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 border ${userStyle?.isBold && "border-purple-500"} rounded-md`}
                         >
                             <FontAwesomeIcon icon={faBold} />
                         </button>
                         <button
-                            // onClick={() =>
-                            // handleChange("isItalic", !element.isItalic)
-                            // }
-                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isItalic ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            onClick={() => {
+                                if (userStyle !== undefined) {
+                                    setUserStyle((prev) => {
+                                        return {
+                                            ...prev!,
+                                            isItalic: !userStyle.isItalic,
+                                        };
+                                    });
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 ${userStyle?.isItalic && "border-purple-500"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faItalic} />
                         </button>
                         <button
-                            // onClick={() =>
-                            // handleChange(
-                            //     "isUnderline",
-                            //     !element.isUnderline,
-                            // )
-                            // }
-                            className={`p-2 ${recentlySelectedActiveElement?.userStyle.isUnderline ? "bg-gray-600" : "bg-gray-900"} border rounded-md`}
+                            onClick={() => {
+                                if (element !== null) {
+                                    if (userStyle !== undefined) {
+                                        setUserStyle((prev) => {
+                                            return {
+                                                ...prev!,
+                                                isUnderline:
+                                                    !userStyle.isUnderline,
+                                            };
+                                        });
+                                    }
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 ${userStyle?.isUnderline && "border-purple-500"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faUnderline} />
                         </button>
                     </div>
                 </div>
+
+                {/* Text Alignment (Left, Center, Right) */}
+                <div className="">
+                    <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
+                        Text Alignment
+                    </label>
+                    <div className="grid grid-cols-3">
+                        <button
+                            onClick={() => {
+                                if (userStyle !== undefined) {
+                                    setUserStyle((prev) => {
+                                        return {
+                                            ...prev!,
+                                            textAlignment: "left",
+                                        };
+                                    });
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 border ${
+                                userStyle?.textAlignment === "left" &&
+                                "border-purple-500"
+                            } rounded-md`}
+                        >
+                            <FontAwesomeIcon icon={faAlignLeft} />
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (userStyle !== undefined) {
+                                    setUserStyle((prev) => {
+                                        return {
+                                            ...prev!,
+                                            textAlignment: "center",
+                                        };
+                                    });
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 border ${
+                                userStyle?.textAlignment === "center" &&
+                                "border-purple-500"
+                            } rounded-md`}
+                        >
+                            <FontAwesomeIcon icon={faAlignCenter} />
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (userStyle !== undefined) {
+                                    setUserStyle((prev) => {
+                                        return {
+                                            ...prev!,
+                                            textAlignment: "right",
+                                        };
+                                    });
+                                }
+                            }}
+                            className={`p-2 bg-gray-900 border ${
+                                userStyle?.textAlignment === "right" &&
+                                "border-purple-500"
+                            } rounded-md`}
+                        >
+                            <FontAwesomeIcon icon={faAlignRight} />
+                        </button>
+                    </div>
+                </div>
+
                 {/* Text Color */}
                 <div>
                     <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
@@ -112,9 +238,11 @@ const Customize: React.FC = () => {
                             recentlySelectedActiveElement?.userStyle
                                 .textColor ?? "black"
                         }
-                        // onChange={(e) =>
-                        // handleChange("textColor", e.target.value)
-                        // }
+                        onChange={(e) => {
+                            setUserStyle((prev) => {
+                                return { ...prev!, textColor: e.target.value };
+                            });
+                        }}
                         className="w-full p-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                     />
                 </div>
@@ -129,15 +257,18 @@ const Customize: React.FC = () => {
                             recentlySelectedActiveElement?.userStyle
                                 .fontFamily ?? "Arial"
                         }
-                        // onChange={(e) =>
-                        //     handleChange("fontFamily", e.target.value)
-                        // }
+                        onChange={(e) => {
+                            setUserStyle((prev) => {
+                                return {
+                                    ...prev!,
+                                    fontFamily: e.target.value as UserFont,
+                                };
+                            });
+                        }}
                     >
-                        <option value="Arial">Arial</option>
-                        <option value="Verdana">Verdana</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Courier New">Courier New</option>
+                        <option value="Sans">Sans</option>
+                        <option value="Serif">Serif</option>
+                        <option value="Monospace">Monospace</option>
                     </select>
                 </div>
             </div>

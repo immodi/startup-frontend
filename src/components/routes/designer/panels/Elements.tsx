@@ -87,8 +87,9 @@ const Elements: React.FC = () => {
 
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
-            <div className="w-full h-full flex justify-center items-center flex-col">
+            <div className="w-full h-full flex relative justify-center items-center flex-col">
                 <Arrow
+                    // className="absolute -top-2 z-10"
                     direction="up"
                     onClick={() => {
                         scrollUp(
@@ -106,6 +107,7 @@ const Elements: React.FC = () => {
                 )}
 
                 <Arrow
+                    // className="absolute -bottom-2 z-10"
                     direction="down"
                     onClick={() => {
                         scrollDown(

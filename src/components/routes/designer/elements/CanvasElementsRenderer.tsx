@@ -3,12 +3,8 @@ import React, { ReactNode, useState } from "react";
 export type ElementsType = Headers | "p";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
 export type SelectionNodeModes = "selected" | "editing" | "idle";
-export type UserFont =
-    | "Arial"
-    | "Verdana"
-    | "Georgia"
-    | "Times New Roman"
-    | "Courier New";
+export type UserFont = "Sans" | "Serif" | "Monospace";
+export type UserTextAlignment = "left" | "center" | "right";
 
 export interface CanvasElement {
     id: number;
@@ -25,7 +21,14 @@ export interface CanvasElementStyles {
     isBold: boolean;
     isItalic: boolean;
     isUnderline: boolean;
+    textAlignment: UserTextAlignment;
     // textContent: string;
+}
+export interface NewCanvasElement {
+    text?: string;
+    customClasses?: string;
+    selectMode?: SelectionNodeModes;
+    userStyle?: CanvasElementStyles;
 }
 
 export function ElementsRenderer(
@@ -33,11 +36,7 @@ export function ElementsRenderer(
     removeCanvasElement: (elementId: number) => void,
     updateCanvasElement: (
         elementIndex: number,
-        newElement: {
-            text?: string;
-            customClasses?: string;
-            selectMode?: SelectionNodeModes;
-        },
+        newElement: NewCanvasElement,
     ) => void,
     updateCurrentEditableIndex: (index: number) => void,
     updateActivePanel: (id: "elements" | "customize") => void,
@@ -52,6 +51,7 @@ export function ElementsRenderer(
                     element.text,
                     element.id,
                     element.selectMode,
+                    element.userStyle,
                     () => {
                         removeCanvasElement(index);
                     },
@@ -72,14 +72,11 @@ function convertHTMLElementToReactNode(
     text: string,
     id: number,
     selectMode: SelectionNodeModes,
+    userStyle: CanvasElementStyles,
     removeCanvasElement: () => void,
     updateCanvasElement: (
         elementIndex: number,
-        newElement: {
-            text?: string;
-            customClasses?: string;
-            selectMode?: SelectionNodeModes;
-        },
+        newElement: NewCanvasElement,
     ) => void,
     updateCurrentEditableIndex: () => void,
 ): ReactNode {
@@ -117,11 +114,21 @@ function convertHTMLElementToReactNode(
         }
     }
 
+    function getFontStyle(userFont: UserFont) {
+        const fontsStyles = {
+            Sans: "font-sans",
+            Serif: "font-serif",
+            Monospace: "font-mono",
+        };
+
+        return fontsStyles[userFont];
+    }
+
     function handleEditText(node: HTMLElement) {
         if (node.children.length > 0) {
             clickManager(node);
 
-            const textInput = node.children[3] as HTMLInputElement;
+            const textInput = node.children[4] as HTMLInputElement;
             textInput.value = text;
             textInput.focus();
 
@@ -142,7 +149,8 @@ function convertHTMLElementToReactNode(
     return React.createElement(tagName, {
         key: id,
         id: id,
-        className: `${className} w-full h-12 flex left items-center relative ${selectMode !== "idle" ? "selected" : ""}`,
+        style: { color: userStyle.textColor },
+        className: `${className} w-full h-12 flex items-center relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
         onClick: (e: React.MouseEvent<HTMLElement>) => {
             const node = e.target as HTMLElement;
             clickManager(node);
@@ -154,7 +162,12 @@ function convertHTMLElementToReactNode(
         },
 
         children: [
-            text,
+            <div
+                id="mainElementText"
+                className={`${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
+            >
+                {text}
+            </div>,
             <span
                 id="deleteElementButton"
                 className={`x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
@@ -182,7 +195,7 @@ function convertHTMLElementToReactNode(
                     });
                 }}
                 type="text"
-                className={`bg-gray-500 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"}`}
+                className={`bg-gray-500 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
             />,
         ],
     });

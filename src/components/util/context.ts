@@ -11,6 +11,8 @@ import { createContext } from "react";
 import { AnimationState } from "../routes/designer/panels/Elements";
 import {
     CanvasElement,
+    CanvasElementStyles,
+    NewCanvasElement,
     SelectionNodeModes,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 
@@ -64,11 +66,7 @@ export interface SidelPanelContextInterface {
 
     updateCanvasElement: (
         elementId: number,
-        newElement: {
-            text?: string;
-            customClasses?: string;
-            selectMode?: SelectionNodeModes;
-        },
+        newElement: NewCanvasElement,
     ) => void;
 
     activePanel: string;

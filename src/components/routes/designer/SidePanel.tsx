@@ -170,7 +170,7 @@ const HorizontalMenu: React.FC = () => {
     ];
 
     return (
-        <div className="flex items-center mb-5 justify-around space-x-4 py-4 rounded-md w-full h-fit shadow-sm">
+        <div className="flex items-center justify-around py-2 rounded-md w-full h-fit shadow-sm">
             {menuItems.map((item) => (
                 <button
                     key={item.id}

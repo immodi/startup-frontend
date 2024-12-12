@@ -40,7 +40,7 @@ const ElementsMapper: React.FC = () => {
     } = designerElementsContext;
 
     return (
-        <div className="elements w-full h-full overflow-visible relative grid grid-cols-2 grid-rows-3 gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow-md">
+        <div className="elements w-full h-full overflow-visible relative grid grid-cols-2 grid-rows-3 gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md">
             {componentsPagedArray.length > 0 &&
                 componentsPagedArray[
                     currentComponentsInterface.currentIndex
@@ -120,11 +120,12 @@ const ElementsMapper: React.FC = () => {
 
                                                 selectMode: "idle",
                                                 userStyle: {
-                                                    fontFamily: "Arial",
+                                                    fontFamily: "Sans",
                                                     textColor: "black",
                                                     isBold: false,
                                                     isItalic: false,
                                                     isUnderline: false,
+                                                    textAlignment: "left",
                                                     // textContent:
                                                     //     component.element.text,
                                                 },
