@@ -6,7 +6,12 @@ import {
     SidelPanelContextInterface,
     SidePanelContext,
 } from "@/components/util/context";
-import { faL, faShapes, faWrench } from "@fortawesome/free-solid-svg-icons";
+import {
+    faFileExport,
+    faL,
+    faShapes,
+    faWrench,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -19,6 +24,7 @@ import Elements from "./panels/Elements";
 import Customize from "./panels/Customize";
 import StyledElements from "./panels/StyledElements";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import Export from "./panels/Export";
 
 const SidePanel: React.FC = () => {
     const homeContext = useContext(HomeContext) as HomeContextInterface;
@@ -44,6 +50,7 @@ const SidePanel: React.FC = () => {
     const panels = new Map<string, React.ReactNode>([
         ["elements", <Elements />],
         ["customize", <Customize />],
+        ["export", <Export />],
     ]);
 
     useEffect(() => {
@@ -95,6 +102,17 @@ const SidePanel: React.FC = () => {
         );
     }
 
+    function triggerIdleToAllCanvasElements() {
+        canvasElements.forEach((element) => {
+            if (element.selectMode !== "idle") {
+                updateCanvasElementByItsId(element.id, {
+                    ...element,
+                    selectMode: "idle",
+                });
+            }
+        });
+    }
+
     function updateActivePanel(id: "elements" | "customize") {
         setActivePanel(id);
     }
@@ -111,6 +129,7 @@ const SidePanel: React.FC = () => {
         addCanvasElement: addCanvasElement,
         removeCanvasElement: removeCanvasElement,
         updateCanvasElement: updateCanvasElementByItsId,
+        triggerIdleToAllCanvasElements: triggerIdleToAllCanvasElements,
 
         activePanel: activePanel,
         currentEditableIndexInCanvasElements:
@@ -167,6 +186,7 @@ const HorizontalMenu: React.FC = () => {
     const menuItems = [
         { id: "elements", icon: faShapes },
         { id: "customize", icon: faWrench },
+        { id: "export", icon: faFileExport },
     ];
 
     return (

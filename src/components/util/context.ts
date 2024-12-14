@@ -68,6 +68,7 @@ export interface SidelPanelContextInterface {
         elementId: number,
         newElement: NewCanvasElement,
     ) => void;
+    triggerIdleToAllCanvasElements: () => void;
 
     activePanel: string;
     currentEditableIndexInCanvasElements: number | undefined;

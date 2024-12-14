@@ -95,7 +95,7 @@ const Customize: React.FC = () => {
                     </label>
                     <input
                         type="text"
-                        className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
+                        className="whitespace-pre-wrap w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                         defaultValue={recentlySelectedActiveElement?.text ?? ""}
                         onChange={(e) => {
                             if (element !== null) {

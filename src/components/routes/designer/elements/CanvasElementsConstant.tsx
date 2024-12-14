@@ -37,9 +37,10 @@ const canvasHeaders: DesignerComponent[] = headersData.map((value, index) => {
             customClasses: value.className,
             selectMode: "idle",
             userStyle: {
-                fontFamily: "Arial",
+                fontFamily: "Sans",
                 textColor: "black",
                 isBold: false,
+                textAlignment: "left",
                 isItalic: false,
                 isUnderline: false,
                 // textContent: "Default Text",
@@ -55,14 +56,15 @@ export const CanvasElements: DesignerComponent[] = [
         index: 6,
         text: "Text",
         element: {
-            element: "p",
+            element: "div",
             id: 6,
             text: "Default Text",
             customClasses: "text-black",
             selectMode: "idle",
             userStyle: {
-                fontFamily: "Arial",
+                fontFamily: "Sans",
                 textColor: "black",
+                textAlignment: "left",
                 isBold: false,
                 isItalic: false,
                 isUnderline: false,
@@ -73,17 +75,18 @@ export const CanvasElements: DesignerComponent[] = [
 
     getDefaultDesignerComponent({
         index: 7,
-        text: "😊",
+        text: "Spacer",
         element: {
-            element: "p",
+            element: "div",
             id: 7,
-            text: "😊",
+            text: "",
             customClasses: "",
             selectMode: "idle",
             userStyle: {
-                fontFamily: "Arial",
-                textColor: "red",
+                fontFamily: "Sans",
+                textColor: "black",
                 isBold: false,
+                textAlignment: "left",
                 isItalic: false,
                 isUnderline: false,
                 // textContent: "Default Text",

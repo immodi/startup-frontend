@@ -1,6 +1,13 @@
 import React, { ReactNode, useState } from "react";
-``;
-export type ElementsType = Headers | "p";
+import {
+    faTrash,
+    faPencil,
+    faCheck,
+    faPen,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export type ElementsType = Headers | "div";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
 export type SelectionNodeModes = "selected" | "editing" | "idle";
 export type UserFont = "Sans" | "Serif" | "Monospace";
@@ -81,8 +88,7 @@ function convertHTMLElementToReactNode(
     updateCurrentEditableIndex: () => void,
 ): ReactNode {
     function clickManager(element: HTMLElement) {
-        if (element.children.length > 0) {
-            // main element
+        if (selectMode !== "editing") {
             switch (selectMode) {
                 case "idle":
                     return updateCanvasElement(id, {
@@ -93,24 +99,6 @@ function convertHTMLElementToReactNode(
                         selectMode: "idle",
                     });
             }
-        } else if (element.id === "deleteElementButton") {
-            removeCanvasElement();
-        } else if (element.id === "saveElementButton") {
-            return updateCanvasElement(id, {
-                selectMode: "idle",
-            });
-        } else if (element.id === "editElementButton") {
-            updateCurrentEditableIndex();
-        }
-    }
-
-    function handleSaveText(e: KeyboardEvent, closingFn: () => void) {
-        if (e.key === "Enter") {
-            document.removeEventListener("keyup", (e: KeyboardEvent) => {
-                handleSaveText(e, closingFn);
-            });
-
-            closingFn();
         }
     }
 
@@ -127,21 +115,13 @@ function convertHTMLElementToReactNode(
     function handleEditText(node: HTMLElement) {
         if (node.children.length > 0) {
             clickManager(node);
+            const textInput = node as HTMLTextAreaElement;
 
-            const textInput = node.children[4] as HTMLInputElement;
             textInput.value = text;
             textInput.focus();
 
             updateCanvasElement(id, {
                 selectMode: "editing",
-            });
-
-            document.addEventListener("keyup", (e: KeyboardEvent) => {
-                handleSaveText(e, () => {
-                    updateCanvasElement(id, {
-                        selectMode: "idle",
-                    });
-                });
             });
         }
     }
@@ -150,52 +130,68 @@ function convertHTMLElementToReactNode(
         key: id,
         id: id,
         style: { color: userStyle.textColor },
-        className: `${className} w-full h-12 flex items-center relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
+        className: `${className} w-full min-h-12 h-auto flex items-center relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
         onClick: (e: React.MouseEvent<HTMLElement>) => {
-            const node = e.target as HTMLElement;
+            const node = e.currentTarget as HTMLElement;
             clickManager(node);
         },
 
         onDoubleClick: (e: React.MouseEvent<HTMLElement>) => {
-            const node = e.target as HTMLElement;
+            const node = e.currentTarget as HTMLElement;
             handleEditText(node);
         },
 
         children: [
             <div
-                id="mainElementText"
-                className={`${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
+                id={`mainElementText${id}`}
+                className={`whitespace-pre-wrap w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
             >
                 {text}
             </div>,
             <span
-                id="deleteElementButton"
-                className={`x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    removeCanvasElement();
+                }}
+                id={`deleteElementButton${id}`}
+                className={`remove-this-at-export x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
             >
-                🗑
+                <FontAwesomeIcon icon={faTrash} />
             </span>,
             <span
-                id="saveElementButton"
-                className={`x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode === "editing" ? "" : "hidden"}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    updateCanvasElement(id, {
+                        selectMode: "idle",
+                    });
+                }}
+                id={`saveElementButton${id}`}
+                className={`remove-this-at-export x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
             >
-                ✔
+                <FontAwesomeIcon icon={faCheck} />
             </span>,
             <span
-                id="editElementButton"
-                className={`x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode === "editing" ? "" : "hidden"}`}
+                id={`editElementButton${id}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    updateCurrentEditableIndex();
+
+                    handleEditText(e.currentTarget);
+                }}
+                className={`remove-this-at-export x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
             >
-                ✎
+                <FontAwesomeIcon icon={faPen} />
             </span>,
-            <input
+            <textarea
                 defaultValue={text}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                onChange={(event) => {
                     // updateKeyBoardString(event.target.value);
                     updateCanvasElement(id, {
                         text: event.target.value,
                     });
                 }}
-                type="text"
-                className={`bg-gray-500 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
+                // type="text"
+                className={`remove-this-at-export w-full min-h-12 h-full resize-none bg-gray-500 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
             />,
         ],
     });

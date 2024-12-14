@@ -16,18 +16,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .left {
     display: flex;
     justify-content: left;
     align-items: center;
+    text-align: left;
 }
 
 .right {
     display: flex;
     justify-content: right;
     align-items: center;
+    text-align: right;
 }
 
 .selected {
