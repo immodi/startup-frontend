@@ -1,15 +1,15 @@
-import { useContext, useState } from "react";
-import "../../../styles/app.css";
-import Header from "./Header";
-import Menu from "./Menu";
-import Footer from "./Footer";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
     Context,
     ContextInterface,
     HomeContext,
     HomeContextInterface,
 } from "@/components/util/context";
+import { useContext, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import "../../../styles/app.css";
+import Footer from "./Footer";
+import Header from "./Header";
+import Menu from "./Menu";
 
 const Home: React.FC = () => {
     const path = useLocation();

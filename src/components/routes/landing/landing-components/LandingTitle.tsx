@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { assignUser } from "@/helpers/auth/isFirstTimeUser";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -13,13 +12,13 @@ const LandingTitle: React.FC = () => {
                 Transform your ideas into beautifully formatted PDF documents
                 with ease.
             </p>
-            <Button
-                size="lg"
-                className="text-lg px-8 bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white"
+            <Link
+                className="text-lg px-8 bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] p-3 rounded-md text-white"
+                to={"/home"}
+                onClick={assignUser}
             >
-                <Link to={"/home"}>Get Started</Link>{" "}
-                <ArrowRight className="ml-2" />
-            </Button>
+                Get Started
+            </Link>{" "}
         </section>
     );
 };

@@ -1,14 +1,23 @@
+import { Context, ContextInterface } from "@/components/util/context";
+import { isFirstTimeUser } from "@/helpers/auth/isFirstTimeUser";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import LandingFeatures from "./landing-components/LandingFeatures";
 import LandingPageHeader from "./landing-components/LandingHeader";
 import LandingSummary from "./landing-components/LandingSummary";
-import LandingFeatures from "./landing-components/LandingFeatures";
 import LandingTitle from "./landing-components/LandingTitle";
-import { useContext } from "react";
-import { Context, ContextInterface } from "@/components/util/context";
 
 const LandingPage: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
+    const navigate = useNavigate();
     const { toggleDarkMode } = context;
     const isDarkMode = context.localState.isDarkMode;
+
+    useEffect(() => {
+        if (!isFirstTimeUser()) {
+            navigate("/home", { replace: true });
+        }
+    }, []);
 
     return (
         <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
