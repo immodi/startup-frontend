@@ -27,3 +27,4 @@ dist-ssr
 .prettierrc
 vite-env.d.ts
 *.tsbuildinfo
+argotunnel
