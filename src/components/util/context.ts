@@ -8,13 +8,11 @@ import { LocalState } from "@/hooks/local-data/useLocalData";
 import { UserModel } from "@/interfaces/auth/userModel";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { createContext } from "react";
-import { AnimationState } from "../routes/designer/panels/Elements";
 import {
     CanvasElement,
-    CanvasElementStyles,
-    NewCanvasElement,
-    SelectionNodeModes,
+    NewCanvasElement
 } from "../routes/designer/elements/CanvasElementsRenderer";
+import { AnimationState } from "../routes/designer/panels/Elements";
 
 export interface ContextInterface {
     localState: LocalState;

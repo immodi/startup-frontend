@@ -1,5 +1,4 @@
 import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
-import { ReactNode } from "react";
 import { ControlPosition } from "react-draggable";
 
 export interface DesignerComponent {

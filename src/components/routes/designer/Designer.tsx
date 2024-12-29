@@ -2,7 +2,7 @@ import {
     DesignerContext,
     DesignerContextInterface,
 } from "@/components/util/context";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { ArrowBigLeft } from "lucide-react";
 import React, { useRef, useState } from "react";
 import Canvas from "./Canvas";
 import SidePanel from "./SidePanel";

@@ -1,19 +1,17 @@
-import React, { useContext, useState } from "react";
+import useSignout from "@/hooks/auth/useSignout";
+import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
 import { PageProps } from "@/interfaces/auth/pageProp";
+import { UserModel } from "@/interfaces/auth/userModel";
 import { File, LogOut, LucideProps, Settings, User } from "lucide-react";
+import React, { useState } from "react";
+import FilesComponent from "./profile_components/Files";
+import ProfileComponent from "./profile_components/MainProfile";
 import {
     ComponentsProps,
     UserProp,
 } from "./profile_components/profileInterfaces";
-import ProfileComponent from "./profile_components/MainProfile";
-import FilesComponent from "./profile_components/Files";
 import SettingsComponent from "./profile_components/Settings";
 import { SignOutModal, SignOutModalProps } from "./profile_components/SignOut";
-import { useGetToken, UserAuthCookie } from "@/hooks/auth/useToken";
-import useSignout from "@/hooks/auth/useSignout";
-import { UserModel } from "@/interfaces/auth/userModel";
-import { useNavigate } from "react-router-dom";
-import { HomeContext, HomeContextInterface } from "@/components/util/context";
 
 type IconType = Map<
     number,

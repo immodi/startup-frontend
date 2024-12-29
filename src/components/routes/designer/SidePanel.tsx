@@ -8,11 +8,11 @@ import {
 } from "@/components/util/context";
 import {
     faFileExport,
-    faL,
     faShapes,
-    faWrench,
+    faWrench
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ArrowBigRight } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -20,10 +20,8 @@ import {
     ElementsRenderer,
     SelectionNodeModes,
 } from "./elements/CanvasElementsRenderer";
-import Elements from "./panels/Elements";
 import Customize from "./panels/Customize";
-import StyledElements from "./panels/StyledElements";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import Elements from "./panels/Elements";
 import Export from "./panels/Export";
 
 const SidePanel: React.FC = () => {
