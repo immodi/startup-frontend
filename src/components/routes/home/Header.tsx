@@ -11,11 +11,17 @@ import {
 const Header: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
     const homeContext = useContext(HomeContext) as HomeContextInterface;
+    const possibleHeaderTitles = new Map<string, string>([
+        ["home", "Document Generator"],
+        ["designer", "Designer"],
+        ["profile", "User Profile"],
+        ["billing", "Billing"],
+    ]);
 
     const { toggleDarkMode } = context;
     const isDarkMode = context.localState.isDarkMode;
 
-    const { isMenuOpen, setIsMenuOpen } = homeContext;
+    const { isMenuOpen, setIsMenuOpen, currentPageName } = homeContext;
 
     return (
         <header
@@ -46,7 +52,7 @@ const Header: React.FC = () => {
                 </button>
             </div>
             <h1 className="text-lg font-semibold text-gray-700 dark:text-white transition-colors duration-300">
-                Document Generator
+                {possibleHeaderTitles.get(currentPageName)}
             </h1>
             {/* Dark Mode Toggle */}
             <div>

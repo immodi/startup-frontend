@@ -9,7 +9,7 @@ import {
 import {
     faFileExport,
     faShapes,
-    faWrench
+    faWrench,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ArrowBigRight } from "lucide-react";
@@ -153,7 +153,7 @@ const SidePanel: React.FC = () => {
                     canvasRef.current,
                 )}
             <div
-                className={`bg-white ${isSidePanelOpen ? "translate-x-0 w-80" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
+                className={`bg-white ${isSidePanelOpen ? "translate-x-0 w-80" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full z-20 transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
                 style={{
                     padding: "1rem",
                     boxSizing: "border-box",
@@ -166,7 +166,7 @@ const SidePanel: React.FC = () => {
                             changePanelDisplay("hidden");
                         }, 170);
                     }}
-                    className="absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-gray-700 first:rounded-full"
+                    className="absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white first:rounded-full"
                 />
                 <HorizontalMenu />
                 {panels.get(activePanel)}
@@ -199,7 +199,7 @@ const HorizontalMenu: React.FC = () => {
           text-sm font-medium rounded-md transition-colors
           ${
               activePanel === item.id
-                  ? "bg-purple-500 text-white"
+                  ? "bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white"
                   : "bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
           }`}
                 >

@@ -50,6 +50,10 @@ function computeHTML(elementRef: React.RefObject<HTMLDivElement>): string {
     clonedElement.style.backgroundColor = "#FFFFFF";
 
     Array.from(clonedElement.children).forEach((canvasElement) => {
+        if (canvasElement.classList.contains("spacer-div")) {
+            canvasElement.innerHTML = "<br />";
+        }
+
         Array.from(canvasElement.children).forEach((canvasElementChild) => {
             if (
                 canvasElementChild.classList.contains("remove-this-at-export")

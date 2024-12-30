@@ -20,8 +20,8 @@ const Arrow: React.FC<ArrowProps> = ({
     };
 
     const arrowDirection = {
-        up: `border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-white`,
-        down: `border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white`,
+        up: `border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent dark:border-b-white border-b-gray-700`,
+        down: `border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent dark:border-t-white border-t-gray-700`,
     };
 
     return (

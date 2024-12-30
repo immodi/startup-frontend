@@ -118,14 +118,38 @@ const ElementsMapper: React.FC = () => {
                                                     component.element
                                                         .customClasses,
 
-                                                selectMode: "idle",
+                                                selectMode:
+                                                    component.element
+                                                        .selectMode ?? "idle",
                                                 userStyle: {
-                                                    fontFamily: "Sans",
-                                                    textColor: "black",
-                                                    isBold: false,
-                                                    isItalic: false,
-                                                    isUnderline: false,
-                                                    textAlignment: "left",
+                                                    fontFamily:
+                                                        component.element
+                                                            .userStyle
+                                                            .fontFamily ??
+                                                        "Sans",
+                                                    textColor:
+                                                        component.element
+                                                            .userStyle
+                                                            .textColor ??
+                                                        "black",
+                                                    isBold:
+                                                        component.element
+                                                            .userStyle.isBold ??
+                                                        false,
+                                                    isItalic:
+                                                        component.element
+                                                            .userStyle
+                                                            .isItalic ?? false,
+                                                    isUnderline:
+                                                        component.element
+                                                            .userStyle
+                                                            .isUnderline ??
+                                                        false,
+                                                    textAlignment:
+                                                        component.element
+                                                            .userStyle
+                                                            .textAlignment ??
+                                                        "left",
                                                     // textContent:
                                                     //     component.element.text,
                                                 },
@@ -135,10 +159,15 @@ const ElementsMapper: React.FC = () => {
                                 }}
                             >
                                 <div
-                                    className={`w-full gap-2 min-h-fit h-full anton-regular md:text-2xl lg:text-4xl rounded-md text-center my-2 relative bg-gray-600 flex items-center justify-center select-none cursor-pointer ease-out ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
+                                    className={`w-full gap-2 px-3 min-h-fit h-full rounded-md text-center my-2 relative text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center justify-center select-none ease-out flex-col cursor-grab ${isStartDragging ? "transition-none" : "transition-all"} ${scrollingAnimationState === "down" ? "animate-scroll-down" : scrollingAnimationState === "up" ? "animate-scroll-up" : ""}`}
                                     style={{ position: component.state }}
                                 >
-                                    {component.text}
+                                    <span className="anton-regular text-base md:text-3xl lg:text-4xl">
+                                        {component.text}
+                                    </span>
+                                    <span className="text-xs text-gray-400 relative bottom-1">
+                                        {component.description}
+                                    </span>
                                 </div>
                             </Draggable>
                         </div>

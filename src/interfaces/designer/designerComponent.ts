@@ -4,6 +4,7 @@ import { ControlPosition } from "react-draggable";
 export interface DesignerComponent {
     index: number;
     text: string;
+    description: string;
     state: "absolute" | "relative";
     position: ControlPosition;
     positionOffset: ControlPosition;

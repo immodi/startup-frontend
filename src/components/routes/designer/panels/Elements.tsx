@@ -89,7 +89,6 @@ const Elements: React.FC = () => {
         <DesignerElementsContext.Provider value={designerElementsContext}>
             <div className="w-full h-full flex relative justify-center items-center flex-col">
                 <Arrow
-                    // className="absolute -top-2 z-10"
                     direction="up"
                     onClick={() => {
                         scrollUp(
@@ -104,10 +103,10 @@ const Elements: React.FC = () => {
                     <LoadingSpinner className="w-16 h-16" />
                 ) : (
                     <ElementsMapper />
+                    // <HeadingControls />
                 )}
 
                 <Arrow
-                    // className="absolute -bottom-2 z-10"
                     direction="down"
                     onClick={() => {
                         scrollDown(

@@ -94,6 +94,11 @@ const Customize: React.FC = () => {
                         Text
                     </label>
                     <input
+                        disabled={
+                            recentlySelectedActiveElement?.customClasses?.includes(
+                                "spacer-div",
+                            ) && true
+                        }
                         type="text"
                         className="whitespace-pre-wrap w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                         defaultValue={recentlySelectedActiveElement?.text ?? ""}
@@ -124,7 +129,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 bg-gray-900 border ${userStyle?.isBold && "border-purple-500"} rounded-md`}
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${userStyle?.isBold && "dark:border-[#AD49E1] border-[#3a00c0]"} rounded-md`}
                         >
                             <FontAwesomeIcon icon={faBold} />
                         </button>
@@ -139,7 +144,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 bg-gray-900 ${userStyle?.isItalic && "border-purple-500"} border rounded-md`}
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 ${userStyle?.isItalic && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faItalic} />
                         </button>
@@ -157,7 +162,7 @@ const Customize: React.FC = () => {
                                     }
                                 }
                             }}
-                            className={`p-2 bg-gray-900 ${userStyle?.isUnderline && "border-purple-500"} border rounded-md`}
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 ${userStyle?.isUnderline && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faUnderline} />
                         </button>
@@ -181,9 +186,9 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 bg-gray-900 border ${
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
                                 userStyle?.textAlignment === "left" &&
-                                "border-purple-500"
+                                "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
                         >
                             <FontAwesomeIcon icon={faAlignLeft} />
@@ -199,9 +204,9 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 bg-gray-900 border ${
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
                                 userStyle?.textAlignment === "center" &&
-                                "border-purple-500"
+                                "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
                         >
                             <FontAwesomeIcon icon={faAlignCenter} />
@@ -217,9 +222,9 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 bg-gray-900 border ${
+                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
                                 userStyle?.textAlignment === "right" &&
-                                "border-purple-500"
+                                "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
                         >
                             <FontAwesomeIcon icon={faAlignRight} />
@@ -276,7 +281,7 @@ const Customize: React.FC = () => {
             {/* Save Button */}
             <button
                 onClick={handleSave}
-                className="mt-4 w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600"
+                className="mt-4 w-full bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white py-2 px-4 rounded-md"
             >
                 Save
             </button>

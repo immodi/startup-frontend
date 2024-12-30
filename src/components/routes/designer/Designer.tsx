@@ -32,7 +32,7 @@ const Designer: React.FC = () => {
 
     return (
         <DesignerContext.Provider value={designerContext}>
-            <div className="w-full h-full bg-gray-100 dark:bg-gray-800 relative flex items-center justify-center overflow-hidden">
+            <div className="w-full h-full bg-gray-100 dark:bg-gray-700 relative flex items-center justify-center overflow-hidden">
                 <ArrowBigLeft
                     onClick={() => {
                         changePanelDisplay("grid");
@@ -40,7 +40,7 @@ const Designer: React.FC = () => {
                             toggleSidePanel(true);
                         }, 2);
                     }}
-                    className="absolute w-10 h-10 right-0 transition-all ease-in-out duration-300 cursor-pointer bg-gray-700 rounded-full"
+                    className="absolute w-10 h-10 right-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full"
                 />
                 <Canvas />
                 <SidePanel />

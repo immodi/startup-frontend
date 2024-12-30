@@ -17,6 +17,7 @@ export interface PartialDesignerComponent {
     index: number;
     text: string;
     element: CanvasElement;
+    description: string;
 }
 
 export function getDefaultDesignerComponent(

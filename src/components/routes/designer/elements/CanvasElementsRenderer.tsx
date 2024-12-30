@@ -1,8 +1,4 @@
-import {
-    faCheck,
-    faPen,
-    faTrash
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode } from "react";
 
@@ -112,7 +108,7 @@ function convertHTMLElementToReactNode(
     }
 
     function handleEditText(node: HTMLElement) {
-        if (node.children.length > 0) {
+        if (node.children.length > 0 && !className.includes("spacer-div")) {
             clickManager();
             const textInput = node as HTMLTextAreaElement;
 
@@ -129,7 +125,7 @@ function convertHTMLElementToReactNode(
         key: id,
         id: id,
         style: { color: userStyle.textColor },
-        className: `${className} w-full min-h-12 h-auto flex items-center relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
+        className: `${className} w-full min-h-12 h-auto relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
         onClick: () => {
             // const node = e.currentTarget as HTMLElement;
             clickManager();
@@ -137,7 +133,9 @@ function convertHTMLElementToReactNode(
 
         onDoubleClick: (e: React.MouseEvent<HTMLElement>) => {
             const node = e.currentTarget as HTMLElement;
-            handleEditText(node);
+            if (!className.includes("spacer-div")) {
+                handleEditText(node);
+            }
         },
 
         children: [
@@ -145,7 +143,7 @@ function convertHTMLElementToReactNode(
                 id={`mainElementText${id}`}
                 className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
             >
-                {text}
+                <p className="w-auto h-auto">{text}</p>
             </div>,
             <span
                 onClick={(e) => {
@@ -190,7 +188,7 @@ function convertHTMLElementToReactNode(
                     });
                 }}
                 // type="text"
-                className={`remove-this-at-export content-center w-full min-h-12 h-full resize-none bg-gray-500 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
+                className={`remove-this-at-export content-center w-full min-h-12 h-full resize-none bg-gray-400 dark:bg-gray-600 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
             />,
         ],
     });

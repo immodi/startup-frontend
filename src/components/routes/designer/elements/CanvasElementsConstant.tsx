@@ -6,10 +6,19 @@ interface HeadersData {
     name: string;
     tagName: Headers;
     text: string;
+    description: string;
     className: string;
 }
 
 const headersText = ["H", "h", "Default H"];
+const headersDescription = [
+    "Main Title",
+    "Section Header",
+    "Sub Section",
+    "Minor Header",
+    "Small Header",
+];
+
 const headersStyles = [
     "text-4xl font-bold tracking-tight text-gray-900",
     "text-3xl font-semibold tracking-tight text-gray-800",
@@ -22,6 +31,7 @@ const headersData: HeadersData[] = [1, 2, 3, 4, 5].map((number, index) => {
         name: `${headersText[0]}${number > 1 ? number : ""}`,
         tagName: `${headersText[1]}${number}` as Headers,
         text: `${headersText[2]}${number}`,
+        description: headersDescription[index],
         className: headersStyles[index],
     };
 });
@@ -30,6 +40,7 @@ const canvasHeaders: DesignerComponent[] = headersData.map((value, index) => {
     return getDefaultDesignerComponent({
         index: index,
         text: value.name,
+        description: value.description,
         element: {
             element: value.tagName,
             id: index,
@@ -55,6 +66,7 @@ export const CanvasElements: DesignerComponent[] = [
     getDefaultDesignerComponent({
         index: 6,
         text: "Text",
+        description: "Paragraph",
         element: {
             element: "div",
             id: 6,
@@ -75,18 +87,19 @@ export const CanvasElements: DesignerComponent[] = [
 
     getDefaultDesignerComponent({
         index: 7,
-        text: "Spacer",
+        text: "Br",
+        description: "Element Spacer",
         element: {
             element: "div",
             id: 7,
-            text: "",
-            customClasses: "",
+            text: "{SPACER}",
+            customClasses: "spacer-div",
             selectMode: "idle",
             userStyle: {
                 fontFamily: "Sans",
                 textColor: "black",
+                textAlignment: "center",
                 isBold: false,
-                textAlignment: "left",
                 isItalic: false,
                 isUnderline: false,
                 // textContent: "Default Text",
