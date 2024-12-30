@@ -153,7 +153,7 @@ const SidePanel: React.FC = () => {
                     canvasRef.current,
                 )}
             <div
-                className={`bg-white ${isSidePanelOpen ? "translate-x-0 w-80" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full z-20 transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
+                className={`bg-white w-96 ${isSidePanelOpen ? "translate-x-0 w-96" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full z-20 transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
                 style={{
                     padding: "1rem",
                     boxSizing: "border-box",

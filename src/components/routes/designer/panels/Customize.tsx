@@ -129,7 +129,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${userStyle?.isBold && "dark:border-[#AD49E1] border-[#3a00c0]"} rounded-md`}
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 border ${userStyle?.isBold && "dark:border-[#AD49E1] border-[#3a00c0]"} rounded-md`}
                         >
                             <FontAwesomeIcon icon={faBold} />
                         </button>
@@ -144,7 +144,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 ${userStyle?.isItalic && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 ${userStyle?.isItalic && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faItalic} />
                         </button>
@@ -162,7 +162,7 @@ const Customize: React.FC = () => {
                                     }
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 ${userStyle?.isUnderline && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 ${userStyle?.isUnderline && "dark:border-[#AD49E1] border-[#3a00c0]"} border rounded-md`}
                         >
                             <FontAwesomeIcon icon={faUnderline} />
                         </button>
@@ -186,7 +186,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 border ${
                                 userStyle?.textAlignment === "left" &&
                                 "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
@@ -204,7 +204,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 border ${
                                 userStyle?.textAlignment === "center" &&
                                 "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
@@ -222,7 +222,7 @@ const Customize: React.FC = () => {
                                     });
                                 }
                             }}
-                            className={`p-2 dark:bg-gray-700 hover:bg-[#3a00c0] hover:text-white dark:hover:bg-[#AD49E1] bg-gray-300 border ${
+                            className={`p-2 dark:bg-gray-700 bg-gray-300 border ${
                                 userStyle?.textAlignment === "right" &&
                                 "dark:border-[#AD49E1] border-[#3a00c0]"
                             } rounded-md`}
