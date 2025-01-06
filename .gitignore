@@ -28,3 +28,4 @@ dist-ssr
 vite-env.d.ts
 *.tsbuildinfo
 argotunnel
+.todo

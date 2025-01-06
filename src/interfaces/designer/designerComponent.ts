@@ -9,4 +9,5 @@ export interface DesignerComponent {
     position: ControlPosition;
     positionOffset: ControlPosition;
     element: CanvasElement;
+    icon: string;
 }

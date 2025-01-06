@@ -12,7 +12,7 @@ import {
     faWrench,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ArrowBigRight } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight, ArrowBigUp } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -36,6 +36,7 @@ const SidePanel: React.FC = () => {
         panelDisplay,
         toggleSidePanel,
         changePanelDisplay,
+        toggleSidePanelState,
     } = designerContext;
 
     const [activePanel, setActivePanel] = useState("elements");
@@ -44,6 +45,7 @@ const SidePanel: React.FC = () => {
         currentEditableIndexInCanvasElements,
         setCurrentEditableIndexInCanvasElements,
     ] = useState<number | undefined>();
+    const [isTransparent, setIsTransparent] = useState(false);
 
     const panels = new Map<string, React.ReactNode>([
         ["elements", <Elements />],
@@ -123,6 +125,10 @@ const SidePanel: React.FC = () => {
         setCurrentEditableIndexInCanvasElements(index);
     }
 
+    function setSidePanelTransparency(isTransparent: boolean) {
+        setIsTransparent(isTransparent);
+    }
+
     const sidePanelContext: SidelPanelContextInterface = {
         addCanvasElement: addCanvasElement,
         removeCanvasElement: removeCanvasElement,
@@ -136,6 +142,7 @@ const SidePanel: React.FC = () => {
         recentlySelectedActiveElement: getCanvasElementByIndex(
             currentEditableIndexInCanvasElements ?? 0,
         ),
+        setSidePanelTransparency: setSidePanelTransparency,
         // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 
@@ -153,20 +160,24 @@ const SidePanel: React.FC = () => {
                     canvasRef.current,
                 )}
             <div
-                className={`bg-white w-96 ${isSidePanelOpen ? "translate-x-0 w-96" : "translate-x-60 w-0"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 h-full z-20 transform self-end relative overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
+                className={`bg-white ${isTransparent ? "opacity-10" : ""} absolute md:relative lg:relative h-1/2 md:h-full lg:h-full w-[100dvw] md:w-96 lg:w-96 ${isSidePanelOpen ? "translate-x-0" : "translate-y-60 md:translate-y-0 lg:translate-y-0 md:translate-x-60 lg:translate-x-60"} ${isMenuOpen && "translate-x-24"} transition-all ease-in-out duration-300 dark:bg-gray-900 z-20 transform self-end overflow-visible ${panelDisplay} place-items-center grid-rows-[auto_1fr]`}
                 style={{
                     padding: "1rem",
                     boxSizing: "border-box",
                 }}
             >
+                <ArrowBigDown
+                    onClick={() => {
+                        toggleSidePanelState(false);
+                    }}
+                    className={`absolute bottom-[95%] md:bottom-1/2 lg:bottom-1/2 left-[45%] md:-left-5 lg:-left-5 w-10 h-10 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full md:hidden lg:hidden`}
+                />
+
                 <ArrowBigRight
                     onClick={() => {
-                        toggleSidePanel(false);
-                        setTimeout(() => {
-                            changePanelDisplay("hidden");
-                        }, 170);
+                        toggleSidePanelState(false);
                     }}
-                    className="absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white first:rounded-full"
+                    className={`absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full portrait:hidden`}
                 />
                 <HorizontalMenu />
                 {panels.get(activePanel)}

@@ -6,6 +6,8 @@ import {
 } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
 import { CanvasElements } from "@/components/routes/designer/elements/CanvasElementsConstant";
+import H1 from "@/assets/designer-elements-svgs/h1.svg";
+import { icons } from "lucide-react";
 
 export function populateDummyElements(
     setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,
@@ -18,6 +20,7 @@ export interface PartialDesignerComponent {
     text: string;
     element: CanvasElement;
     description: string;
+    icon: string;
 }
 
 export function getDefaultDesignerComponent(

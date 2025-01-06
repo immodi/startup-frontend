@@ -23,7 +23,6 @@ import {
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useEffect, useReducer, useState } from "react";
 import ElementsMapper from "../elements/ElementsMapFunction";
-import Arrow from "../elements/ElementsSelectArrow";
 
 export type AnimationState = "down" | "up" | "none";
 
@@ -88,7 +87,7 @@ const Elements: React.FC = () => {
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
             <div className="w-full h-full flex relative justify-center items-center flex-col">
-                <Arrow
+                {/* <Arrow
                     direction="up"
                     onClick={() => {
                         scrollUp(
@@ -97,16 +96,16 @@ const Elements: React.FC = () => {
                             setScrollAnimationState,
                         );
                     }}
-                />
+                /> */}
 
                 {componentsPagedArray.length < 0 ? (
                     <LoadingSpinner className="w-16 h-16" />
                 ) : (
-                    <ElementsMapper />
+                    <ElementsMapper components={components} />
                     // <HeadingControls />
                 )}
 
-                <Arrow
+                {/* <Arrow
                     direction="down"
                     onClick={() => {
                         scrollDown(
@@ -115,7 +114,7 @@ const Elements: React.FC = () => {
                             setScrollAnimationState,
                         );
                     }}
-                />
+                /> */}
             </div>
         </DesignerElementsContext.Provider>
     );

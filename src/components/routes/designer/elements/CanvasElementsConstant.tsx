@@ -1,6 +1,13 @@
 import { getDefaultDesignerComponent } from "@/helpers/designer/manageElements";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { Headers } from "./CanvasElementsRenderer";
+import H1 from "@/assets/designer-elements-svgs/h1.svg";
+import H2 from "@/assets/designer-elements-svgs/h2.svg";
+import H3 from "@/assets/designer-elements-svgs/h3.svg";
+import H4 from "@/assets/designer-elements-svgs/h4.svg";
+import H5 from "@/assets/designer-elements-svgs/h5.svg";
+import Text from "@/assets/designer-elements-svgs/text.svg";
+import Spacer from "@/assets/designer-elements-svgs/spacer.svg";
 
 interface HeadersData {
     name: string;
@@ -8,6 +15,7 @@ interface HeadersData {
     text: string;
     description: string;
     className: string;
+    icon: string;
 }
 
 const headersText = ["H", "h", "Default H"];
@@ -26,6 +34,8 @@ const headersStyles = [
     "text-xl font-medium text-gray-700",
     "text-lg font-medium text-gray-700",
 ];
+
+const headersIcons = [H1, H2, H3, H4, H5];
 const headersData: HeadersData[] = [1, 2, 3, 4, 5].map((number, index) => {
     return {
         name: `${headersText[0]}${number > 1 ? number : ""}`,
@@ -33,6 +43,7 @@ const headersData: HeadersData[] = [1, 2, 3, 4, 5].map((number, index) => {
         text: `${headersText[2]}${number}`,
         description: headersDescription[index],
         className: headersStyles[index],
+        icon: headersIcons[index],
     };
 });
 
@@ -41,6 +52,7 @@ const canvasHeaders: DesignerComponent[] = headersData.map((value, index) => {
         index: index,
         text: value.name,
         description: value.description,
+        icon: value.icon,
         element: {
             element: value.tagName,
             id: index,
@@ -67,6 +79,7 @@ export const CanvasElements: DesignerComponent[] = [
         index: 6,
         text: "Text",
         description: "Paragraph",
+        icon: Text,
         element: {
             element: "div",
             id: 6,
@@ -89,6 +102,7 @@ export const CanvasElements: DesignerComponent[] = [
         index: 7,
         text: "Br",
         description: "Element Spacer",
+        icon: Spacer,
         element: {
             element: "div",
             id: 7,

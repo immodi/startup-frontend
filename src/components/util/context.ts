@@ -10,7 +10,7 @@ import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { createContext } from "react";
 import {
     CanvasElement,
-    NewCanvasElement
+    NewCanvasElement,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
 
@@ -56,6 +56,7 @@ export interface DesignerContextInterface {
     panelDisplay: "grid" | "hidden";
     toggleSidePanel: (state: boolean) => void;
     changePanelDisplay: (state: "grid" | "hidden") => void;
+    toggleSidePanelState: (state: boolean) => void;
 }
 
 export interface SidelPanelContextInterface {
@@ -72,6 +73,7 @@ export interface SidelPanelContextInterface {
     currentEditableIndexInCanvasElements: number | undefined;
     recentlySelectedActiveElement: CanvasElement | null;
     updateActivePanel: (itemId: "elements" | "customize") => void;
+    setSidePanelTransparency: (isTransparent: boolean) => void;
     // getCanvasElementByIndex: (index: number) => CanvasElement | null;
 }
 
