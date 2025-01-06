@@ -11,7 +11,7 @@ import useLandscapeMode from "@/helpers/designer/useLandscapeMode";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInArray } from "@/hooks/designer/componentsArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Draggable from "react-draggable";
 
 const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
@@ -32,9 +32,7 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
     ) as SidelPanelContextInterface;
     const { addCanvasElement, setSidePanelTransparency } = sidePanelContext;
 
-    useEffect(() => {
-        console.log(isPhoneLandscape);
-    }, [isPhoneLandscape]);
+    // useEffect(() => {}, [isPhoneLandscape]);
 
     const {
         // currentComponentsInterface,
@@ -57,14 +55,14 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                 />
             </div>
             <div
-                className={`elements w-full ${isPhoneLandscape ? "md:h-[50%] h-1/2" : "h-44"} md:h-[98%] lg:h-[98%] overflow-visible max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
+                className={`elements w-full ${isPhoneLandscape ? "md:h-[50%] h-1/2" : "h-[70%] pb-32"} md:h-[98%] lg:h-[98%] overflow-scroll max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
             >
                 {components.length > 0 &&
                     components.map((component, index) => {
                         return (
                             <div
                                 key={index}
-                                className={`w-full h-full transition-all ease-in-out scale-75 md:scale-100 lg:scale-100 duration-150 hover:scale-105 ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}`}
+                                className={`w-full h-full transition-all ease-in-out scale-90 md:scale-100 lg:scale-100 duration-150 hover:scale-105 ${isAnimating.index === component.index && isAnimating.payload === true ? "animate-fade-out" : "animate-fade-in"}`}
                             >
                                 <Draggable
                                     key={component.index}
