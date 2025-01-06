@@ -55,7 +55,7 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                 />
             </div>
             <div
-                className={`elements w-full ${isPhoneLandscape ? "md:h-[50%] h-1/2" : "h-[70%] pb-32"} md:h-[98%] lg:h-[98%] overflow-scroll max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
+                className={`elements w-full ${isPhoneLandscape ? "md:h-[40%] h-1/2" : "h-[75%] pb-80"} md:h-[98%] lg:h-[98%] overflow-scroll max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
             >
                 {components.length > 0 &&
                     components.map((component, index) => {
