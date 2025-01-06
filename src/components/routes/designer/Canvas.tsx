@@ -2,9 +2,7 @@ import {
     DesignerContext,
     DesignerContextInterface,
     HomeContext,
-    HomeContextInterface,
-    SidelPanelContextInterface,
-    SidePanelContext,
+    HomeContextInterface
 } from "@/components/util/context";
 import React, { useContext } from "react";
 

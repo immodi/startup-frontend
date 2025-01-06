@@ -1,13 +1,11 @@
-import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import { ComponentsIndexInterface } from "./scrollBehaviors";
+import { CanvasElements } from "@/components/routes/designer/elements/CanvasElementsConstant";
+import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
 import {
     Action,
     setComponentsArray,
 } from "@/hooks/designer/componentsPagedArrayDispatcher";
-import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
-import { CanvasElements } from "@/components/routes/designer/elements/CanvasElementsConstant";
-import H1 from "@/assets/designer-elements-svgs/h1.svg";
-import { icons } from "lucide-react";
+import { DesignerComponent } from "@/interfaces/designer/designerComponent";
+import { ComponentsIndexInterface } from "./scrollBehaviors";
 
 export function populateDummyElements(
     setComponents: React.Dispatch<React.SetStateAction<DesignerComponent[]>>,

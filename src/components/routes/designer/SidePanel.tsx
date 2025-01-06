@@ -12,7 +12,7 @@ import {
     faWrench,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ArrowBigDown, ArrowBigRight, ArrowBigUp } from "lucide-react";
+import { ArrowBigDown, ArrowBigRight } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -30,14 +30,8 @@ const SidePanel: React.FC = () => {
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
-    const {
-        canvasRef,
-        isSidePanelOpen,
-        panelDisplay,
-        toggleSidePanel,
-        changePanelDisplay,
-        toggleSidePanelState,
-    } = designerContext;
+    const { canvasRef, isSidePanelOpen, panelDisplay, toggleSidePanelState } =
+        designerContext;
 
     const [activePanel, setActivePanel] = useState("elements");
     const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);

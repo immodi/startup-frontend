@@ -9,9 +9,9 @@ import {
 import checkCollision from "@/helpers/designer/checkCollision";
 import useLandscapeMode from "@/helpers/designer/useLandscapeMode";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
-import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
+import { replaceComponentInArray } from "@/hooks/designer/componentsArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Draggable from "react-draggable";
 
 const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
@@ -37,10 +37,10 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
     }, [isPhoneLandscape]);
 
     const {
-        componentsPagedArray,
-        currentComponentsInterface,
+        // currentComponentsInterface,
         animatingDispatch,
-        componentsPagedArraydispatch,
+        // componentsPagedArraydispatch,
+        componentsArrayDispatch,
         isAnimating,
         isStartDragging,
         scrollingAnimationState,
@@ -57,7 +57,7 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                 />
             </div>
             <div
-                className={`elements w-full ${isPhoneLandscape ? "md:h-[50%] h-1/2" : "h-44"} md:h-[98%] lg:h-[98%] overflow-scroll max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
+                className={`elements w-full ${isPhoneLandscape ? "md:h-[50%] h-1/2" : "h-44"} md:h-[98%] lg:h-[98%] overflow-visible max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
             >
                 {components.length > 0 &&
                     components.map((component, index) => {
@@ -85,9 +85,17 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                                             },
                                         };
 
-                                        replaceComponentInSubArray(
-                                            componentsPagedArraydispatch,
-                                            currentComponentsInterface.currentIndex,
+                                        replaceComponentInArray(
+                                            // ...component,
+                                            // currentComponentsInterface.currentIndex,
+                                            // index,
+                                            // () => {
+                                            //     console.log(
+                                            //         currentComponentsInterface,
+                                            //     );
+                                            // },
+                                            // newElement,
+                                            componentsArrayDispatch,
                                             index,
                                             () => {},
                                             newElement,
@@ -111,9 +119,21 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                                                     },
                                                 };
 
-                                            replaceComponentInSubArray(
-                                                componentsPagedArraydispatch,
-                                                currentComponentsInterface.currentIndex,
+                                            // replaceComponentInSubArray(
+                                            //     componentsPagedArraydispatch,
+                                            //     currentComponentsInterface.currentIndex,
+                                            //     index,
+                                            // () => {
+                                            //     stopAnimating(
+                                            //         animatingDispatch,
+                                            //         component.index,
+                                            //     );
+                                            //     setIsStartDragging(false);
+                                            // },
+                                            //     newElement,
+                                            // );
+                                            replaceComponentInArray(
+                                                componentsArrayDispatch,
                                                 index,
                                                 () => {
                                                     stopAnimating(

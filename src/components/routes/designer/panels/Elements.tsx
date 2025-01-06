@@ -3,19 +3,16 @@ import {
     DesignerElementsContext,
     DesignerElementsContextInterface,
 } from "@/components/util/context";
-import {
-    indexAndDisplayElements,
-    populateDummyElements,
-} from "@/helpers/designer/manageElements";
-import {
-    ComponentsIndexInterface,
-    scrollDown,
-    scrollUp,
-} from "@/helpers/designer/scrollBehaviors";
+import { populateDummyElements } from "@/helpers/designer/manageElements";
+import { ComponentsIndexInterface } from "@/helpers/designer/scrollBehaviors";
 import {
     animatingReducer,
     animationInitialState,
 } from "@/hooks/designer/animatingDispatcher";
+import {
+    componentsArrayInitialState,
+    componentsArrayReducer,
+} from "@/hooks/designer/componentsArrayDispatcher";
 import {
     componentsPagedArrayInitialState,
     componentsReducer,
@@ -29,12 +26,16 @@ export type AnimationState = "down" | "up" | "none";
 const Elements: React.FC = () => {
     const [components, setComponents] = useState<Array<DesignerComponent>>([]);
     const [isStartDragging, setIsStartDragging] = useState(false);
-    const [scrollingAnimationState, setScrollingAnimationState] =
-        useState<AnimationState>("none");
+    const [scrollingAnimationState] = useState<AnimationState>("none");
 
     const [componentsPagedArray, componentsPagedArraydispatch] = useReducer(
         componentsReducer,
         componentsPagedArrayInitialState,
+    );
+
+    const [_a, componentsArrayDispatch] = useReducer(
+        componentsArrayReducer,
+        componentsArrayInitialState,
     );
 
     const [isAnimating, animatingDispatch] = useReducer(
@@ -42,32 +43,32 @@ const Elements: React.FC = () => {
         animationInitialState,
     );
 
-    const [currentComponentsInterface, setCurrentComponentsInterface] =
-        useState<ComponentsIndexInterface>({
-            currentIndex: 0,
-            subArrayCount: 0,
-        });
+    const [currentComponentsInterface, _] = useState<ComponentsIndexInterface>({
+        currentIndex: 0,
+        subArrayCount: 0,
+    });
 
     useEffect(() => {
         populateDummyElements(setComponents);
     }, []);
 
     useEffect(() => {
-        indexAndDisplayElements(
-            components,
-            currentComponentsInterface,
-            setComponentsInterface,
-            componentsPagedArraydispatch,
-        );
+        // indexAndDisplayElements(
+        //     components,
+        //     currentComponentsInterface,
+        //     setComponentsInterface,
+        //     componentsPagedArraydispatch,
+        // );
+        // componentsArrayDispatch({type="REPLACE_ARRAY_COMPONENT", })
     }, [components]);
 
-    function setComponentsInterface(ci: ComponentsIndexInterface) {
-        setCurrentComponentsInterface(ci);
-    }
+    // function setComponentsInterface(ci: ComponentsIndexInterface) {
+    //     setCurrentComponentsInterface(ci);
+    // }
 
-    function setScrollAnimationState(animationState: AnimationState) {
-        setScrollingAnimationState(animationState);
-    }
+    // function setScrollAnimationState(animationState: AnimationState) {
+    //     setScrollingAnimationState(animationState);
+    // }
 
     function setStartDragging(state: boolean) {
         setIsStartDragging(state);
@@ -82,6 +83,7 @@ const Elements: React.FC = () => {
         componentsPagedArraydispatch: componentsPagedArraydispatch,
         animatingDispatch: animatingDispatch,
         setIsStartDragging: setStartDragging,
+        componentsArrayDispatch: componentsArrayDispatch,
     };
 
     return (

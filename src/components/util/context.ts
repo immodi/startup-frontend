@@ -13,6 +13,7 @@ import {
     NewCanvasElement,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
+import { ActionArray } from "@/hooks/designer/componentsArrayDispatcher";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -86,6 +87,7 @@ export interface DesignerElementsContextInterface {
     componentsPagedArraydispatch: React.Dispatch<Action>;
     animatingDispatch: React.Dispatch<AnimatingAction>;
     setIsStartDragging: (state: boolean) => void;
+    componentsArrayDispatch: React.Dispatch<ActionArray>;
 }
 
 type Option = ContextInterface | null;
