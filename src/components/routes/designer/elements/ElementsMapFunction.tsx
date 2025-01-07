@@ -9,14 +9,12 @@ import {
 import checkCollision from "@/helpers/designer/checkCollision";
 import useLandscapeMode from "@/helpers/designer/useLandscapeMode";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
-import { replaceComponentInArray } from "@/hooks/designer/componentsArrayDispatcher";
+import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import React, { useContext } from "react";
 import Draggable from "react-draggable";
 
-const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
-    components,
-}) => {
+const ElementsMapper: React.FC = () => {
     const isPhoneLandscape = useLandscapeMode();
     const designerElementsContext = useContext(
         DesignerElementsContext,
@@ -32,17 +30,18 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
     ) as SidelPanelContextInterface;
     const { addCanvasElement, setSidePanelTransparency } = sidePanelContext;
 
-    // useEffect(() => {}, [isPhoneLandscape]);
-
     const {
         // currentComponentsInterface,
         animatingDispatch,
+
         // componentsPagedArraydispatch,
-        componentsArrayDispatch,
         isAnimating,
+        componentsPagedArray,
+        currentComponentsInterface,
         isStartDragging,
         scrollingAnimationState,
         setIsStartDragging,
+        componentsPagedArraydispatch,
     } = designerElementsContext;
 
     return (
@@ -55,10 +54,12 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                 />
             </div>
             <div
-                className={`elements w-full ${isPhoneLandscape ? "md:h-[40%] h-1/2" : "h-[75%] pb-80"} md:h-[98%] lg:h-[98%] overflow-scroll max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
+                className={`elements w-full ${isPhoneLandscape ? "md:h-[40%] h-1/2" : "h-fit"} md:h-[98%] lg:h-[98%] overflow-visible max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
             >
-                {components.length > 0 &&
-                    components.map((component, index) => {
+                {componentsPagedArray.length > 0 &&
+                    componentsPagedArray[
+                        currentComponentsInterface.currentIndex
+                    ].map((component, index) => {
                         return (
                             <div
                                 key={index}
@@ -83,21 +84,29 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                                             },
                                         };
 
-                                        replaceComponentInArray(
-                                            // ...component,
-                                            // currentComponentsInterface.currentIndex,
-                                            // index,
-                                            // () => {
-                                            //     console.log(
-                                            //         currentComponentsInterface,
-                                            //     );
-                                            // },
-                                            // newElement,
-                                            componentsArrayDispatch,
+                                        replaceComponentInSubArray(
+                                            componentsPagedArraydispatch,
+                                            currentComponentsInterface.currentIndex,
                                             index,
                                             () => {},
                                             newElement,
                                         );
+
+                                        // replaceComponentInArray(
+                                        //     // ...component,
+                                        //     // currentComponentsInterface.currentIndex,
+                                        //     // index,
+                                        //     // () => {
+                                        //     //     console.log(
+                                        //     //         currentComponentsInterface,
+                                        //     //     );
+                                        //     // },
+                                        //     // newElement,
+                                        //     componentsArrayDispatch,
+                                        //     index,
+                                        //     () => {},
+                                        //     newElement,
+                                        // );
                                     }}
                                     onStop={(_, data) => {
                                         setSidePanelTransparency(false);
@@ -117,21 +126,9 @@ const ElementsMapper: React.FC<{ components: DesignerComponent[] }> = ({
                                                     },
                                                 };
 
-                                            // replaceComponentInSubArray(
-                                            //     componentsPagedArraydispatch,
-                                            //     currentComponentsInterface.currentIndex,
-                                            //     index,
-                                            // () => {
-                                            //     stopAnimating(
-                                            //         animatingDispatch,
-                                            //         component.index,
-                                            //     );
-                                            //     setIsStartDragging(false);
-                                            // },
-                                            //     newElement,
-                                            // );
-                                            replaceComponentInArray(
-                                                componentsArrayDispatch,
+                                            replaceComponentInSubArray(
+                                                componentsPagedArraydispatch,
+                                                currentComponentsInterface.currentIndex,
                                                 index,
                                                 () => {
                                                     stopAnimating(

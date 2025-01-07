@@ -13,7 +13,6 @@ import {
     NewCanvasElement,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
-import { ActionArray } from "@/hooks/designer/componentsArrayDispatcher";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -54,6 +53,7 @@ export interface GeneratorContextInterface {
 export interface DesignerContextInterface {
     isSidePanelOpen: boolean;
     canvasRef: React.RefObject<HTMLDivElement>;
+    designerRef: React.RefObject<HTMLDivElement>;
     panelDisplay: "grid" | "hidden";
     toggleSidePanel: (state: boolean) => void;
     changePanelDisplay: (state: "grid" | "hidden") => void;
@@ -87,7 +87,11 @@ export interface DesignerElementsContextInterface {
     componentsPagedArraydispatch: React.Dispatch<Action>;
     animatingDispatch: React.Dispatch<AnimatingAction>;
     setIsStartDragging: (state: boolean) => void;
-    componentsArrayDispatch: React.Dispatch<ActionArray>;
+    updateComponentByIndex: (
+        index: number,
+        newComponent: DesignerComponent,
+    ) => void;
+    // componentsArrayDispatch: React.Dispatch<ActionArray>;
 }
 
 type Option = ContextInterface | null;

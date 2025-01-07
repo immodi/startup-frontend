@@ -6,6 +6,7 @@ export interface DesignerComponent {
     text: string;
     description: string;
     state: "absolute" | "relative";
+    node?: HTMLElement;
     position: ControlPosition;
     positionOffset: ControlPosition;
     element: CanvasElement;

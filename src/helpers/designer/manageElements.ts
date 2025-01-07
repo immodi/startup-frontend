@@ -36,13 +36,15 @@ export function getDefaultDesignerComponent(
 }
 
 export function indexAndDisplayElements(
+    isPhoneLandscape: boolean,
+    maxElementsNumber: number,
     components: DesignerComponent[],
     currentComponentsInterface: ComponentsIndexInterface,
     setCurrentComponentsInterface: (ci: ComponentsIndexInterface) => void,
     componentsPagedArraydispatch: React.Dispatch<Action>,
 ) {
     const pagedArray: DesignerComponent[][] = [];
-    const indexer = 6;
+    const indexer = maxElementsNumber;
     const subArrayNumber =
         components.length % indexer === 0
             ? Math.trunc(components.length / indexer)
@@ -56,8 +58,18 @@ export function indexAndDisplayElements(
         );
     }
 
+    // Check for landscape orientation or if the device is a tablet/PC
+    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+    const isLargeScreen = window.innerWidth > 768; // Consider anything larger than 768px as tablet/PC
+    let currentIndex =
+        !isPhoneLandscape && isLandscape && isLargeScreen
+            ? 0
+            : currentComponentsInterface.currentIndex;
+    // not a phone and not in landscape with large screen with 10 indexer
+    // reset current page to the first
+
     setCurrentComponentsInterface({
-        ...currentComponentsInterface,
+        currentIndex: currentIndex,
         subArrayCount: subArrayNumber,
     });
 

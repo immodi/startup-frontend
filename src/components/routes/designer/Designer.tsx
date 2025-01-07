@@ -15,8 +15,10 @@ const Designer: React.FC = () => {
     );
 
     const canvasRef = useRef<HTMLDivElement>(null);
+    const designerRef = useRef<HTMLDivElement>(null);
     const designerContext: DesignerContextInterface = {
         canvasRef: canvasRef,
+        designerRef: designerRef,
         isSidePanelOpen: isSidePanelOpen,
         panelDisplay: panelDisplay,
         toggleSidePanel: toggleSidePanel,
@@ -47,6 +49,11 @@ const Designer: React.FC = () => {
     return (
         <DesignerContext.Provider value={designerContext}>
             <div className="w-full h-full bg-gray-100 dark:bg-gray-700 relative flex items-center justify-center overflow-hidden">
+                <div
+                    id="elementHiddenOverlay"
+                    ref={designerRef}
+                    className="absolute w-screen h-screen"
+                ></div>
                 <SwipeDetector
                     onSwipeUp={() => {
                         toggleSidePanelState(true);
