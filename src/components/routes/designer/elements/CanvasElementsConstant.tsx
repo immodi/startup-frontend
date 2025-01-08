@@ -18,7 +18,7 @@ interface HeadersData {
     icon: string;
 }
 
-const headersText = ["H", "h", "Default H"];
+const headersText = ["H", "h", "Document H"];
 const headersDescription = [
     "Main Title",
     "Section Header",
@@ -54,6 +54,7 @@ const canvasHeaders: DesignerComponent[] = headersData.map((value, index) => {
         description: value.description,
         icon: value.icon,
         element: {
+            identifier: value.text,
             element: value.tagName,
             id: index,
             text: value.text,
@@ -81,6 +82,7 @@ export const CanvasElements: DesignerComponent[] = [
         description: "Paragraph",
         icon: Text,
         element: {
+            identifier: "Text",
             element: "div",
             id: 6,
             text: "Default Text",
@@ -104,6 +106,7 @@ export const CanvasElements: DesignerComponent[] = [
         description: "Element Spacer",
         icon: Spacer,
         element: {
+            identifier: null,
             element: "div",
             id: 7,
             text: "{SPACER}",

@@ -121,7 +121,9 @@ const Elements: React.FC = () => {
 
     return (
         <DesignerElementsContext.Provider value={designerElementsContext}>
-            <div className="w-full h-full flex relative justify-center items-center flex-col">
+            <div
+                className={`w-full h-full ${!isStartDragging && "overflow-y-auto overscroll-x-none"} grid relative flex-col`}
+            >
                 {componentsPagedArray.length < 0 ? (
                     <LoadingSpinner className="w-16 h-16" />
                 ) : (
@@ -129,7 +131,7 @@ const Elements: React.FC = () => {
                     // <HeadingControls />
                 )}
 
-                <div className="flex justify-between items-center w-full h-fit absolute -bottom-4 bg-gray-300 rounded-md dark:bg-gray-700">
+                <div className="flex justify-between items-center w-full h-fit relative bg-gray-300 rounded-md dark:bg-gray-700">
                     <Arrow
                         direction="up"
                         className="p-3"

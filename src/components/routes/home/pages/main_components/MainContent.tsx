@@ -4,6 +4,8 @@ import {
     ContextInterface,
     GeneratorContext,
     GeneratorContextInterface,
+    HomeContext,
+    HomeContextInterface,
 } from "@/components/util/context";
 import fileDownloader from "@/helpers/generator/fileDownloader";
 import { capitalizeFirstChar } from "@/helpers/generator/getTemplates";
@@ -14,6 +16,9 @@ import { useContext } from "react";
 const MainContent: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
     const { localState, cacheLocalState } = context;
+
+    const homeContext = useContext(HomeContext) as HomeContextInterface;
+    const { navigateTo } = homeContext;
     const { selectedTemplate, topic, userTemplateData, vocabulary } =
         localState.generator;
     const isDarkMode = context.localState.isDarkMode;
@@ -33,7 +38,6 @@ const MainContent: React.FC = () => {
         setVocabulary,
         setIsErrorDialogOpen,
         setIsKeyValuePopupOpen,
-        setIsModalOpen,
     } = generatorContext;
 
     return (
@@ -139,7 +143,8 @@ const MainContent: React.FC = () => {
                                 className={`cursor-pointer p-4 rounded-lg border-2 flex items-center justify-center transition-colors border-transparent ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] border-gray-700 text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] border-gray-700 text-white"}`}
                                 onClick={() => {
                                     // Handle click for creating a new template
-                                    setIsModalOpen(true);
+                                    // setIsModalOpen(true);
+                                    navigateTo("designer");
                                 }}
                             >
                                 <svg

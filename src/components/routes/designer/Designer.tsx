@@ -2,11 +2,12 @@ import {
     DesignerContext,
     DesignerContextInterface,
 } from "@/components/util/context";
+import SwipeDetector from "@/helpers/designer/swipeDetector";
 import { ArrowBigLeft, ArrowBigUp } from "lucide-react";
 import React, { useRef, useState } from "react";
 import Canvas from "./Canvas";
+import { SaveDesignModal } from "./elements/SaveDesignModal";
 import SidePanel from "./SidePanel";
-import SwipeDetector from "@/helpers/designer/swipeDetector";
 
 const Designer: React.FC = () => {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
@@ -16,15 +17,8 @@ const Designer: React.FC = () => {
 
     const canvasRef = useRef<HTMLDivElement>(null);
     const designerRef = useRef<HTMLDivElement>(null);
-    const designerContext: DesignerContextInterface = {
-        canvasRef: canvasRef,
-        designerRef: designerRef,
-        isSidePanelOpen: isSidePanelOpen,
-        panelDisplay: panelDisplay,
-        toggleSidePanel: toggleSidePanel,
-        changePanelDisplay: changePanelDisplay,
-        toggleSidePanelState: toggleSidePanelState,
-    };
+    const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+    const [saveModelName, setSaveModalName] = useState("");
 
     function toggleSidePanel(state: boolean) {
         setIsSidePanelOpen(state);
@@ -45,6 +39,23 @@ const Designer: React.FC = () => {
             toggleSidePanel(state);
         }, 10);
     }
+
+    function openSaveModal() {
+        setIsSaveModalOpen(true);
+    }
+
+    const designerContext: DesignerContextInterface = {
+        canvasRef: canvasRef,
+        designerRef: designerRef,
+        isSidePanelOpen: isSidePanelOpen,
+        panelDisplay: panelDisplay,
+        saveModelName: saveModelName,
+        toggleSidePanel: toggleSidePanel,
+        changePanelDisplay: changePanelDisplay,
+        toggleSidePanelState: toggleSidePanelState,
+        openSaveModal: openSaveModal,
+        // changeSaveDesignModal: changeSaveDesignModal,
+    };
 
     return (
         <DesignerContext.Provider value={designerContext}>
@@ -75,6 +86,16 @@ const Designer: React.FC = () => {
 
                 <Canvas />
                 <SidePanel />
+
+                {
+                    <SaveDesignModal
+                        isOpen={isSaveModalOpen}
+                        onClose={() => {
+                            setIsSaveModalOpen(false);
+                        }}
+                        handleSubmit={setSaveModalName}
+                    />
+                }
             </div>
         </DesignerContext.Provider>
     );

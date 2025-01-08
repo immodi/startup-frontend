@@ -54,10 +54,12 @@ export interface DesignerContextInterface {
     isSidePanelOpen: boolean;
     canvasRef: React.RefObject<HTMLDivElement>;
     designerRef: React.RefObject<HTMLDivElement>;
+    saveModelName: string;
     panelDisplay: "grid" | "hidden";
     toggleSidePanel: (state: boolean) => void;
     changePanelDisplay: (state: "grid" | "hidden") => void;
     toggleSidePanelState: (state: boolean) => void;
+    openSaveModal: () => void;
 }
 
 export interface SidelPanelContextInterface {
@@ -75,6 +77,8 @@ export interface SidelPanelContextInterface {
     recentlySelectedActiveElement: CanvasElement | null;
     updateActivePanel: (itemId: "elements" | "customize") => void;
     setSidePanelTransparency: (isTransparent: boolean) => void;
+    getAllIdentifiersCanvasElements: () => Array<string>;
+    // changeAllCanvasElements: (newCanvasElements: CanvasElement[]) => void;
     // getCanvasElementByIndex: (index: number) => CanvasElement | null;
 }
 

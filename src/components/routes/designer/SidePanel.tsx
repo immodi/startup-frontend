@@ -96,6 +96,10 @@ const SidePanel: React.FC = () => {
         );
     }
 
+    function changeAllCanvasElements(newCanvasElements: CanvasElement[]) {
+        setCanvasElements([...newCanvasElements]);
+    }
+
     function triggerIdleToAllCanvasElements() {
         canvasElements.forEach((element) => {
             if (element.selectMode !== "idle") {
@@ -105,6 +109,16 @@ const SidePanel: React.FC = () => {
                 });
             }
         });
+    }
+
+    function getAllIdentifiersCanvasElements(): Array<string> {
+        const templateData = new Array<string>();
+        canvasElements.forEach((element) => {
+            if (element.identifier !== null)
+                templateData.push(element.identifier);
+        });
+
+        return templateData;
     }
 
     function updateActivePanel(id: "elements" | "customize") {
@@ -137,6 +151,8 @@ const SidePanel: React.FC = () => {
             currentEditableIndexInCanvasElements ?? 0,
         ),
         setSidePanelTransparency: setSidePanelTransparency,
+        getAllIdentifiersCanvasElements: getAllIdentifiersCanvasElements,
+        // changeAllCanvasElements: changeAllCanvasElements
         // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 
@@ -146,6 +162,7 @@ const SidePanel: React.FC = () => {
                 createPortal(
                     ElementsRenderer(
                         canvasElements,
+                        changeAllCanvasElements,
                         removeCanvasElement,
                         updateCanvasElementByItsId,
                         updateCurrentEditableIndex,

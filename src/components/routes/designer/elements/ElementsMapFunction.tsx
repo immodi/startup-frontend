@@ -45,7 +45,7 @@ const ElementsMapper: React.FC = () => {
     } = designerElementsContext;
 
     return (
-        <div className="w-full h-[90%]">
+        <div className="w-full h-[90%] ">
             <div className="mb-4">
                 <input
                     type="text"
@@ -74,6 +74,7 @@ const ElementsMapper: React.FC = () => {
                                     position={component.position}
                                     onStart={() => {
                                         setSidePanelTransparency(true);
+                                        setIsStartDragging(true);
                                     }}
                                     onDrag={(_, data) => {
                                         const newElement: DesignerComponent = {
@@ -114,7 +115,7 @@ const ElementsMapper: React.FC = () => {
                                             animatingDispatch,
                                             component.index,
                                         );
-                                        setIsStartDragging(true);
+                                        // setIsStartDragging(true);
 
                                         setTimeout(() => {
                                             const newElement: DesignerComponent =
@@ -156,6 +157,18 @@ const ElementsMapper: React.FC = () => {
                                                                     Date.now(),
                                                             ),
                                                     ),
+                                                    identifier:
+                                                        component.element
+                                                            .identifier !== null
+                                                            ? component.element.identifier
+                                                                  .replace(
+                                                                      /\s/g,
+                                                                      "",
+                                                                  )
+                                                                  .concat(
+                                                                      generateIdentifier(),
+                                                                  )
+                                                            : null,
                                                     element:
                                                         component.element
                                                             .element,
@@ -235,5 +248,17 @@ const ElementsMapper: React.FC = () => {
         </div>
     );
 };
+
+function generateIdentifier(): string {
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let identifier = "";
+    for (let i = 0; i < 6; i++) {
+        identifier += characters.charAt(
+            Math.floor(Math.random() * characters.length),
+        );
+    }
+    return identifier;
+}
 
 export default ElementsMapper;

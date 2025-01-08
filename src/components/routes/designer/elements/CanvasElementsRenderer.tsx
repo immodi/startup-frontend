@@ -1,4 +1,10 @@
-import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowDown,
+    faArrowUp,
+    faCheck,
+    faPen,
+    faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode } from "react";
 
@@ -12,6 +18,7 @@ export interface CanvasElement {
     id: number;
     element: ElementsType;
     text: string;
+    identifier: string | null;
     selectMode: SelectionNodeModes;
     userStyle: CanvasElementStyles;
     customClasses?: string;
@@ -35,6 +42,7 @@ export interface NewCanvasElement {
 
 export function ElementsRenderer(
     elements: CanvasElement[],
+    changeAllCanvasElements: (newCanvasElements: CanvasElement[]) => void,
     removeCanvasElement: (elementId: number) => void,
     updateCanvasElement: (
         elementIndex: number,
@@ -43,6 +51,44 @@ export function ElementsRenderer(
     updateCurrentEditableIndex: (index: number) => void,
     updateActivePanel: (id: "elements" | "customize") => void,
 ): ReactNode {
+    function moveElementUp(id: number) {
+        const elementsCopy = [...elements];
+        const currentIndex = elementsCopy.findIndex(
+            (element) => element.id === id,
+        );
+
+        // If element not found or it's already at the top
+        if (currentIndex <= 0) {
+            return elementsCopy;
+        }
+
+        // Swap with previous element
+        const temp = elementsCopy[currentIndex];
+        elementsCopy[currentIndex] = elementsCopy[currentIndex - 1];
+        elementsCopy[currentIndex - 1] = temp;
+
+        changeAllCanvasElements(elementsCopy);
+    }
+
+    function moveElementDown(id: number) {
+        const elementsCopy = [...elements];
+        const currentIndex = elementsCopy.findIndex(
+            (element) => element.id === id,
+        );
+
+        // If element not found or it's already at the bottom
+        if (currentIndex === -1 || currentIndex >= elementsCopy.length - 1) {
+            return elementsCopy;
+        }
+
+        // Swap with next element
+        const temp = elementsCopy[currentIndex];
+        elementsCopy[currentIndex] = elementsCopy[currentIndex + 1];
+        elementsCopy[currentIndex + 1] = temp;
+
+        changeAllCanvasElements(elementsCopy);
+    }
+
     return (
         <>
             {elements.map((element, index) => {
@@ -62,6 +108,8 @@ export function ElementsRenderer(
                         updateCurrentEditableIndex(index);
                         updateActivePanel("customize");
                     },
+                    moveElementUp,
+                    moveElementDown,
                 );
             })}
         </>
@@ -81,6 +129,8 @@ function convertHTMLElementToReactNode(
         newElement: NewCanvasElement,
     ) => void,
     updateCurrentEditableIndex: () => void,
+    moveElementUp: (id: number) => void,
+    moveElementDown: (id: number) => void,
 ): ReactNode {
     function clickManager() {
         if (selectMode !== "editing") {
@@ -167,6 +217,7 @@ function convertHTMLElementToReactNode(
             >
                 <FontAwesomeIcon icon={faCheck} />
             </span>,
+
             <span
                 id={`editElementButton${id}`}
                 onClick={(e) => {
@@ -178,6 +229,32 @@ function convertHTMLElementToReactNode(
                 className={`remove-this-at-export x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
             >
                 <FontAwesomeIcon icon={faPen} />
+            </span>,
+            <span
+                onClick={(e) => {
+                    e.stopPropagation();
+                    // updateCanvasElement(id, {
+                    //     selectMode: "idle",
+                    // });
+                    moveElementUp(id);
+                }}
+                id={`upElementButton${id}`}
+                className={`remove-this-at-export x-button-elements absolute top-0 right-[7.5rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+            >
+                <FontAwesomeIcon icon={faArrowUp} />
+            </span>,
+            <span
+                onClick={(e) => {
+                    e.stopPropagation();
+                    // updateCanvasElement(id, {
+                    //     selectMode: "idle",
+                    // });
+                    moveElementDown(id);
+                }}
+                id={`downElementButton${id}`}
+                className={`remove-this-at-export x-button-elements absolute top-0 right-[10rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+            >
+                <FontAwesomeIcon icon={faArrowDown} />
             </span>,
             <textarea
                 defaultValue={text}

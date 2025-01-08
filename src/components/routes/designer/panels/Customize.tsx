@@ -11,6 +11,7 @@ import {
     faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Info } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import {
     CanvasElement,
@@ -90,8 +91,21 @@ const Customize: React.FC = () => {
             <div className="space-y-4">
                 {/* Text */}
                 <div>
-                    <label className="block mb-1 font-medium text-gray-700 dark:text-gray-300">
-                        Text
+                    <label className="mb-1 font-medium text-gray-700 dark:text-gray-300 flex justify-start place-content-center">
+                        Description{" "}
+                        <span className="relative group grid place-items-center ml-1">
+                            <button
+                                type="button"
+                                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                                aria-label="Info"
+                            >
+                                <Info width={16} height={16} />
+                            </button>
+                            {/* Tooltip for hover */}
+                            <div className="absolute hidden group-hover:block z-10 w-48 p-2 text-sm text-gray-700 bg-white dark:bg-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+                                Describe what you want the AI to talk about here
+                            </div>
+                        </span>
                     </label>
                     <input
                         disabled={
@@ -102,6 +116,51 @@ const Customize: React.FC = () => {
                         type="text"
                         className="whitespace-pre-wrap w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
                         defaultValue={recentlySelectedActiveElement?.text ?? ""}
+                        onChange={(e) => {
+                            if (element !== null) {
+                                handleChange({
+                                    ...element,
+                                    text: e.target.value,
+                                });
+                            }
+                        }}
+                    />
+                </div>
+
+                {/* Identifier */}
+                <div>
+                    <label className="mb-1 font-medium text-gray-700 dark:text-gray-300 flex justify-start place-content-center">
+                        Identifier{" "}
+                        <span className="relative group grid place-items-center ml-1">
+                            <button
+                                type="button"
+                                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                                aria-label="Info"
+                            >
+                                <Info width={16} height={16} />
+                            </button>
+                            {/* Tooltip for hover */}
+                            <div className="absolute hidden group-hover:block z-10 w-48 p-2 text-sm text-gray-700 bg-white dark:bg-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+                                The main identifier for the node, to be able to
+                                replace it if needed
+                            </div>
+                        </span>
+                    </label>
+                    <input
+                        disabled={
+                            recentlySelectedActiveElement?.customClasses?.includes(
+                                "spacer-div",
+                            ) && true
+                        }
+                        type="text"
+                        className="whitespace-pre-wrap w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 dark:text-gray-300"
+                        defaultValue={
+                            recentlySelectedActiveElement?.identifier ?? ""
+                        }
+                        onInput={(e) => {
+                            e.currentTarget.value =
+                                e.currentTarget.value.replace(/\s/g, ""); // Remove spaces dynamically
+                        }}
                         onChange={(e) => {
                             if (element !== null) {
                                 handleChange({

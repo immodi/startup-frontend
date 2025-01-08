@@ -15,7 +15,7 @@ const Arrow: React.FC<ArrowProps> = ({
 }) => {
     const arrowStyles = {
         base: `w-8/12 h-8 flex items-center justify-center rounded-sm bg-opacity-50 transition-all duration-300`,
-        hover: `hover:bg-opacity-70 hover:scale-150`,
+        hover: `hover:bg-opacity-70 hover:bg-gray-400`,
         active: `active:scale-90`,
     };
 
