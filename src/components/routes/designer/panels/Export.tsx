@@ -1,14 +1,12 @@
 import {
-    Context,
-    ContextInterface,
     DesignerContext,
     DesignerContextInterface,
-    HomeContext,
-    HomeContextInterface,
+    // HomeContext,
+    // HomeContextInterface,
     SidelPanelContextInterface,
     SidePanelContext,
 } from "@/components/util/context";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
 interface TemplateData {
@@ -24,10 +22,8 @@ interface CardProps {
 }
 
 const Export: React.FC = () => {
-    const context = useContext(Context) as ContextInterface;
-    const homeContext = useContext(HomeContext) as HomeContextInterface;
-    const isDarkMode = context.localState.isDarkMode;
-    const { navigateTo } = homeContext;
+    // const homeContext = useContext(HomeContext) as HomeContextInterface;
+    // const { navigateTo } = homeContext;
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
@@ -46,15 +42,14 @@ const Export: React.FC = () => {
         html: "",
     });
 
-    const [cards, setCards] = useState<Array<CardProps>>(
-        Array.from({ length: 3 }).map((_, i) => ({
-            name: `Test ${i}`,
-            checked: false,
-            toggleCheckMark: () => {
-                updateCardByIndex(i);
-            },
-        })),
-    );
+    const [cards, setCards] = useState<Array<CardProps>>([]);
+    // Array.from({ length: 3 }).map((_, i) => ({
+    //     name: `Test ${i}`,
+    //     checked: false,
+    //     toggleCheckMark: () => {
+    //         updateCardByIndex(i);
+    //     },
+    // })),
 
     useEffect(() => {
         if (saveModelName !== "") {
@@ -80,7 +75,7 @@ const Export: React.FC = () => {
     useEffect(() => {
         if (templateData.name !== "" && templateData.html !== "") {
             console.log(templateData);
-            navigateTo("home");
+            // navigateTo("home");
         }
     }, [templateData.html, templateData.name]);
 
@@ -113,7 +108,7 @@ const Export: React.FC = () => {
     }
 
     return (
-        <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md w-full h-full overflow-y-auto grid grid-cols-1 gap-4 grid-rows-auto">
+        <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md w-full h-full overflow-y-auto grid grid-cols-1 gap-4 grid-rows-auto content-baseline">
             {cards.map((card, i) => {
                 return (
                     <Card
@@ -131,22 +126,9 @@ const Export: React.FC = () => {
                     triggerIdleToAllCanvasElements();
                     openSaveModal();
                 }}
-                className={`w-full h-36 my-2 bg-red-300 hover:bg-red-500 select-none transition-all duration-100 rounded-md flex justify-center items-center text-7xl font-bold cursor-pointer relative`}
+                className={`w-full h-36 my-2 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 select-none transition-all duration-150 rounded-md flex justify-center items-center text-7xl font-bold cursor-pointer relative`}
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="white"
-                    className={`w-12 h-12 ${isDarkMode ? "text-[#AD49E1]" : "text-[#4A00E0]"}`}
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        d="M12 4v16m8-8H4"
-                    />
-                </svg>
+                <Plus className="w-12 h-12" />
             </div>
         </div>
     );
@@ -155,7 +137,7 @@ const Export: React.FC = () => {
 const Card: React.FC<CardProps> = ({ name, checked, toggleCheckMark }) => {
     return (
         <div
-            className={`w-full h-36 my-2 bg-red-300 hover:bg-red-500 select-none transition-all duration-100 rounded-md flex justify-center items-center text-7xl font-bold cursor-pointer relative ${checked && "border-4 shadow-md border-gray-700"}`}
+            className={`w-full h-36 my-2 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 select-none transition-all duration-150 rounded-md flex justify-center items-center text-6xl font-bold cursor-pointer relative ${checked && "border-4 shadow-md dark:border-[white] border-gray-900"}`}
             onClick={toggleCheckMark}
         >
             {name}

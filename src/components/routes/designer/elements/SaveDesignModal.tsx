@@ -27,8 +27,8 @@ const SaveDesignModal: React.FC<SaveDesignModalProps> = ({
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-all duration-200">
-            <div className="p-6 rounded-lg w-96">
-                <div className="flex items-center space-x-2 min-w-fit">
+            <div className="p-6 rounded-lg w-96 bg-gray-200 dark:bg-gray-800">
+                <div className="flex items-center  space-x-2 min-w-fit">
                     <input
                         type="text"
                         className="flex-grow px-4 py-2 bg-gray-300 dark:bg-gray-700 border dark:text-gray-400 text-gray-800 border-gray-600 rounded-md"
