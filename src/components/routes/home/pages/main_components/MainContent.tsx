@@ -8,10 +8,10 @@ import {
     HomeContextInterface,
 } from "@/components/util/context";
 import fileDownloader from "@/helpers/generator/fileDownloader";
-import { capitalizeFirstChar } from "@/helpers/generator/getTemplates";
 import { INITAL_LOCAL_STATE } from "@/hooks/local-data/useLocalData";
 import { GenerateErrorResponse } from "@/interfaces/generator/generateResponses";
-import { useContext } from "react";
+import { Check, FileDown, FilePlus, Plus, RotateCcw } from "lucide-react";
+import React, { useContext } from "react";
 
 const MainContent: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -39,6 +39,56 @@ const MainContent: React.FC = () => {
         setIsErrorDialogOpen,
         setIsKeyValuePopupOpen,
     } = generatorContext;
+
+    const buttonClass = `relative select-none h-full min-h-fit w-full rounded-lg border-2 transition-all duration-200 ${
+        isDarkMode
+            ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white border-[#AD49E1]"
+            : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white border-[#3a00c0]"
+    }`;
+
+    const renderOptions = (templates: string[]) => {
+        return (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-2">
+                {templates.slice(0, 3).map((template, index) => (
+                    <button
+                        className={`${buttonClass} ${
+                            localState.generator.selectedTemplate ===
+                            template.toLowerCase()
+                                ? "ring-2 ring-offset-2 ring-offset-background"
+                                : ""
+                        }`}
+                        key={index}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedTemplate(template.toLowerCase());
+                        }}
+                    >
+                        {localState.generator.selectedTemplate ===
+                            template.toLowerCase() && (
+                            <Check className="absolute top-2 right-2 h-6 w-6" />
+                        )}
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                            <span className="text-3xl font-bold">
+                                {template.charAt(0).toUpperCase()}
+                            </span>
+                            <span className="text-sm font-medium">
+                                {template}
+                            </span>
+                        </div>
+                    </button>
+                ))}
+
+                <button
+                    className={`${buttonClass}`}
+                    onClick={() => navigateTo("designer")}
+                >
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                        <Plus className="h-8 w-8" />
+                    </div>
+                </button>
+            </div>
+        );
+    };
 
     return (
         <div
@@ -120,99 +170,60 @@ const MainContent: React.FC = () => {
 
                 <div className="form-group w-full min-h-fit h-fit flex flex-col justify-between relative portrait:top-2">
                     {/* Template Select */}
-                    <div
-                        className={`mb-4 w-full landscape:max-h-56 portrait:max-h-72 overflow-y-hidden `}
-                    >
-                        <div className="grid grid-cols-2 gap-6">
-                            {templates.slice(0, 3).map((template, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() =>
-                                        setSelectedTemplate(
-                                            template.toLowerCase(),
-                                        )
-                                    }
-                                    className={`cursor-pointer p-4 flex justify-center items-center rounded-lg border-2 text-center transition-colors ${selectedTemplate === template.toLowerCase() ? (isDarkMode ? "border-[#AD49E1] bg-gray-700 text-white" : "border-[#4A00E0] bg-gray-200") : isDarkMode ? "border-gray-600 bg-gray-800 text-white" : "border-gray-300 bg-gray-100"} ${isDarkMode ? "hover:border-[#AD49E1]" : "hover:border-[#4A00E0]"}`}
-                                >
-                                    <p className="font-semibold text-sm lg:text-lg md:text-base flex items-center justify-center">
-                                        {capitalizeFirstChar(template)}
-                                    </p>
-                                </div>
-                            ))}
-                            <div
-                                className={`cursor-pointer p-4 rounded-lg border-2 flex items-center justify-center transition-colors border-transparent ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] border-gray-700 text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] border-gray-700 text-white"}`}
-                                onClick={() => {
-                                    // Handle click for creating a new template
-                                    // setIsModalOpen(true);
-                                    navigateTo("designer");
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="white"
-                                    className={`w-4 h-4 ${isDarkMode ? "text-[#AD49E1]" : "text-[#4A00E0]"}`}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="3"
-                                        d="M12 4v16m8-8H4"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+                    {renderOptions(templates)}
 
                     <hr className="border-gray-800 dark:border-gray-600 mt-4" />
 
-                    <div className="grid grid-cols-2 gap-4 mt-4">
-                        {/* Button to open the Key-Value Pair Popup */}
-                        <div className="text-center mt-4 flex justify-center items-center">
-                            <button
-                                type="button"
-                                onClick={() => setIsKeyValuePopupOpen(true)}
-                                className={`w-full py-3 rounded-lg font-semibold tracking-wide text-base transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
-                            >
-                                Add Data To Template
-                            </button>
+                    <div className="w-full h-fit flex">
+                        <div className="text-center mt-4 flex justify-center items-center w-[60%]">
+                            {!isLoading ? (
+                                <button
+                                    type="submit"
+                                    className={`w-full flex py-2 justify-center items-center rounded-lg font-semibold tracking-wide text-lg transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
+                                >
+                                    <FileDown className="mr-2 h-5 w-5" />
+                                    Generate
+                                </button>
+                            ) : (
+                                <LoadingSpinner
+                                    isDarkMode={isDarkMode}
+                                    className="w-12 h-12"
+                                />
+                            )}
                         </div>
 
-                        {/* Button to reset to defaults */}
-                        <div className="text-center mt-4 flex justify-center items-center">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    cacheLocalState({
-                                        ...localState,
-                                        generator: {
-                                            ...INITAL_LOCAL_STATE.generator,
-                                        },
-                                    });
-                                }}
-                                className={`w-full py-3 rounded-lg font-semibold tracking-wide text-base transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
-                            >
-                                Reset To Defaults
-                            </button>
-                        </div>
-                    </div>
+                        <div className="w-[10%] md:w-[25%] lg:w-[30%]"></div>
 
-                    {/* Submit Button */}
-                    <div className="text-center mt-4 flex justify-center items-center">
-                        {!isLoading ? (
-                            <button
-                                type="submit"
-                                className={`w-full py-3 rounded-lg font-semibold tracking-wide text-lg transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
-                            >
-                                Generate PDF File
-                            </button>
-                        ) : (
-                            <LoadingSpinner
-                                isDarkMode={isDarkMode}
-                                className="w-12 h-12"
-                            />
-                        )}
+                        <div className="/* w-[30%] md:w-[15%] lg:w-[10%] grid grid-rows-1 place-content-end grid-cols-2">
+                            {/* Button to open the Key-Value Pair Popup */}
+                            <div className="text-center mt-4 flex justify-end items-center">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsKeyValuePopupOpen(true)}
+                                    className={`w-fit h-fit  text-gray-600 dark:text-gray-200`}
+                                >
+                                    <FilePlus className="h-8 w-8" />
+                                </button>
+                            </div>
+
+                            {/* Button to reset to defaults */}
+                            <div className="text-center mt-4 flex justify-end items-center">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        cacheLocalState({
+                                            ...localState,
+                                            generator: {
+                                                ...INITAL_LOCAL_STATE.generator,
+                                            },
+                                        });
+                                    }}
+                                    className={`w-fit h-fit  text-gray-600 dark:text-gray-200`}
+                                >
+                                    <RotateCcw className="h-8 w-8" />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

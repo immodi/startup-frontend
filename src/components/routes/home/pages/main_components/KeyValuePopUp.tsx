@@ -1,3 +1,5 @@
+import { CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
     Context,
     ContextInterface,
@@ -5,6 +7,8 @@ import {
     GeneratorContextInterface,
 } from "@/components/util/context";
 import getTemplateData from "@/helpers/generator/getTemplatesData";
+import { Label } from "@radix-ui/react-label";
+import { X } from "lucide-react";
 import { useContext } from "react";
 
 const KeyValuePopUp: React.FC = () => {
@@ -21,70 +25,73 @@ const KeyValuePopUp: React.FC = () => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div
-                className={`bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 portrait:w-full max-w-lg`}
+                className={`bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 portrait:w-full max-w-lg relative`}
             >
                 <h3 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
                     Add Data
                 </h3>
+
+                <button
+                    type="button"
+                    onClick={() => setIsKeyValuePopupOpen(false)}
+                    className={`absolute right-4 top-4 text-gray-600 duration-150 dark:text-gray-300`}
+                >
+                    <X />
+                </button>
+
                 <form className="flex flex-col w-full h-full justify-between min-h-fit">
                     <div className="form-group overflow-y-auto max-h-64 w-full min-h-fit flex flex-col space-y-4">
                         {/* Key-Value Input Pairs */}
                         {getTemplateData(selectedTemplate).map(
                             (label, index) => (
-                                <div
-                                    className="flex justify-between items-center"
-                                    key={index}
-                                >
-                                    {/* Key Input */}
-                                    <input
-                                        type="text"
-                                        disabled={true}
-                                        value={label
-                                            .charAt(0)
-                                            .toUpperCase()
-                                            .concat(label.slice(1))}
-                                        className={`w-1/4 p-2 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
-                                    />
-                                    {/* Value Input */}
-                                    <input
-                                        type="text"
-                                        placeholder={`Value`}
-                                        value={
-                                            userTemplateData.get(label) || ""
-                                        }
-                                        onChange={(event) => {
-                                            const value = event.target.value;
-
-                                            // Create a new Map instance based on the existing one
-                                            const updatedMap = new Map(
-                                                userTemplateData,
-                                            );
-
-                                            if (value !== "") {
-                                                updatedMap.set(label, value);
-                                            } else {
-                                                updatedMap.delete(label);
+                                <CardContent className="space-y-0 p-0">
+                                    <div key={index} className="">
+                                        <Label
+                                            htmlFor={index.toString()}
+                                            className="text-sm font-medium"
+                                        >
+                                            {label.charAt(0).toUpperCase() +
+                                                label.slice(1)}
+                                        </Label>
+                                        <Input
+                                            name={index.toString()}
+                                            type="text"
+                                            value={
+                                                userTemplateData.get(label) ||
+                                                ""
                                             }
+                                            placeholder="Value"
+                                            onChange={(event) => {
+                                                const value =
+                                                    event.target.value;
 
-                                            // Set the new Map as the state
-                                            setUserTemplateData(updatedMap);
-                                        }}
-                                        className={`w-3/4 ml-4 p-2 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
-                                    />
-                                </div>
+                                                // Create a new Map instance based on the existing one
+                                                const updatedMap = new Map(
+                                                    userTemplateData,
+                                                );
+
+                                                if (value !== "") {
+                                                    updatedMap.set(
+                                                        label,
+                                                        value,
+                                                    );
+                                                } else {
+                                                    updatedMap.delete(label);
+                                                }
+
+                                                // Set the new Map as the state
+                                                setUserTemplateData(updatedMap);
+                                            }}
+                                            className={`w-full border ${
+                                                isDarkMode
+                                                    ? "bg-gray-800 border-gray-700 focus:border-[#4A00E0]"
+                                                    : "bg-white border-gray-200 focus:border-[#7A1CAC]"
+                                            }`}
+                                        />
+                                    </div>
+                                </CardContent>
                             ),
                         )}
-                    </div>
-
-                    {/* Close Button */}
-                    <div className="text-center mt-4 flex justify-center items-center">
-                        <button
-                            type="button"
-                            onClick={() => setIsKeyValuePopupOpen(false)}
-                            className={`py-2 px-4 rounded-lg font-semibold transition-colors duration-300 ${isDarkMode ? "bg-[#7A1CAC] hover:bg-[#AD49E1] text-white" : "bg-[#4A00E0] hover:bg-[#3a00c0] text-white"}`}
-                        >
-                            Close
-                        </button>
                     </div>
                 </form>
             </div>

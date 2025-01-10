@@ -78,7 +78,7 @@ export interface SidelPanelContextInterface {
     updateActivePanel: (itemId: "elements" | "customize") => void;
     setSidePanelTransparency: (isTransparent: boolean) => void;
     getAllIdentifiersCanvasElements: () => Array<string>;
-    // changeAllCanvasElements: (newCanvasElements: CanvasElement[]) => void;
+    changeAllCanvasElements: (newCanvasElements: CanvasElement[]) => void;
     // getCanvasElementByIndex: (index: number) => CanvasElement | null;
 }
 

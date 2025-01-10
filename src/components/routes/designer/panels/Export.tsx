@@ -22,8 +22,6 @@ interface CardProps {
 }
 
 const Export: React.FC = () => {
-    // const homeContext = useContext(HomeContext) as HomeContextInterface;
-    // const { navigateTo } = homeContext;
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
@@ -31,8 +29,11 @@ const Export: React.FC = () => {
     const sidePanelContext = useContext(
         SidePanelContext,
     ) as SidelPanelContextInterface;
-    const { triggerIdleToAllCanvasElements, getAllIdentifiersCanvasElements } =
-        sidePanelContext;
+    const {
+        triggerIdleToAllCanvasElements,
+        getAllIdentifiersCanvasElements,
+        // changeAllCanvasElements,
+    } = sidePanelContext;
 
     const [exporting, setExporting] = useState(false);
 
@@ -75,6 +76,7 @@ const Export: React.FC = () => {
     useEffect(() => {
         if (templateData.name !== "" && templateData.html !== "") {
             console.log(templateData);
+            // changeAllCanvasElements([])
             // navigateTo("home");
         }
     }, [templateData.html, templateData.name]);

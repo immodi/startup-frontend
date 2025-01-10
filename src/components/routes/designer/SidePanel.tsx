@@ -152,7 +152,7 @@ const SidePanel: React.FC = () => {
         ),
         setSidePanelTransparency: setSidePanelTransparency,
         getAllIdentifiersCanvasElements: getAllIdentifiersCanvasElements,
-        // changeAllCanvasElements: changeAllCanvasElements
+        changeAllCanvasElements: changeAllCanvasElements,
         // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 

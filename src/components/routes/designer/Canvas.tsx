@@ -21,7 +21,7 @@ const Canvas: React.FC = () => {
             ref={canvasRef}
             className={`
                 ${isMenuOpen ? "translate-x-24" : ""} 
-                ${isSidePanelOpen ? "border-4 shadow-lg p-4" : ""} 
+                ${isSidePanelOpen ? "border-2 shadow-lg p-4" : ""} 
                 ${
                     isSidePanelOpen
                         ? "border-[#4A00E0] dark:border-[#7A1CAC]"
