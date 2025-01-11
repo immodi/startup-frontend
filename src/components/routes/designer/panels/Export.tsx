@@ -6,6 +6,7 @@ import {
     SidelPanelContextInterface,
     SidePanelContext,
 } from "@/components/util/context";
+import { createTemplate } from "@/helpers/generator/getTemplates";
 import { CheckCircle2, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -75,8 +76,10 @@ const Export: React.FC = () => {
 
     useEffect(() => {
         if (templateData.name !== "" && templateData.html !== "") {
-            console.log(templateData);
-            // changeAllCanvasElements([])
+            setTimeout(() => {
+                // console.log(isSidePanelOpen);
+                createTemplate(templateData.name, templateData.html);
+            }, 10);
             // navigateTo("home");
         }
     }, [templateData.html, templateData.name]);

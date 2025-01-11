@@ -165,7 +165,7 @@ const Customize: React.FC = () => {
                             if (element !== null) {
                                 handleChange({
                                     ...element,
-                                    text: e.target.value,
+                                    identifier: e.target.value,
                                 });
                             }
                         }}

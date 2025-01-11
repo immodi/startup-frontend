@@ -30,8 +30,13 @@ const SidePanel: React.FC = () => {
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
-    const { canvasRef, isSidePanelOpen, panelDisplay, toggleSidePanelState } =
-        designerContext;
+    const {
+        canvasRef,
+        isSidePanelOpen,
+        panelDisplay,
+        toggleSidePanelState,
+        toggleSidePanel,
+    } = designerContext;
 
     const [activePanel, setActivePanel] = useState("elements");
     const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
@@ -101,6 +106,9 @@ const SidePanel: React.FC = () => {
     }
 
     function triggerIdleToAllCanvasElements() {
+        toggleSidePanel(false);
+        toggleSidePanelState(false);
+
         canvasElements.forEach((element) => {
             if (element.selectMode !== "idle") {
                 updateCanvasElementByItsId(element.id, {

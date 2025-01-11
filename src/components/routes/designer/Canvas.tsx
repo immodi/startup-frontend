@@ -21,13 +21,8 @@ const Canvas: React.FC = () => {
             ref={canvasRef}
             className={`
                 ${isMenuOpen ? "translate-x-24" : ""} 
-                ${isSidePanelOpen ? "border-2 shadow-lg p-4" : ""} 
-                ${
-                    isSidePanelOpen
-                        ? "border-[#4A00E0] dark:border-[#7A1CAC]"
-                        : "border-gray-300 dark:border-gray-700"
-                } 
-                h-full w-full md:w-screen lg:w-screen 
+                ${isSidePanelOpen ? "border-2 shadow-lg p-4 border-[#4A00E0] dark:border-[#7A1CAC]" : ""} 
+                h-full min-h-fit w-full md:w-screen lg:w-screen 
                 transition-all ease-in-out duration-300 
                 overflow-y-scroll flex-grow select-none
               `}

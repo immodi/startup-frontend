@@ -34,7 +34,12 @@ const Main: React.FC = () => {
         if (authed) {
             getAllTemplates(token ?? "")
                 .then((res) => {
-                    setTemplates(res);
+                    // setTemplates([
+                    //     res.map((item) => item[1])[0],
+                    //     res.map((item) => item[1])[1],
+                    //     res.map((item) => item[1])[3],
+                    // ]);
+                    setTemplates(res.map((item) => item[1]));
                 })
                 .catch(() => {
                     setTemplates(["document", "report", "paragraph"]);
