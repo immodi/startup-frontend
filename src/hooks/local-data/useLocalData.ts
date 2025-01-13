@@ -5,6 +5,7 @@ export interface LocalState {
     isDarkMode: boolean;
     authed: boolean;
     generator: GeneratorLocalState;
+    selectedUserTemplate?: string;
 }
 
 export const INITAL_LOCAL_STATE: LocalState = {

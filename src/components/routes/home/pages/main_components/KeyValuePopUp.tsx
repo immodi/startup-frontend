@@ -6,21 +6,34 @@ import {
     GeneratorContext,
     GeneratorContextInterface,
 } from "@/components/util/context";
-import getTemplateData from "@/helpers/generator/getTemplatesData";
+import getTemplateKeyValuePairs from "@/helpers/generator/getTemplatesData";
 import { Label } from "@radix-ui/react-label";
 import { X } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const KeyValuePopUp: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
     const { localState } = context;
-    const { selectedTemplate, userTemplateData } = localState.generator;
+    const { userTemplateData, selectedTemplate } = localState.generator;
     const isDarkMode = context.localState.isDarkMode;
     const generatorContext = useContext(
         GeneratorContext,
     ) as GeneratorContextInterface;
 
-    const { setIsKeyValuePopupOpen, setUserTemplateData } = generatorContext;
+    const { setIsKeyValuePopupOpen, setUserTemplateData, templates } =
+        generatorContext;
+
+    const [userIdentifiers, setUserIdentifiers] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        const templateId = templates.find(
+            (template) => template.name === selectedTemplate,
+        )!!.id;
+
+        getTemplateKeyValuePairs(templateId).then((res) => {
+            setUserIdentifiers(res);
+        });
+    }, []);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -42,8 +55,8 @@ const KeyValuePopUp: React.FC = () => {
                 <form className="flex flex-col w-full h-full justify-between min-h-fit">
                     <div className="form-group overflow-y-auto max-h-64 w-full min-h-fit flex flex-col space-y-4">
                         {/* Key-Value Input Pairs */}
-                        {getTemplateData(selectedTemplate).map(
-                            (label, index) => (
+                        {userIdentifiers !== undefined &&
+                            userIdentifiers.map((label, index) => (
                                 <CardContent className="space-y-0 p-0">
                                     <div key={index} className="">
                                         <Label
@@ -90,8 +103,7 @@ const KeyValuePopUp: React.FC = () => {
                                         />
                                     </div>
                                 </CardContent>
-                            ),
-                        )}
+                            ))}
                     </div>
                 </form>
             </div>

@@ -1,3 +1,4 @@
+import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import axios from "axios";
 import PocketBase from "pocketbase";
 
@@ -21,21 +22,21 @@ export async function getAllTemplates(
         },
     );
 
-    let data: Array<Array<string>>;
     if (response.status < 299 && response.status > 199) {
-        data = response.data;
+        const data: Array<Array<string>> = response.data;
 
         return data;
     } else {
-        // data = [["report"], ["document"], ["paragraph"]];
         throw new Error("Failed to fetch templates");
     }
 }
 
-export async function createTemplate(name: string, html: string) {
+export async function createTemplate(templateData: TemplateData) {
     const data = {
-        name: name,
-        html: html,
+        name: templateData.name,
+        html: templateData.html,
+        canvas_elements: JSON.stringify(templateData.canvasElements, null),
+        identifiers: JSON.stringify(templateData.data, null),
     };
 
     pb.collection("templates")
@@ -52,6 +53,12 @@ export async function createTemplate(name: string, html: string) {
                 pb.collection("users").update(pb.authStore.model?.id, userData);
             });
         });
+}
+
+export async function getTemplateDataById(templateId: string) {
+    const record = await pb.collection("templates").getOne(templateId);
+
+    return record;
 }
 
 export function capitalizeFirstChar(str: string): string {

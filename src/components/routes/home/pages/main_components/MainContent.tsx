@@ -80,10 +80,39 @@ const MainContent: React.FC = () => {
 
                 <button
                     className={`${buttonClass}`}
-                    onClick={() => navigateTo("designer")}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const isCurrentSelectedTemplateCustom = ![
+                            "report",
+                            "document",
+                            "paragraph",
+                        ].includes(localState.generator.selectedTemplate);
+
+                        if (!isCurrentSelectedTemplateCustom) {
+                            navigateTo("designer");
+                        }
+                    }}
                 >
                     <div className="flex flex-col items-center justify-center space-y-2">
-                        <Plus className="h-8 w-8" />
+                        {!["report", "document", "paragraph"].includes(
+                            localState.generator.selectedTemplate,
+                        ) ? (
+                            <>
+                                <Check className="absolute top-2 right-2 h-6 w-6" />
+                                <div className="flex flex-col items-center justify-center space-y-2">
+                                    <span className="text-3xl font-bold">
+                                        {localState.generator.selectedTemplate
+                                            .charAt(0)
+                                            .toUpperCase()}
+                                    </span>
+                                    <span className="text-sm font-medium">
+                                        {localState.generator.selectedTemplate}
+                                    </span>
+                                </div>
+                            </>
+                        ) : (
+                            <Plus className="h-8 w-8" />
+                        )}
                     </div>
                 </button>
             </div>
@@ -115,6 +144,13 @@ const MainContent: React.FC = () => {
                     )
                         .then((res) => {
                             console.log(res);
+                            cacheLocalState({
+                                ...localState,
+                                generator: {
+                                    ...localState.generator,
+                                    topic: INITAL_LOCAL_STATE.generator.topic,
+                                },
+                            });
                         })
                         .catch((err: GenerateErrorResponse) => {
                             console.log(err.details);
@@ -170,7 +206,7 @@ const MainContent: React.FC = () => {
 
                 <div className="form-group w-full min-h-fit h-fit flex flex-col justify-between relative portrait:top-2">
                     {/* Template Select */}
-                    {renderOptions(templates)}
+                    {renderOptions(templates.map((template) => template.name))}
 
                     <hr className="border-gray-800 dark:border-gray-600 mt-4" />
 

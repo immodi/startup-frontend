@@ -95,6 +95,7 @@ export function ElementsRenderer(
                 const className = element.customClasses ?? "";
                 return convertHTMLElementToReactNode(
                     element.element,
+                    element.identifier,
                     className,
                     element.text,
                     element.id,
@@ -118,6 +119,7 @@ export function ElementsRenderer(
 
 function convertHTMLElementToReactNode(
     tagName: string,
+    identifier: string | null,
     className: string,
     text: string,
     id: number,
@@ -160,7 +162,9 @@ function convertHTMLElementToReactNode(
     function handleEditText(node: HTMLElement) {
         if (node.children.length > 0 && !className.includes("spacer-div")) {
             clickManager();
-            const textInput = node as HTMLTextAreaElement;
+            const textInput = document.querySelector(
+                `#textarea${id}`,
+            ) as HTMLTextAreaElement;
 
             textInput.value = text;
             textInput.focus();
@@ -193,7 +197,11 @@ function convertHTMLElementToReactNode(
                 id={`mainElementText${id}`}
                 className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
             >
-                <p className="w-auto h-auto">{text}</p>
+                <p
+                    className={`${identifier !== null ? identifier : ""} w-auto h-auto`}
+                >
+                    {text}
+                </p>
             </div>,
             <span
                 onClick={(e) => {
@@ -257,6 +265,7 @@ function convertHTMLElementToReactNode(
                 <FontAwesomeIcon icon={faArrowDown} />
             </span>,
             <textarea
+                id={`textarea${id}`}
                 defaultValue={text}
                 onChange={(event) => {
                     // updateKeyBoardString(event.target.value);

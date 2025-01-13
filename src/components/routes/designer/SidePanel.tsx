@@ -54,7 +54,7 @@ const SidePanel: React.FC = () => {
 
     useEffect(() => {
         if (canvasElements.length > 0) {
-            console.log(canvasElements[0].text);
+            // console.log(canvasElements[0].text);
         }
     }, [canvasElements]);
 
@@ -129,7 +129,7 @@ const SidePanel: React.FC = () => {
         return templateData;
     }
 
-    function updateActivePanel(id: "elements" | "customize") {
+    function updateActivePanel(id: "elements" | "customize" | "export") {
         setActivePanel(id);
     }
 
@@ -150,6 +150,7 @@ const SidePanel: React.FC = () => {
         removeCanvasElement: removeCanvasElement,
         updateCanvasElement: updateCanvasElementByItsId,
         triggerIdleToAllCanvasElements: triggerIdleToAllCanvasElements,
+        canvasElements: canvasElements,
 
         activePanel: activePanel,
         currentEditableIndexInCanvasElements:

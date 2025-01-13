@@ -1,20 +1,18 @@
 import {
+    Context,
+    ContextInterface,
     DesignerContext,
     DesignerContextInterface,
-    // HomeContext,
-    // HomeContextInterface,
     SidelPanelContextInterface,
     SidePanelContext,
 } from "@/components/util/context";
-import { createTemplate } from "@/helpers/generator/getTemplates";
+import {
+    createTemplate,
+    getAllTemplates,
+} from "@/helpers/generator/getTemplates";
+import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import { CheckCircle2, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
-
-interface TemplateData {
-    name: string;
-    data: Array<string>;
-    html: string;
-}
 
 interface CardProps {
     name: string;
@@ -23,6 +21,8 @@ interface CardProps {
 }
 
 const Export: React.FC = () => {
+    const context = useContext(Context) as ContextInterface;
+    const { localState, cacheLocalState } = context;
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
@@ -33,6 +33,7 @@ const Export: React.FC = () => {
     const {
         triggerIdleToAllCanvasElements,
         getAllIdentifiersCanvasElements,
+        canvasElements,
         // changeAllCanvasElements,
     } = sidePanelContext;
 
@@ -42,6 +43,7 @@ const Export: React.FC = () => {
         name: "",
         data: getAllIdentifiersCanvasElements(),
         html: "",
+        canvasElements: [],
     });
 
     const [cards, setCards] = useState<Array<CardProps>>([]);
@@ -52,6 +54,29 @@ const Export: React.FC = () => {
     //         updateCardByIndex(i);
     //     },
     // })),
+
+    useEffect(() => {
+        const token = context.userData?.token;
+
+        try {
+            getAllTemplates(token ?? "").then((templates) => {
+                setCards(
+                    templates.splice(3).map((template, i) => ({
+                        name: template[1],
+                        checked:
+                            localState.selectedUserTemplate === template[1]
+                                ? true
+                                : false,
+                        toggleCheckMark: () => {
+                            updateCardByIndex(i);
+                        },
+                    })),
+                );
+            });
+        } catch (error) {
+            setCards([]);
+        }
+    }, []);
 
     useEffect(() => {
         if (saveModelName !== "") {
@@ -68,7 +93,11 @@ const Export: React.FC = () => {
         if (exporting) {
             const html = computeHTML(canvasRef);
             // the export is here for some reason
-            setTemplateData({ ...templateData, html: html });
+            setTemplateData({
+                ...templateData,
+                html: html,
+                canvasElements: canvasElements,
+            });
         }
 
         setExporting(false);
@@ -77,10 +106,9 @@ const Export: React.FC = () => {
     useEffect(() => {
         if (templateData.name !== "" && templateData.html !== "") {
             setTimeout(() => {
-                // console.log(isSidePanelOpen);
-                createTemplate(templateData.name, templateData.html);
+                // console.log(templateData);
+                createTemplate(templateData);
             }, 10);
-            // navigateTo("home");
         }
     }, [templateData.html, templateData.name]);
 
@@ -93,6 +121,13 @@ const Export: React.FC = () => {
             ...newCards[index],
             checked: !newCards[index].checked, // Toggle the checked value
         };
+
+        if (newCards[index].checked) {
+            setSelectedTemplate(newCards[index].name);
+        } else {
+            setSelectedTemplate("document");
+        }
+
         setCards(newCards); // Update the state with the modified array
     }
 
@@ -109,7 +144,20 @@ const Export: React.FC = () => {
             },
         });
 
+        setSelectedTemplate(cardName);
         setCards(newCards);
+    }
+
+    function setSelectedTemplate(template: string) {
+        // setSelectedTemplate(template);
+        cacheLocalState({
+            ...localState,
+            generator: {
+                ...localState.generator,
+                selectedTemplate: template,
+            },
+            selectedUserTemplate: template,
+        });
     }
 
     return (
@@ -142,7 +190,7 @@ const Export: React.FC = () => {
 const Card: React.FC<CardProps> = ({ name, checked, toggleCheckMark }) => {
     return (
         <div
-            className={`w-full h-36 my-2 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 select-none transition-all duration-150 rounded-md flex justify-center items-center text-6xl font-bold cursor-pointer relative ${checked && "border-4 shadow-md dark:border-[white] border-gray-900"}`}
+            className={`w-full h-36 my-2 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 select-none transition-all duration-150 rounded-md flex justify-center items-center text-4xl font-bold cursor-pointer relative ${checked && "border-4 shadow-md dark:border-[white] border-gray-900"}`}
             onClick={toggleCheckMark}
         >
             {name}

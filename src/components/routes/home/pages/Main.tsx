@@ -13,17 +13,18 @@ import KeyValuePopUp from "./main_components/KeyValuePopUp";
 import Modal from "./main_components/Modal";
 import MainContent from "./main_components/MainContent";
 import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
+import { Template } from "@/interfaces/generator/template";
 
 const Main: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
+    const { localState, cacheLocalState } = context;
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
 
-    const { localState, cacheLocalState } = context;
     const authed = context.localState.authed;
 
     const token = context.userData?.token;
-    const [templates, setTemplates] = useState<Array<string>>([]);
+    const [templates, setTemplates] = useState<Array<Template>>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isKeyValuePopupOpen, setIsKeyValuePopupOpen] = useState(false);
@@ -39,10 +40,30 @@ const Main: React.FC = () => {
                     //     res.map((item) => item[1])[1],
                     //     res.map((item) => item[1])[3],
                     // ]);
-                    setTemplates(res.map((item) => item[1]));
+                    setTemplates(
+                        res.map((item) => {
+                            return {
+                                id: item[0],
+                                name: item[1],
+                            };
+                        }),
+                    );
                 })
                 .catch(() => {
-                    setTemplates(["document", "report", "paragraph"]);
+                    setTemplates([
+                        {
+                            id: "",
+                            name: "document",
+                        },
+                        {
+                            id: "",
+                            name: "paragraph",
+                        },
+                        {
+                            id: "",
+                            name: "report",
+                        },
+                    ]);
                 });
         }
     }, [authed]);
@@ -55,6 +76,7 @@ const Main: React.FC = () => {
                 ...localState.generator,
                 selectedTemplate: template,
             },
+            selectedUserTemplate: undefined,
         });
     }
 

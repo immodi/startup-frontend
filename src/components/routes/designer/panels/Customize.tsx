@@ -75,6 +75,7 @@ const Customize: React.FC = () => {
             updateCanvasElement(element.id, {
                 ...element,
                 selectMode: "idle",
+                // text: element.text,
                 userStyle: userStyle,
             });
         }

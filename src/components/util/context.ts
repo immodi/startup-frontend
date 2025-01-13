@@ -13,6 +13,7 @@ import {
     NewCanvasElement,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
+import { Template } from "@/interfaces/generator/template";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -34,7 +35,7 @@ export interface HomeContextInterface {
 }
 
 export interface GeneratorContextInterface {
-    templates: Array<string>;
+    templates: Array<Template>;
     isLoading: boolean;
     token: string;
     errorMessage: string;
@@ -72,6 +73,7 @@ export interface SidelPanelContextInterface {
     ) => void;
     triggerIdleToAllCanvasElements: () => void;
 
+    canvasElements: CanvasElement[];
     activePanel: string;
     currentEditableIndexInCanvasElements: number | undefined;
     recentlySelectedActiveElement: CanvasElement | null;
