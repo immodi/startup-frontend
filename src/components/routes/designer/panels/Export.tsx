@@ -9,12 +9,15 @@ import {
 import {
     createTemplate,
     getAllTemplates,
+    getTemplateDataById,
 } from "@/helpers/generator/getTemplates";
 import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import { CheckCircle2, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
+import { CanvasElement } from "../elements/CanvasElementsRenderer";
 
 interface CardProps {
+    id: string;
     name: string;
     checked: boolean;
     toggleCheckMark: () => void;
@@ -34,12 +37,13 @@ const Export: React.FC = () => {
         triggerIdleToAllCanvasElements,
         getAllIdentifiersCanvasElements,
         canvasElements,
-        // changeAllCanvasElements,
+        changeAllCanvasElements,
     } = sidePanelContext;
 
     const [exporting, setExporting] = useState(false);
 
     const [templateData, setTemplateData] = useState<TemplateData>({
+        id: "",
         name: "",
         data: getAllIdentifiersCanvasElements(),
         html: "",
@@ -47,13 +51,6 @@ const Export: React.FC = () => {
     });
 
     const [cards, setCards] = useState<Array<CardProps>>([]);
-    // Array.from({ length: 3 }).map((_, i) => ({
-    //     name: `Test ${i}`,
-    //     checked: false,
-    //     toggleCheckMark: () => {
-    //         updateCardByIndex(i);
-    //     },
-    // })),
 
     useEffect(() => {
         const token = context.userData?.token;
@@ -62,6 +59,7 @@ const Export: React.FC = () => {
             getAllTemplates(token ?? "").then((templates) => {
                 setCards(
                     templates.splice(3).map((template, i) => ({
+                        id: template[0],
                         name: template[1],
                         checked:
                             localState.selectedUserTemplate === template[1]
@@ -80,7 +78,7 @@ const Export: React.FC = () => {
 
     useEffect(() => {
         if (saveModelName !== "") {
-            addCard(saveModelName);
+            addCard(templateData.id, saveModelName);
             setTemplateData({
                 ...templateData,
                 name: saveModelName,
@@ -123,6 +121,11 @@ const Export: React.FC = () => {
         };
 
         if (newCards[index].checked) {
+            getTemplateDataById(newCards[index].id).then((templateData) => {
+                const canvasElements: CanvasElement[] =
+                    templateData["canvas_elements"];
+                changeAllCanvasElements(canvasElements);
+            });
             setSelectedTemplate(newCards[index].name);
         } else {
             setSelectedTemplate("document");
@@ -131,12 +134,13 @@ const Export: React.FC = () => {
         setCards(newCards); // Update the state with the modified array
     }
 
-    function addCard(cardName: string) {
+    function addCard(cardId: string, cardName: string) {
         const newCards = [...cards];
         newCards.forEach((card) => {
             if (card.checked) card.checked = false;
         });
         newCards.push({
+            id: cardId,
             name: cardName,
             checked: true,
             toggleCheckMark: () => {
@@ -165,6 +169,7 @@ const Export: React.FC = () => {
             {cards.map((card, i) => {
                 return (
                     <Card
+                        id={card.id}
                         name={card.name}
                         key={i}
                         checked={card.checked}

@@ -198,7 +198,8 @@ function convertHTMLElementToReactNode(
                 className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
             >
                 <p
-                    className={`${identifier !== null ? identifier : ""} w-auto h-auto`}
+                    id={`${identifier !== null ? identifier : ""} `}
+                    className={`w-auto h-auto`}
                 >
                     {text}
                 </p>

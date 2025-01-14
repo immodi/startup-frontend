@@ -38,7 +38,7 @@ const headersStyles = [
 const headersIcons = [H1, H2, H3, H4, H5];
 const headersData: HeadersData[] = [1, 2, 3, 4, 5].map((number, index) => {
     return {
-        name: `${headersText[0]}${number > 1 ? number : ""}`,
+        name: `${headersText[0]}${number ? number : ""}`,
         tagName: `${headersText[1]}${number}` as Headers,
         text: `${headersText[2]}${number}`,
         description: headersDescription[index],
@@ -102,7 +102,7 @@ export const CanvasElements: DesignerComponent[] = [
 
     getDefaultDesignerComponent({
         index: 7,
-        text: "Br",
+        text: "Space",
         description: "Element Spacer",
         icon: Spacer,
         element: {

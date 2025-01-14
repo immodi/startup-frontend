@@ -11,7 +11,7 @@ import useLandscapeMode from "@/helpers/designer/useLandscapeMode";
 import { animate, stopAnimating } from "@/hooks/designer/animatingDispatcher";
 import { replaceComponentInSubArray } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Draggable from "react-draggable";
 
 const ElementsMapper: React.FC = () => {
@@ -44,10 +44,47 @@ const ElementsMapper: React.FC = () => {
         componentsPagedArraydispatch,
     } = designerElementsContext;
 
+    const [elements, setElements] = useState<DesignerComponent[]>([]);
+
+    useEffect(() => {
+        if (componentsPagedArray.length > 0) {
+            setElements(
+                componentsPagedArray[currentComponentsInterface.currentIndex],
+            );
+        }
+    }, [componentsPagedArray.length]);
+
     return (
         <div className="w-full h-[90%] ">
             <div className="mb-4">
                 <input
+                    onChange={(e) => {
+                        if (
+                            elements.length > 0 &&
+                            e.currentTarget.value !== ""
+                        ) {
+                            const elementToSearch = e.currentTarget.value;
+
+                            const allElements =
+                                componentsPagedArray[
+                                    currentComponentsInterface.currentIndex
+                                ];
+
+                            setElements(
+                                allElements.filter((element) =>
+                                    element.text
+                                        .toLowerCase()
+                                        .includes(elementToSearch),
+                                ),
+                            );
+                        } else {
+                            setElements(
+                                componentsPagedArray[
+                                    currentComponentsInterface.currentIndex
+                                ],
+                            );
+                        }
+                    }}
                     type="text"
                     placeholder="Search Elements..."
                     className="w-full p-2 text-sm bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-md placeholder-gray-800 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600"
@@ -56,10 +93,8 @@ const ElementsMapper: React.FC = () => {
             <div
                 className={`elements w-full ${isPhoneLandscape ? "md:h-[40%] h-1/2" : "h-fit"} md:h-[98%] lg:h-[98%] overflow-visible max-h-[100vh] relative grid grid-cols-3 grid-rows-auto-fill gap-2 place-items-center content-baseline items-center bg-gray-100 dark:bg-gray-800 p-4 pb-8 rounded-md shadow-md`}
             >
-                {componentsPagedArray.length > 0 &&
-                    componentsPagedArray[
-                        currentComponentsInterface.currentIndex
-                    ].map((component, index) => {
+                {elements.length > 0 &&
+                    elements.map((component, index) => {
                         return (
                             <div
                                 key={index}
