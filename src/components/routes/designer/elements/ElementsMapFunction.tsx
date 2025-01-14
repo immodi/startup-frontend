@@ -23,12 +23,12 @@ const ElementsMapper: React.FC = () => {
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
-    const { canvasRef } = designerContext;
+    const { canvasRef, addCanvasElement } = designerContext;
 
     const sidePanelContext = useContext(
         SidePanelContext,
     ) as SidelPanelContextInterface;
-    const { addCanvasElement, setSidePanelTransparency } = sidePanelContext;
+    const { setSidePanelTransparency } = sidePanelContext;
 
     const {
         // currentComponentsInterface,

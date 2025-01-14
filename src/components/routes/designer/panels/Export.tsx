@@ -3,25 +3,18 @@ import {
     ContextInterface,
     DesignerContext,
     DesignerContextInterface,
-    SidelPanelContextInterface,
-    SidePanelContext,
 } from "@/components/util/context";
+import computeHTML from "@/helpers/designer/computeHtml";
 import {
     createTemplate,
     getAllTemplates,
     getTemplateDataById,
 } from "@/helpers/generator/getTemplates";
+import { CardProps } from "@/interfaces/designer/cardsProps";
 import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import { CheckCircle2, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { CanvasElement } from "../elements/CanvasElementsRenderer";
-
-interface CardProps {
-    id: string;
-    name: string;
-    checked: boolean;
-    toggleCheckMark: () => void;
-}
 
 const Export: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -29,16 +22,16 @@ const Export: React.FC = () => {
     const designerContext = useContext(
         DesignerContext,
     ) as DesignerContextInterface;
-    const { canvasRef, saveModelName, openSaveModal } = designerContext;
-    const sidePanelContext = useContext(
-        SidePanelContext,
-    ) as SidelPanelContextInterface;
     const {
+        canvasRef,
+        saveModelName,
+        openSaveModal,
         triggerIdleToAllCanvasElements,
         getAllIdentifiersCanvasElements,
         canvasElements,
+
         changeAllCanvasElements,
-    } = sidePanelContext;
+    } = designerContext;
 
     const [exporting, setExporting] = useState(false);
 
@@ -74,7 +67,7 @@ const Export: React.FC = () => {
         } catch (error) {
             setCards([]);
         }
-    }, []);
+    }, [canvasElements.length]);
 
     useEffect(() => {
         if (saveModelName !== "") {
@@ -104,8 +97,7 @@ const Export: React.FC = () => {
     useEffect(() => {
         if (templateData.name !== "" && templateData.html !== "") {
             setTimeout(() => {
-                // console.log(templateData);
-                createTemplate(templateData);
+                createTemplate(templateData, cards);
             }, 10);
         }
     }, [templateData.html, templateData.name]);
@@ -207,37 +199,5 @@ const Card: React.FC<CardProps> = ({ name, checked, toggleCheckMark }) => {
         </div>
     );
 };
-
-function computeHTML(elementRef: React.RefObject<HTMLDivElement>): string {
-    if (!elementRef.current) return "";
-
-    const element = elementRef.current;
-    const clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.backgroundColor = "#FFFFFF";
-
-    Array.from(clonedElement.children).forEach((canvasElement) => {
-        if (canvasElement.classList.contains("spacer-div")) {
-            canvasElement.innerHTML = "<br />";
-        }
-
-        Array.from(canvasElement.children).forEach((canvasElementChild) => {
-            if (
-                canvasElementChild.classList.contains("remove-this-at-export")
-            ) {
-                canvasElementChild.remove();
-            }
-        });
-    });
-
-    const cssStyles = Array.from(document.head.getElementsByTagName("style"))
-        .map((style) => style.innerHTML)
-        .join("");
-
-    const styleElement = document.createElement("style");
-    styleElement.innerHTML = cssStyles;
-
-    clonedElement.appendChild(styleElement);
-    return clonedElement.outerHTML;
-}
 
 export default Export;

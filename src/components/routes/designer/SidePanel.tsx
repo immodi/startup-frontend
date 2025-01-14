@@ -13,13 +13,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ArrowBigDown, ArrowBigRight } from "lucide-react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-    CanvasElement,
-    ElementsRenderer,
-    SelectionNodeModes,
-} from "./elements/CanvasElementsRenderer";
+import { ElementsRenderer } from "./elements/CanvasElementsRenderer";
 import Customize from "./panels/Customize";
 import Elements from "./panels/Elements";
 import Export from "./panels/Export";
@@ -35,15 +31,14 @@ const SidePanel: React.FC = () => {
         isSidePanelOpen,
         panelDisplay,
         toggleSidePanelState,
-        toggleSidePanel,
+        canvasElements,
+        changeAllCanvasElements,
+        removeCanvasElement,
+        updateCanvasElementByItsId,
+        updateCurrentEditableIndex,
     } = designerContext;
 
     const [activePanel, setActivePanel] = useState("elements");
-    const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
-    const [
-        currentEditableIndexInCanvasElements,
-        setCurrentEditableIndexInCanvasElements,
-    ] = useState<number | undefined>();
     const [isTransparent, setIsTransparent] = useState(false);
 
     const panels = new Map<string, React.ReactNode>([
@@ -52,93 +47,8 @@ const SidePanel: React.FC = () => {
         ["export", <Export />],
     ]);
 
-    useEffect(() => {
-        if (canvasElements.length > 0) {
-            // console.log(canvasElements[0].text);
-        }
-    }, [canvasElements]);
-
-    function getCanvasElementByIndex(index: number): CanvasElement | null {
-        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
-            return null;
-        }
-
-        return canvasElements[index];
-    }
-
-    function addCanvasElement(element: CanvasElement) {
-        const elements = structuredClone(canvasElements);
-        elements.push(element);
-
-        setCanvasElements(elements);
-    }
-
-    function removeCanvasElement(elementIndex: number) {
-        const newElements = canvasElements.filter((_, index) => {
-            return index !== elementIndex;
-        });
-
-        setCanvasElements(newElements);
-    }
-
-    function updateCanvasElementByItsId(
-        elementId: number,
-        newElement: {
-            text?: string;
-            customClasses?: string;
-            selectMode?: SelectionNodeModes;
-        },
-    ) {
-        setCanvasElements((prevElements) =>
-            prevElements.map((element) =>
-                element.id === elementId
-                    ? {
-                          ...element,
-                          ...newElement,
-                      }
-                    : element,
-            ),
-        );
-    }
-
-    function changeAllCanvasElements(newCanvasElements: CanvasElement[]) {
-        setCanvasElements([...newCanvasElements]);
-    }
-
-    function triggerIdleToAllCanvasElements() {
-        toggleSidePanel(false);
-        toggleSidePanelState(false);
-
-        canvasElements.forEach((element) => {
-            if (element.selectMode !== "idle") {
-                updateCanvasElementByItsId(element.id, {
-                    ...element,
-                    selectMode: "idle",
-                });
-            }
-        });
-    }
-
-    function getAllIdentifiersCanvasElements(): Array<string> {
-        const templateData = new Array<string>();
-        canvasElements.forEach((element) => {
-            if (element.identifier !== null)
-                templateData.push(element.identifier);
-        });
-
-        return templateData;
-    }
-
     function updateActivePanel(id: "elements" | "customize" | "export") {
         setActivePanel(id);
-    }
-
-    function updateCurrentEditableIndex(index: number) {
-        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
-            return;
-        }
-
-        setCurrentEditableIndexInCanvasElements(index);
     }
 
     function setSidePanelTransparency(isTransparent: boolean) {
@@ -146,22 +56,11 @@ const SidePanel: React.FC = () => {
     }
 
     const sidePanelContext: SidelPanelContextInterface = {
-        addCanvasElement: addCanvasElement,
-        removeCanvasElement: removeCanvasElement,
-        updateCanvasElement: updateCanvasElementByItsId,
-        triggerIdleToAllCanvasElements: triggerIdleToAllCanvasElements,
-        canvasElements: canvasElements,
-
         activePanel: activePanel,
-        currentEditableIndexInCanvasElements:
-            currentEditableIndexInCanvasElements,
         updateActivePanel: updateActivePanel,
-        recentlySelectedActiveElement: getCanvasElementByIndex(
-            currentEditableIndexInCanvasElements ?? 0,
-        ),
+
         setSidePanelTransparency: setSidePanelTransparency,
-        getAllIdentifiersCanvasElements: getAllIdentifiersCanvasElements,
-        changeAllCanvasElements: changeAllCanvasElements,
+
         // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 

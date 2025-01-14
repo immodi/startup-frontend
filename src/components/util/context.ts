@@ -11,6 +11,7 @@ import { createContext } from "react";
 import {
     CanvasElement,
     NewCanvasElement,
+    SelectionNodeModes,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
 import { Template } from "@/interfaces/generator/template";
@@ -61,9 +62,7 @@ export interface DesignerContextInterface {
     changePanelDisplay: (state: "grid" | "hidden") => void;
     toggleSidePanelState: (state: boolean) => void;
     openSaveModal: () => void;
-}
 
-export interface SidelPanelContextInterface {
     addCanvasElement: (element: CanvasElement) => void;
     removeCanvasElement: (elementId: number) => void;
 
@@ -74,13 +73,26 @@ export interface SidelPanelContextInterface {
     triggerIdleToAllCanvasElements: () => void;
 
     canvasElements: CanvasElement[];
-    activePanel: string;
     currentEditableIndexInCanvasElements: number | undefined;
     recentlySelectedActiveElement: CanvasElement | null;
-    updateActivePanel: (itemId: "elements" | "customize") => void;
-    setSidePanelTransparency: (isTransparent: boolean) => void;
     getAllIdentifiersCanvasElements: () => Array<string>;
     changeAllCanvasElements: (newCanvasElements: CanvasElement[]) => void;
+    updateCurrentEditableIndex: (index: number) => void;
+    updateCanvasElementByItsId: (
+        elementId: number,
+        newElement: {
+            text?: string;
+            customClasses?: string;
+            selectMode?: SelectionNodeModes;
+        },
+    ) => void;
+}
+
+export interface SidelPanelContextInterface {
+    activePanel: string;
+    updateActivePanel: (itemId: "elements" | "customize") => void;
+    setSidePanelTransparency: (isTransparent: boolean) => void;
+
     // getCanvasElementByIndex: (index: number) => CanvasElement | null;
 }
 
@@ -97,6 +109,7 @@ export interface DesignerElementsContextInterface {
         index: number,
         newComponent: DesignerComponent,
     ) => void;
+
     // componentsArrayDispatch: React.Dispatch<ActionArray>;
 }
 

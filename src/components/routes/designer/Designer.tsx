@@ -1,11 +1,21 @@
 import {
+    Context,
+    ContextInterface,
     DesignerContext,
     DesignerContextInterface,
 } from "@/components/util/context";
 import SwipeDetector from "@/helpers/designer/swipeDetector";
+import {
+    getAllTemplates,
+    getTemplateDataById,
+} from "@/helpers/generator/getTemplates";
 import { ArrowBigLeft, ArrowBigUp } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Canvas from "./Canvas";
+import {
+    CanvasElement,
+    SelectionNodeModes,
+} from "./elements/CanvasElementsRenderer";
 import { SaveDesignModal } from "./elements/SaveDesignModal";
 import SidePanel from "./SidePanel";
 
@@ -14,11 +24,121 @@ const Designer: React.FC = () => {
     const [panelDisplay, setPanelDisplay] = useState<"grid" | "hidden">(
         "hidden",
     );
+    const context = useContext(Context) as ContextInterface;
+    const { localState, userData } = context;
 
     const canvasRef = useRef<HTMLDivElement>(null);
     const designerRef = useRef<HTMLDivElement>(null);
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [saveModelName, setSaveModalName] = useState("");
+
+    const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
+    const [
+        currentEditableIndexInCanvasElements,
+        setCurrentEditableIndexInCanvasElements,
+    ] = useState<number | undefined>();
+
+    function getCanvasElementByIndex(index: number): CanvasElement | null {
+        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
+            return null;
+        }
+
+        return canvasElements[index];
+    }
+
+    useEffect(() => {
+        if (
+            localState.selectedUserTemplate !== undefined &&
+            !["document", "paragraph", "report"].includes(
+                localState.selectedUserTemplate,
+            )
+        ) {
+            getAllTemplates(userData?.token!).then((templates) => {
+                const template = templates.find(
+                    (template) =>
+                        template[1] === localState.selectedUserTemplate,
+                );
+                if (template !== undefined) {
+                    const templateId = template[0];
+                    getTemplateDataById(templateId).then((templateData) => {
+                        const canvasElements: CanvasElement[] =
+                            templateData["canvas_elements"];
+                        changeAllCanvasElements(canvasElements);
+                    });
+                }
+            });
+        }
+    }, []);
+
+    function addCanvasElement(element: CanvasElement) {
+        const elements = structuredClone(canvasElements);
+        elements.push(element);
+
+        setCanvasElements(elements);
+    }
+
+    function removeCanvasElement(elementIndex: number) {
+        const newElements = canvasElements.filter((_, index) => {
+            return index !== elementIndex;
+        });
+
+        setCanvasElements(newElements);
+    }
+
+    function updateCanvasElementByItsId(
+        elementId: number,
+        newElement: {
+            text?: string;
+            customClasses?: string;
+            selectMode?: SelectionNodeModes;
+        },
+    ) {
+        setCanvasElements((prevElements) =>
+            prevElements.map((element) =>
+                element.id === elementId
+                    ? {
+                          ...element,
+                          ...newElement,
+                      }
+                    : element,
+            ),
+        );
+    }
+
+    function changeAllCanvasElements(newCanvasElements: CanvasElement[]) {
+        setCanvasElements([...newCanvasElements]);
+    }
+
+    function triggerIdleToAllCanvasElements() {
+        toggleSidePanel(false);
+        toggleSidePanelState(false);
+
+        canvasElements.forEach((element) => {
+            if (element.selectMode !== "idle") {
+                updateCanvasElementByItsId(element.id, {
+                    ...element,
+                    selectMode: "idle",
+                });
+            }
+        });
+    }
+
+    function getAllIdentifiersCanvasElements(): Array<string> {
+        const templateData = new Array<string>();
+        canvasElements.forEach((element) => {
+            if (element.identifier !== null)
+                templateData.push(element.identifier);
+        });
+
+        return templateData;
+    }
+    function updateCurrentEditableIndex(index: number) {
+        if (index > canvasElements.length - 1 || canvasElements.length === 0) {
+            return;
+        }
+
+        setCurrentEditableIndexInCanvasElements(index);
+    }
 
     function toggleSidePanel(state: boolean) {
         setIsSidePanelOpen(state);
@@ -54,6 +174,21 @@ const Designer: React.FC = () => {
         changePanelDisplay: changePanelDisplay,
         toggleSidePanelState: toggleSidePanelState,
         openSaveModal: openSaveModal,
+
+        addCanvasElement: addCanvasElement,
+        removeCanvasElement: removeCanvasElement,
+        updateCanvasElement: updateCanvasElementByItsId,
+        triggerIdleToAllCanvasElements: triggerIdleToAllCanvasElements,
+        canvasElements: canvasElements,
+        currentEditableIndexInCanvasElements:
+            currentEditableIndexInCanvasElements,
+        recentlySelectedActiveElement: getCanvasElementByIndex(
+            currentEditableIndexInCanvasElements ?? 0,
+        ),
+        getAllIdentifiersCanvasElements: getAllIdentifiersCanvasElements,
+        changeAllCanvasElements: changeAllCanvasElements,
+        updateCanvasElementByItsId: updateCanvasElementByItsId,
+        updateCurrentEditableIndex: updateCurrentEditableIndex,
         // changeSaveDesignModal: changeSaveDesignModal,
     };
 

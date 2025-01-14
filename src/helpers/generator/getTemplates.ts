@@ -1,6 +1,7 @@
+import { CardProps } from "@/interfaces/designer/cardsProps";
 import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import axios from "axios";
-import PocketBase from "pocketbase";
+import PocketBase, { RecordModel } from "pocketbase";
 
 const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
 
@@ -31,7 +32,10 @@ export async function getAllTemplates(
     }
 }
 
-export async function createTemplate(templateData: TemplateData) {
+export async function createTemplate(
+    templateData: TemplateData,
+    cards: CardProps[],
+) {
     const data = {
         name: templateData.name,
         html: templateData.html,
@@ -50,15 +54,40 @@ export async function createTemplate(templateData: TemplateData) {
                     ],
                 };
 
+                cards[cards.length - 1].id = res.id;
+
                 pb.collection("users").update(pb.authStore.model?.id, userData);
             });
         });
+
+    return true;
+}
+
+export async function updateTemplateById(
+    newTemplate: TemplateData,
+): Promise<RecordModel> {
+    const data = {
+        name: newTemplate.name,
+        html: newTemplate.html,
+        canvas_elements: JSON.stringify(newTemplate.canvasElements, null),
+        identifiers: JSON.stringify(newTemplate.data, null),
+    };
+
+    const record = await pb
+        .collection("templates")
+        .update(newTemplate.id, data);
+
+    return record;
 }
 
 export async function getTemplateDataById(templateId: string) {
     const record = await pb.collection("templates").getOne(templateId);
 
     return record;
+}
+
+export async function deleteTemplate(templateId: string) {
+    await pb.collection("templates").delete(templateId);
 }
 
 export function capitalizeFirstChar(str: string): string {

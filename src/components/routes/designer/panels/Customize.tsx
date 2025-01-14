@@ -1,6 +1,6 @@
 import {
-    SidelPanelContextInterface,
-    SidePanelContext,
+    DesignerContext,
+    DesignerContextInterface,
 } from "@/components/util/context";
 import {
     faAlignCenter,
@@ -20,14 +20,11 @@ import {
 } from "../elements/CanvasElementsRenderer";
 
 const Customize: React.FC = () => {
-    const sidePanelContext = useContext(
-        SidePanelContext,
-    ) as SidelPanelContextInterface;
-    const {
-        recentlySelectedActiveElement,
-        updateCanvasElement,
-        // currentEditableIndexInCanvasElements,
-    } = sidePanelContext;
+    const designerContext = useContext(
+        DesignerContext,
+    ) as DesignerContextInterface;
+    const { recentlySelectedActiveElement, updateCanvasElement } =
+        designerContext;
 
     const [element, setElement] = useState<CanvasElement | null>(
         recentlySelectedActiveElement,
