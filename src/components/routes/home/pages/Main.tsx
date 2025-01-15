@@ -17,11 +17,11 @@ import { Template } from "@/interfaces/generator/template";
 
 const Main: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
+    const authed = context.localState.authed;
     const { localState, cacheLocalState } = context;
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
 
-    const authed = context.localState.authed;
 
     const token = context.userData?.token;
     const [templates, setTemplates] = useState<Array<Template>>([]);

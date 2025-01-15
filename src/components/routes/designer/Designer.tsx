@@ -18,6 +18,7 @@ import {
 } from "./elements/CanvasElementsRenderer";
 import { SaveDesignModal } from "./elements/SaveDesignModal";
 import SidePanel from "./SidePanel";
+import NotLoggedInErrorDialog from "../home/pages/main_components/NotLoggedInErrorDialog";
 
 const Designer: React.FC = () => {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
@@ -26,6 +27,7 @@ const Designer: React.FC = () => {
     );
     const context = useContext(Context) as ContextInterface;
     const { localState, userData } = context;
+    const authed = context.localState.authed;
 
     const canvasRef = useRef<HTMLDivElement>(null);
     const designerRef = useRef<HTMLDivElement>(null);
@@ -110,8 +112,8 @@ const Designer: React.FC = () => {
     }
 
     function triggerIdleToAllCanvasElements() {
-        toggleSidePanel(false);
-        toggleSidePanelState(false);
+        // toggleSidePanel(false);
+        // toggleSidePanelState(false);
 
         canvasElements.forEach((element) => {
             if (element.selectMode !== "idle") {
@@ -195,42 +197,46 @@ const Designer: React.FC = () => {
     return (
         <DesignerContext.Provider value={designerContext}>
             <div className="w-full h-full bg-gray-100 dark:bg-gray-700 relative flex items-center justify-center overflow-hidden">
-                <div
-                    id="elementHiddenOverlay"
-                    ref={designerRef}
-                    className="absolute w-screen h-screen"
-                ></div>
-                <SwipeDetector
-                    onSwipeUp={() => {
-                        toggleSidePanelState(true);
-                    }}
-                />
-                <ArrowBigUp
-                    onClick={() => {
-                        toggleSidePanelState(true);
-                    }}
-                    className={`${isSidePanelOpen ? "hidden" : "absolute"} w-10 h-10 right-[45%] bottom-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full md:hidden lg:hidden`}
-                />
+                {!authed ? (
+                    <NotLoggedInErrorDialog />
+                ) : (
+                    <>
+                        <div
+                            id="elementHiddenOverlay"
+                            ref={designerRef}
+                            className="absolute w-screen h-screen"
+                        ></div>
+                        <SwipeDetector
+                            onSwipeUp={() => {
+                                toggleSidePanelState(true);
+                            }}
+                        />
+                        <ArrowBigUp
+                            onClick={() => {
+                                toggleSidePanelState(true);
+                            }}
+                            className={`${isSidePanelOpen ? "hidden" : "absolute"} w-10 h-10 right-[45%] bottom-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full md:hidden lg:hidden`}
+                        />
 
-                <ArrowBigLeft
-                    onClick={() => {
-                        toggleSidePanelState(true);
-                    }}
-                    className={`${isSidePanelOpen ? "hidden" : "absolute"} w-10 h-10 right-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full portrait:hidden`}
-                />
+                        <ArrowBigLeft
+                            onClick={() => {
+                                toggleSidePanelState(true);
+                            }}
+                            className={`${isSidePanelOpen ? "hidden" : "absolute"} w-10 h-10 right-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full portrait:hidden`}
+                        />
 
-                <Canvas />
-                <SidePanel />
+                        <Canvas />
+                        <SidePanel />
 
-                {
-                    <SaveDesignModal
-                        isOpen={isSaveModalOpen}
-                        onClose={() => {
-                            setIsSaveModalOpen(false);
-                        }}
-                        handleSubmit={setSaveModalName}
-                    />
-                }
+                        <SaveDesignModal
+                            isOpen={isSaveModalOpen}
+                            onClose={() => {
+                                setIsSaveModalOpen(false);
+                            }}
+                            handleSubmit={setSaveModalName}
+                        />
+                    </>
+                )}
             </div>
         </DesignerContext.Provider>
     );

@@ -38,9 +38,8 @@ const Canvas: React.FC = () => {
     const [isEditPanelVisible, setIsEditPanelVisible] = useState(false);
 
     useEffect(() => {
-        if (!isSidePanelOpen && templateData.length > 0) {
+        if (templateData.length > 0) {
             const html = computeHTML(canvasRef);
-            console.log(html);
 
             updateTemplateById({
                 id: templateData[0],
@@ -50,7 +49,7 @@ const Canvas: React.FC = () => {
                 canvasElements: canvasElements,
             });
         }
-    }, [isSidePanelOpen, templateData.length]);
+    }, [templateData.length]);
 
     useEffect(() => {
         if (
@@ -117,7 +116,7 @@ const Canvas: React.FC = () => {
             <div
                 id="canvas"
                 ref={canvasRef}
-                className={`${isSidePanelOpen ? "border-2 shadow-lg border-[#4A00E0] dark:border-[#7A1CAC]" : ""} h-auto flex-grow`}
+                className={`${isSidePanelOpen ? "border-2 shadow-lg border-[#4A00E0] dark:border-[#7A1CAC]" : ""} h-auto w-full flex-grow`}
             ></div>
         </div>
     );

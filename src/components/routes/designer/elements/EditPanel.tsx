@@ -22,7 +22,7 @@ const EditPanel: React.FC<EditPanelInterface> = ({ onSave, onDelete }) => {
 
     return (
         <div
-            className={`remove-this-at-export flex w-full min-w-fit h-10 justify-center items-center relative ml-auto mr-auto dark:bg-gray-600 bg-gray-300 rounded-md saving-overlay cursor-pointer`}
+            className={`remove-this-at-export flex w-full min-w-fit h-10 justify-center items-center relative ml-auto mr-auto dark:bg-gray-800 bg-gray-300 rounded-md saving-overlay cursor-pointer`}
         >
             <div className="relative w-fit mr-3" onClick={handleSaveClick}>
                 <div

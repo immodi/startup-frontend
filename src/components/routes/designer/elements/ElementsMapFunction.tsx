@@ -74,7 +74,9 @@ const ElementsMapper: React.FC = () => {
                                 allElements.filter((element) =>
                                     element.text
                                         .toLowerCase()
-                                        .includes(elementToSearch),
+                                        .includes(
+                                            elementToSearch.toLowerCase(),
+                                        ),
                                 ),
                             );
                         } else {
@@ -217,6 +219,12 @@ const ElementsMapper: React.FC = () => {
                                                         component.element
                                                             .selectMode ??
                                                         "idle",
+                                                    childrenNodeTexts:
+                                                        component.element
+                                                            .childrenNodeTexts,
+                                                    tabWidth:
+                                                        component.element
+                                                            .tabWidth,
                                                     userStyle: {
                                                         fontFamily:
                                                             component.element

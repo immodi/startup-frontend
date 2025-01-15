@@ -126,12 +126,12 @@ export const LoginPage: React.FC<
                                 {isDarkMode ? "Remember me" : "Remember me"}
                             </span>
                         </label>
-                        <a
+                        {/* <a
                             href="#"
                             className="text-sm font-bold text-[#4A00E0] dark:text-[#7A1CAC] hover:underline"
                         >
                             Forgot Password?
-                        </a>
+                        </a> */}
                     </div>
                     {!isLoading ? (
                         <button

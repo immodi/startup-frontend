@@ -76,7 +76,7 @@ const Menu: React.FC = () => {
     return (
         <div
             ref={menuRef}
-            className={`fixed top-0 left-0 h-full w-24 bg-gray-200 dark:bg-gray-900 shadow-lg transform z-10 ${
+            className={`fixed top-0 left-0 h-full w-24 bg-gray-200 overflow-y-scroll dark:bg-gray-900 shadow-lg transform z-10 ${
                 isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } transition-transform duration-300 ease-in-out`}
         >

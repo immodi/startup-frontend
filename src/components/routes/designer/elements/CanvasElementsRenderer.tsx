@@ -8,11 +8,16 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ReactNode } from "react";
 
-export type ElementsType = Headers | "div";
+export type ElementsType = Headers | "div" | "ol" | "ul";
 export type Headers = "h1" | "h2" | "h3" | "h4" | "h5";
 export type SelectionNodeModes = "selected" | "editing" | "idle";
 export type UserFont = "Sans" | "Serif" | "Monospace";
 export type UserTextAlignment = "left" | "center" | "right";
+const flexAligner = new Map<UserTextAlignment, string>([
+    ["left", "items-baseline"],
+    ["center", "items-center"],
+    ["right", "items-end"],
+]);
 
 export interface CanvasElement {
     id: number;
@@ -22,6 +27,8 @@ export interface CanvasElement {
     selectMode: SelectionNodeModes;
     userStyle: CanvasElementStyles;
     customClasses?: string;
+    childrenNodeTexts?: Array<string>;
+    tabWidth?: number;
 }
 
 export interface CanvasElementStyles {
@@ -97,10 +104,13 @@ export function ElementsRenderer(
                     element.element,
                     element.identifier,
                     className,
+
                     element.text,
                     element.id,
                     element.selectMode,
                     element.userStyle,
+                    element.childrenNodeTexts,
+                    element.tabWidth,
                     () => {
                         removeCanvasElement(index);
                     },
@@ -125,6 +135,8 @@ function convertHTMLElementToReactNode(
     id: number,
     selectMode: SelectionNodeModes,
     userStyle: CanvasElementStyles,
+    childrenNodeTexts: Array<string> | undefined,
+    tabWidth: number | undefined,
     removeCanvasElement: () => void,
     updateCanvasElement: (
         elementIndex: number,
@@ -178,8 +190,8 @@ function convertHTMLElementToReactNode(
     return React.createElement(tagName, {
         key: id,
         id: id,
-        style: { color: userStyle.textColor },
-        className: `${className} w-full min-h-12 h-auto relative ${selectMode !== "idle" ? "selected" : ""} ${userStyle.textAlignment}`,
+        style: { color: userStyle.textColor, paddingLeft: `${tabWidth}rem` },
+        className: `${className} w-full min-h-12 h-auto relative ${selectMode !== "idle" ? "selected" : ""} ${childrenNodeTexts === undefined ? userStyle.textAlignment : flexAligner.get(userStyle.textAlignment)}`,
         onClick: () => {
             // const node = e.currentTarget as HTMLElement;
             clickManager();
@@ -192,91 +204,159 @@ function convertHTMLElementToReactNode(
             }
         },
 
-        children: [
-            <div
-                id={`mainElementText${id}`}
-                className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
-            >
-                <p
-                    id={`${identifier !== null ? identifier : ""} `}
-                    className={`w-auto h-auto`}
-                >
-                    {text}
-                </p>
-            </div>,
-            <span
-                onClick={(e) => {
-                    e.stopPropagation();
-                    removeCanvasElement();
-                }}
-                id={`deleteElementButton${id}`}
-                className={`remove-this-at-export x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
-            >
-                <FontAwesomeIcon icon={faTrash} />
-            </span>,
-            <span
-                onClick={(e) => {
-                    e.stopPropagation();
-                    updateCanvasElement(id, {
-                        selectMode: "idle",
-                    });
-                }}
-                id={`saveElementButton${id}`}
-                className={`remove-this-at-export x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
-            >
-                <FontAwesomeIcon icon={faCheck} />
-            </span>,
+        children:
+            childrenNodeTexts !== undefined
+                ? [
+                      ...childrenNodeTexts.map((listItem) => (
+                          <li>{listItem}</li>
+                      )),
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              removeCanvasElement();
+                          }}
+                          id={`deleteElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faTrash} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              updateCanvasElement(id, {
+                                  selectMode: "idle",
+                              });
+                          }}
+                          id={`saveElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faCheck} />
+                      </span>,
 
-            <span
-                id={`editElementButton${id}`}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    updateCurrentEditableIndex();
+                      <span
+                          id={`editElementButton${id}`}
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              updateCurrentEditableIndex();
 
-                    handleEditText(e.currentTarget);
-                }}
-                className={`remove-this-at-export x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
-            >
-                <FontAwesomeIcon icon={faPen} />
-            </span>,
-            <span
-                onClick={(e) => {
-                    e.stopPropagation();
-                    // updateCanvasElement(id, {
-                    //     selectMode: "idle",
-                    // });
-                    moveElementUp(id);
-                }}
-                id={`upElementButton${id}`}
-                className={`remove-this-at-export x-button-elements absolute top-0 right-[7.5rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
-            >
-                <FontAwesomeIcon icon={faArrowUp} />
-            </span>,
-            <span
-                onClick={(e) => {
-                    e.stopPropagation();
-                    // updateCanvasElement(id, {
-                    //     selectMode: "idle",
-                    // });
-                    moveElementDown(id);
-                }}
-                id={`downElementButton${id}`}
-                className={`remove-this-at-export x-button-elements absolute top-0 right-[10rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
-            >
-                <FontAwesomeIcon icon={faArrowDown} />
-            </span>,
-            <textarea
-                id={`textarea${id}`}
-                defaultValue={text}
-                onChange={(event) => {
-                    // updateKeyBoardString(event.target.value);
-                    updateCanvasElement(id, {
-                        text: event.target.value,
-                    });
-                }}
-                // type="text"
-                className={`remove-this-at-export content-center w-full min-h-12 h-full resize-none bg-gray-400 dark:bg-gray-600 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
-            />,
-        ],
+                              handleEditText(e.currentTarget);
+                          }}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faPen} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              // updateCanvasElement(id, {
+                              //     selectMode: "idle",
+                              // });
+                              moveElementUp(id);
+                          }}
+                          id={`upElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-[7.5rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              // updateCanvasElement(id, {
+                              //     selectMode: "idle",
+                              // });
+                              moveElementDown(id);
+                          }}
+                          id={`downElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-[10rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                      </span>,
+                  ]
+                : [
+                      <div
+                          id={`mainElementText${id}`}
+                          className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
+                      >
+                          <p
+                              id={`${identifier !== null ? identifier : ""} `}
+                              className={`w-auto h-auto`}
+                          >
+                              {text}
+                          </p>
+                      </div>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              removeCanvasElement();
+                          }}
+                          id={`deleteElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-0 flex justify-center items-center z-10 w-7 h-7 text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faTrash} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              updateCanvasElement(id, {
+                                  selectMode: "idle",
+                              });
+                          }}
+                          id={`saveElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-10 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faCheck} />
+                      </span>,
+
+                      <span
+                          id={`editElementButton${id}`}
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              updateCurrentEditableIndex();
+
+                              handleEditText(e.currentTarget);
+                          }}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-20 flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faPen} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              // updateCanvasElement(id, {
+                              //     selectMode: "idle",
+                              // });
+                              moveElementUp(id);
+                          }}
+                          id={`upElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-[7.5rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faArrowUp} />
+                      </span>,
+                      <span
+                          onClick={(e) => {
+                              e.stopPropagation();
+                              // updateCanvasElement(id, {
+                              //     selectMode: "idle",
+                              // });
+                              moveElementDown(id);
+                          }}
+                          id={`downElementButton${id}`}
+                          className={`remove-this-at-export x-button-elements absolute top-0 right-[10rem] flex justify-center items-center z-10 w-7 h-7 text-center text-base text-black m-2 bg-white rounded-full cursor-pointer transition-all ease-in-out duration-100 ${selectMode !== "idle" ? "" : "hidden"}`}
+                      >
+                          <FontAwesomeIcon icon={faArrowDown} />
+                      </span>,
+                      <textarea
+                          id={`textarea${id}`}
+                          defaultValue={text}
+                          onChange={(event) => {
+                              // updateKeyBoardString(event.target.value);
+                              updateCanvasElement(id, {
+                                  text: event.target.value,
+                              });
+                          }}
+                          // type="text"
+                          className={`remove-this-at-export content-center w-full min-h-12 h-full resize-none bg-gray-400 dark:bg-gray-600 absolute left-0 ${selectMode === "editing" ? "w-full" : "hidden w-0"} ${userStyle.isBold ? "font-bold" : ""} ${userStyle.isItalic ? "italic" : ""} ${userStyle.isUnderline ? "underline" : ""} ${"text-" + userStyle.textAlignment} ${getFontStyle(userStyle.fontFamily)}`}
+                      />,
+                  ],
     });
 }

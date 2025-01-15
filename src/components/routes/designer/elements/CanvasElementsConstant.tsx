@@ -8,6 +8,8 @@ import H4 from "@/assets/designer-elements-svgs/h4.svg";
 import H5 from "@/assets/designer-elements-svgs/h5.svg";
 import Text from "@/assets/designer-elements-svgs/text.svg";
 import Spacer from "@/assets/designer-elements-svgs/spacer.svg";
+import OL from "@/assets/designer-elements-svgs/ol.svg";
+import UL from "@/assets/designer-elements-svgs/ul.svg";
 
 interface HeadersData {
     name: string;
@@ -102,13 +104,65 @@ export const CanvasElements: DesignerComponent[] = [
 
     getDefaultDesignerComponent({
         index: 7,
+        text: "Orderd List",
+        description: "Numbered List",
+        icon: OL,
+        element: {
+            identifier: null,
+            element: "ol",
+            id: 7,
+            text: "",
+            customClasses: "spacer-div list-decimal list flex flex-col",
+            selectMode: "idle",
+            userStyle: {
+                fontFamily: "Sans",
+                textColor: "black",
+                textAlignment: "left",
+                isBold: false,
+                isItalic: false,
+                isUnderline: false,
+                // textContent: "Default Text",
+            },
+            childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
+            tabWidth: 1,
+        },
+    }),
+
+    getDefaultDesignerComponent({
+        index: 8,
+        text: "Unorderd List",
+        description: "Not a Numbered List",
+        icon: UL,
+        element: {
+            identifier: null,
+            element: "ul",
+            id: 8,
+            text: "",
+            customClasses: "spacer-div list-disc list flex flex-col",
+            selectMode: "idle",
+            userStyle: {
+                fontFamily: "Sans",
+                textColor: "black",
+                textAlignment: "left",
+                isBold: false,
+                isItalic: false,
+                isUnderline: false,
+                // textContent: "Default Text",
+            },
+            childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
+            tabWidth: 1,
+        },
+    }),
+
+    getDefaultDesignerComponent({
+        index: 9,
         text: "Space",
         description: "Element Spacer",
         icon: Spacer,
         element: {
             identifier: null,
             element: "div",
-            id: 7,
+            id: 9,
             text: "{SPACER}",
             customClasses: "spacer-div",
             selectMode: "idle",

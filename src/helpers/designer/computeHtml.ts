@@ -3,11 +3,22 @@ export default function computeHTML(
 ): string {
     if (!elementRef.current) return "";
 
-    const element = elementRef.current;
-    const clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.backgroundColor = "#FFFFFF";
+    const canvas = elementRef.current;
+    const clonedCanvas = canvas.cloneNode(true) as HTMLElement;
+    clonedCanvas.style.backgroundColor = "#FFFFFF";
+    const borderClasses = [
+        "border-2",
+        "shadow-lg",
+        "border-[#4A00E0]",
+        "dark:border-[#7A1CAC]",
+    ];
+    borderClasses.forEach((borderClass) => {
+        if (clonedCanvas.classList.contains(borderClass)) {
+            clonedCanvas.classList.remove(borderClass);
+        }
+    });
 
-    Array.from(clonedElement.children).forEach((canvasElement) => {
+    Array.from(clonedCanvas.children).forEach((canvasElement) => {
         if (canvasElement.classList.contains("spacer-div")) {
             canvasElement.innerHTML = "<br />";
         }
@@ -32,6 +43,7 @@ export default function computeHTML(
     const styleElement = document.createElement("style");
     styleElement.innerHTML = cssStyles;
 
-    clonedElement.appendChild(styleElement);
-    return clonedElement.outerHTML;
+    clonedCanvas.appendChild(styleElement);
+
+    return clonedCanvas.outerHTML;
 }
