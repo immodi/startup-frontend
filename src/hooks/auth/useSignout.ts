@@ -1,5 +1,8 @@
 import { UserModel } from "@/interfaces/auth/userModel";
 import { useDeleteToken } from "./useToken";
+import PocketBase from "pocketbase";
+import { deleteLocalUser } from "@/helpers/auth/clearLocalUser";
+const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
 
 function useSignout(
     setAuthed: (isAuthed: boolean) => void,
@@ -10,6 +13,9 @@ function useSignout(
     useDeleteToken();
     // setToken(undefined);
     setUserData(undefined);
+
+    deleteLocalUser();
+    pb.authStore.clear();
 }
 
 export default useSignout;
