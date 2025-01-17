@@ -14,6 +14,8 @@ import Main from "./routes/home/pages/Main";
 import NotFound from "./routes/home/pages/404";
 import { AuthPage } from "./routes/auth/Auth";
 import Designer from "./routes/designer/Designer";
+import PrivacyPolicy from "./routes/policy/Privacy";
+import TermsOfService from "./routes/policy/Terms";
 
 const App: React.FC = () => {
     const [localState, setLocalState] = useLocalStorageState();
@@ -83,6 +85,14 @@ const App: React.FC = () => {
                         <Route path="designer" element={<Designer />} />
                         <Route path="profile" element={<AuthPage />} />
                         <Route path="billing" element={<NotFound />} />
+                        <Route
+                            path="privacy-policy"
+                            element={<PrivacyPolicy />}
+                        />
+                        <Route
+                            path="terms-of-service"
+                            element={<TermsOfService />}
+                        />
                     </Route>
 
                     <Route path="*" element={<ErrorPage />} />
