@@ -71,7 +71,7 @@ const Elements: React.FC = () => {
 
         // If in landscape mode or on a larger device (tablet/PC)
         if (!isPhoneLandscape && isLandscape && isLargeScreen) {
-            indexer = 10; // Set indexer to 10
+            indexer = 9;
         }
 
         indexAndDisplayElements(

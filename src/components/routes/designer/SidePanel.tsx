@@ -64,6 +64,10 @@ const SidePanel: React.FC = () => {
         // getCanvasElementByIndex: getCanvasElementByIndex,
     };
 
+    // useEffect(() => {
+    //     console.log(canvasElements);
+    // }, [JSON.stringify(canvasElements)]);
+
     return (
         <SidePanelContext.Provider value={sidePanelContext}>
             {canvasRef.current &&
@@ -96,7 +100,7 @@ const SidePanel: React.FC = () => {
                     onClick={() => {
                         toggleSidePanelState(false);
                     }}
-                    className={`absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full portrait:hidden`}
+                    className={`absolute w-10 h-10 -left-5 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full hidden md:block lg:block`}
                 />
                 <HorizontalMenu />
                 {panels.get(activePanel)}

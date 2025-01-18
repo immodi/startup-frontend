@@ -84,7 +84,12 @@ export interface DesignerContextInterface {
             text?: string;
             customClasses?: string;
             selectMode?: SelectionNodeModes;
+            childrenNodes?: Array<CanvasElement>;
         },
+    ) => void;
+    updateSubCanvasElement: (
+        subElementId: number,
+        newSubElement: CanvasElement,
     ) => void;
 }
 

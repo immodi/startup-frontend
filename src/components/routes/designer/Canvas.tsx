@@ -77,6 +77,7 @@ const Canvas: React.FC = () => {
 
     return (
         <div
+            // key={JSON.stringify(canvasElements)}
             className={`transition-all ease-in-out duration-300 h-full min-h-fit w-full md:w-screen lg:w-screen overflow-y-scroll flex flex-col select-none ${isMenuOpen ? "translate-x-24" : ""}`}
         >
             {isEditPanelVisible && (

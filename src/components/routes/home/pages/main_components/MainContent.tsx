@@ -170,7 +170,7 @@ const MainContent: React.FC = () => {
                             value={topic}
                             id="topic"
                             className={`w-full portrait:top-4 relative portrait:h-14 p-3 border rounded-md focus:outline-none focus:ring-2 ${isDarkMode ? "border-[#AD49E1] focus:ring-[#AD49E1] dark:bg-gray-700 dark:text-white" : "border-[#4A00E0] focus:ring-[#4A00E0]"}`}
-                            placeholder="Enter a topic (e.g., FPS Games)"
+                            placeholder="Enter a topic (e.g., FPS Games, and write atleast 20 sentences)"
                             required
                         />
                     </div>

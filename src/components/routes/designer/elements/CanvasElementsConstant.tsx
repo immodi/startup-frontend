@@ -1,15 +1,16 @@
+import Container from "@/assets/container.svg";
+import H1 from "@/assets/h1.svg";
+import H2 from "@/assets/h2.svg";
+import H3 from "@/assets/h3.svg";
+import H4 from "@/assets/h4.svg";
+import H5 from "@/assets/h5.svg";
+import OL from "@/assets/ol.svg";
+import Spacer from "@/assets/spacer.svg";
+import Text from "@/assets/text.svg";
+import UL from "@/assets/ul.svg";
 import { getDefaultDesignerComponent } from "@/helpers/designer/manageElements";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
-import { Headers } from "./CanvasElementsRenderer";
-import H1 from "@/assets/designer-elements-svgs/h1.svg";
-import H2 from "@/assets/designer-elements-svgs/h2.svg";
-import H3 from "@/assets/designer-elements-svgs/h3.svg";
-import H4 from "@/assets/designer-elements-svgs/h4.svg";
-import H5 from "@/assets/designer-elements-svgs/h5.svg";
-import Text from "@/assets/designer-elements-svgs/text.svg";
-import Spacer from "@/assets/designer-elements-svgs/spacer.svg";
-import OL from "@/assets/designer-elements-svgs/ol.svg";
-import UL from "@/assets/designer-elements-svgs/ul.svg";
+import { CanvasElement, Headers } from "./CanvasElementsRenderer";
 
 interface HeadersData {
     name: string;
@@ -75,9 +76,47 @@ const canvasHeaders: DesignerComponent[] = headersData.map((value, index) => {
     });
 });
 
+const defaultContainerContent: Array<CanvasElement> = [
+    {
+        identifier: "Text",
+        element: "div",
+        id: 98,
+        text: "First Text Block",
+        customClasses: "text-black",
+        selectMode: "idle",
+        userStyle: {
+            width: 50,
+            fontFamily: "Sans",
+            textColor: "black",
+            textAlignment: "center",
+            isBold: false,
+            isItalic: true,
+            isUnderline: false,
+        },
+    },
+    {
+        identifier: "Text",
+        element: "div",
+        id: 99,
+        text: "Second Text Block",
+        customClasses: "text-black",
+        selectMode: "idle",
+        userStyle: {
+            width: 50,
+            fontFamily: "Sans",
+            textColor: "black",
+            textAlignment: "center",
+            isBold: false,
+            isItalic: false,
+            isUnderline: true,
+        },
+    },
+];
+
 export const CanvasElements: DesignerComponent[] = [
     ...canvasHeaders,
 
+    // text
     getDefaultDesignerComponent({
         index: 6,
         text: "Text",
@@ -102,6 +141,7 @@ export const CanvasElements: DesignerComponent[] = [
         },
     }),
 
+    // <ol>
     getDefaultDesignerComponent({
         index: 7,
         text: "Orderd List",
@@ -128,6 +168,7 @@ export const CanvasElements: DesignerComponent[] = [
         },
     }),
 
+    // <ul>
     getDefaultDesignerComponent({
         index: 8,
         text: "Unorderd List",
@@ -154,6 +195,7 @@ export const CanvasElements: DesignerComponent[] = [
         },
     }),
 
+    // <br>
     getDefaultDesignerComponent({
         index: 9,
         text: "Space",
@@ -170,6 +212,32 @@ export const CanvasElements: DesignerComponent[] = [
                 fontFamily: "Sans",
                 textColor: "black",
                 textAlignment: "center",
+                isBold: false,
+                isItalic: false,
+                isUnderline: false,
+                // textContent: "Default Text",
+            },
+        },
+    }),
+
+    // container
+    getDefaultDesignerComponent({
+        index: 10,
+        text: "Container",
+        description: "Element Container",
+        icon: Container,
+        element: {
+            identifier: null,
+            element: "div",
+            id: 10,
+            text: "",
+            customClasses: "container-div",
+            selectMode: "idle",
+            childrenNodes: defaultContainerContent,
+            userStyle: {
+                fontFamily: "Sans",
+                textColor: "black",
+                textAlignment: "left",
                 isBold: false,
                 isItalic: false,
                 isUnderline: false,

@@ -52,7 +52,10 @@ const ElementsMapper: React.FC = () => {
                 componentsPagedArray[currentComponentsInterface.currentIndex],
             );
         }
-    }, [componentsPagedArray.length]);
+    }, [
+        componentsPagedArray.length,
+        JSON.stringify(currentComponentsInterface),
+    ]);
 
     return (
         <div className="w-full h-[90%] ">
@@ -222,6 +225,33 @@ const ElementsMapper: React.FC = () => {
                                                     childrenNodeTexts:
                                                         component.element
                                                             .childrenNodeTexts,
+                                                    childrenNodes:
+                                                        component.element.childrenNodes?.map(
+                                                            (node) => {
+                                                                return {
+                                                                    ...node,
+                                                                    id: Math.floor(
+                                                                        Math.random() *
+                                                                            Math.floor(
+                                                                                Math.random() *
+                                                                                    Date.now(),
+                                                                            ),
+                                                                    ),
+                                                                    identifier:
+                                                                        node.identifier !==
+                                                                        null
+                                                                            ? node.identifier
+                                                                                  .replace(
+                                                                                      /\s/g,
+                                                                                      "",
+                                                                                  )
+                                                                                  .concat(
+                                                                                      generateIdentifier(),
+                                                                                  )
+                                                                            : null,
+                                                                };
+                                                            },
+                                                        ),
                                                     tabWidth:
                                                         component.element
                                                             .tabWidth,
@@ -277,7 +307,7 @@ const ElementsMapper: React.FC = () => {
                                         {component.description}
                                     </span> */}
                                         <img
-                                            className="scale-150 md:scale-110 lg:scale-110 select-none"
+                                            className="scale-140 md:scale-110 lg:scale-110 select-none"
                                             draggable="false"
                                             src={component.icon}
                                             alt={component.text}

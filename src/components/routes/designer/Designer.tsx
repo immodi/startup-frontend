@@ -11,6 +11,7 @@ import {
 } from "@/helpers/generator/getTemplates";
 import { ArrowBigLeft, ArrowBigUp } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import NotLoggedInErrorDialog from "../home/pages/main_components/NotLoggedInErrorDialog";
 import Canvas from "./Canvas";
 import {
     CanvasElement,
@@ -18,7 +19,6 @@ import {
 } from "./elements/CanvasElementsRenderer";
 import { SaveDesignModal } from "./elements/SaveDesignModal";
 import SidePanel from "./SidePanel";
-import NotLoggedInErrorDialog from "../home/pages/main_components/NotLoggedInErrorDialog";
 
 const Designer: React.FC = () => {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
@@ -134,6 +134,39 @@ const Designer: React.FC = () => {
 
         return templateData;
     }
+
+    function updateSubCanvasElement(
+        subElementId: number,
+        newSubElement: CanvasElement,
+    ) {
+        let found = false;
+        const newCanvasElements = canvasElements.map((element) => {
+            if (found || !element.childrenNodes) {
+                return element;
+            }
+
+            const updatedChildrenNodes = element.childrenNodes.map(
+                (node, _) => {
+                    if (!found && node.id === subElementId) {
+                        found = true;
+                        return newSubElement;
+                    }
+                    return node;
+                },
+            );
+
+            if (found) {
+                return {
+                    ...element,
+                    childrenNodes: updatedChildrenNodes,
+                };
+            }
+            return element;
+        });
+
+        setCanvasElements(newCanvasElements);
+    }
+
     function updateCurrentEditableIndex(index: number) {
         if (index > canvasElements.length - 1 || canvasElements.length === 0) {
             return;
@@ -191,6 +224,7 @@ const Designer: React.FC = () => {
         changeAllCanvasElements: changeAllCanvasElements,
         updateCanvasElementByItsId: updateCanvasElementByItsId,
         updateCurrentEditableIndex: updateCurrentEditableIndex,
+        updateSubCanvasElement: updateSubCanvasElement,
         // changeSaveDesignModal: changeSaveDesignModal,
     };
 
@@ -222,7 +256,7 @@ const Designer: React.FC = () => {
                             onClick={() => {
                                 toggleSidePanelState(true);
                             }}
-                            className={`${isSidePanelOpen ? "hidden" : "absolute"} w-10 h-10 right-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full portrait:hidden`}
+                            className={`w-10 h-10 right-0 z-10 transition-all ease-in-out duration-300 cursor-pointer bg-[#4A00E0] hover:bg-[#3a00c0] dark:bg-[#7A1CAC] dark:hover:bg-[#AD49E1] text-white rounded-full hidden ${isSidePanelOpen ? "" : "absolute md:block lg:block"}`}
                         />
 
                         <Canvas />

@@ -18,6 +18,7 @@ import {
     CanvasElementStyles,
     UserFont,
 } from "../elements/CanvasElementsRenderer";
+import SubCustomize from "./SubElementCustomize";
 
 const Customize: React.FC = () => {
     const designerContext = useContext(
@@ -62,7 +63,7 @@ const Customize: React.FC = () => {
         recentlySelectedActiveElement?.id,
     ]);
 
-    function handleChange(newElement: CanvasElement) {
+    function updateElement(newElement: CanvasElement) {
         setElement(newElement);
     }
 
@@ -78,7 +79,9 @@ const Customize: React.FC = () => {
         }
     }
 
-    return (
+    return element?.customClasses?.includes("container-div") ? (
+        <SubCustomize element={element} />
+    ) : (
         <div
             key={key}
             className="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md w-full h-full overflow-y-scroll"
@@ -120,7 +123,7 @@ const Customize: React.FC = () => {
                             }
                             onChange={(e) => {
                                 if (element !== null) {
-                                    handleChange({
+                                    updateElement({
                                         ...element,
                                         text: e.target.value,
                                     });
@@ -167,7 +170,7 @@ const Customize: React.FC = () => {
                             }}
                             onChange={(e) => {
                                 if (element !== null) {
-                                    handleChange({
+                                    updateElement({
                                         ...element,
                                         identifier: e.target.value,
                                     });
@@ -204,7 +207,7 @@ const Customize: React.FC = () => {
                             onChange={(e) => {
                                 const value = parseInt(e.target.value, 10);
                                 if (element !== null && value >= 1) {
-                                    handleChange({
+                                    updateElement({
                                         ...element,
                                         tabWidth: value,
                                     });
@@ -404,7 +407,7 @@ const Customize: React.FC = () => {
                                             newListItems[index] =
                                                 e.currentTarget.value;
 
-                                            handleChange({
+                                            updateElement({
                                                 ...element,
                                                 childrenNodeTexts: newListItems,
                                             });
@@ -419,7 +422,7 @@ const Customize: React.FC = () => {
                                                     (_, i) => index !== i,
                                                 );
 
-                                            handleChange({
+                                            updateElement({
                                                 ...element,
                                                 childrenNodeTexts: newListItems,
                                             });
@@ -433,7 +436,7 @@ const Customize: React.FC = () => {
                         ))}
                         <button
                             onClick={() => {
-                                handleChange({
+                                updateElement({
                                     ...element,
                                     childrenNodeTexts: [
                                         ...element.childrenNodeTexts!,
