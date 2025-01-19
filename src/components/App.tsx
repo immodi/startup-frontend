@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LandingPage from "./routes/landing/Landing";
-import Home from "./routes/home/Home";
-import ErrorPage from "./util/Error";
+import getLocalUser from "@/helpers/auth/getLocalUser";
 import {
     LocalState,
     useLocalStorageState,
 } from "@/hooks/local-data/useLocalData";
-import { Context, ContextInterface } from "./util/context";
 import { UserModel } from "@/interfaces/auth/userModel";
-import getLocalUser from "@/helpers/auth/getLocalUser";
-import Main from "./routes/home/pages/Main";
-import NotFound from "./routes/home/pages/404";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthPage } from "./routes/auth/Auth";
+import Billing from "./routes/billing/Billing";
 import Designer from "./routes/designer/Designer";
+import Home from "./routes/home/Home";
+import Main from "./routes/home/pages/Main";
+import LandingPage from "./routes/landing/Landing";
 import PrivacyPolicy from "./routes/policy/Privacy";
 import TermsOfService from "./routes/policy/Terms";
+import { Context, ContextInterface } from "./util/context";
+import ErrorPage from "./util/Error";
 
 const App: React.FC = () => {
     const [localState, setLocalState] = useLocalStorageState();
@@ -84,7 +84,7 @@ const App: React.FC = () => {
                         <Route path="home" element={<Main />} />
                         <Route path="designer" element={<Designer />} />
                         <Route path="profile" element={<AuthPage />} />
-                        <Route path="billing" element={<NotFound />} />
+                        <Route path="billing" element={<Billing />} />
                         <Route
                             path="privacy-policy"
                             element={<PrivacyPolicy />}

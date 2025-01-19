@@ -12,7 +12,7 @@ import ErrorDialog from "./main_components/ErrorDialog";
 import KeyValuePopUp from "./main_components/KeyValuePopUp";
 import Modal from "./main_components/Modal";
 import MainContent from "./main_components/MainContent";
-import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
+// import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 import { Template } from "@/interfaces/generator/template";
 
 const Main: React.FC = () => {
@@ -21,7 +21,6 @@ const Main: React.FC = () => {
     const { localState, cacheLocalState } = context;
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
-
 
     const token = context.userData?.token;
     const [templates, setTemplates] = useState<Array<Template>>([]);
@@ -160,7 +159,7 @@ const Main: React.FC = () => {
 
                 {isErrorDialogOpen && <ErrorDialog />}
 
-                {!authed && <NotLoggedInErrorDialog />}
+                {/* {!authed && <NotLoggedInErrorDialog />} */}
             </div>
         </GeneratorContext.Provider>
     );
