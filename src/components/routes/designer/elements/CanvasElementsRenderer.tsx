@@ -277,14 +277,20 @@ function convertHTMLElementToReactNode(
                             width: `${node.userStyle.width}%`,
                             backgroundColor:
                                 selectMode === "selected" && getRandomColor(),
+
+                            textDecoration: node.userStyle.isUnderline
+                                ? "underline"
+                                : "none",
                             textDecorationLine: node.userStyle.isUnderline
                                 ? "underline"
                                 : "none",
+                            textDecorationStyle: "solid",
+
                             alignItems: "center",
                             justifyContent: node.userStyle.textAlignment,
                             textAlign: node.userStyle.textAlignment,
                         },
-                        className: `${node.customClasses} flex min-h-12 h-auto relative`,
+                        className: `${node.customClasses} w-full flex min-h-12 h-auto relative`,
 
                         children: [
                             <div
@@ -305,9 +311,14 @@ function convertHTMLElementToReactNode(
         const children = [
             <div
                 style={{
+                    textDecoration: userStyle.isUnderline
+                        ? "underline"
+                        : "none",
                     textDecorationLine: userStyle.isUnderline
                         ? "underline"
                         : "none",
+                    textDecorationStyle: "solid",
+
                     alignItems: "center",
                     justifyContent: userStyle.textAlignment,
                     textAlign: userStyle.textAlignment,
