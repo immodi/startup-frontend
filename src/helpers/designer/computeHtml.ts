@@ -27,23 +27,31 @@ export default function computeHTML(
             canvasElement.remove();
         }
 
+        if (canvasElement.classList.contains("whitespace-pre-wrap")) {
+            canvasElement.classList.remove("whitespace-pre-wrap");
+        }
+
         Array.from(canvasElement.children).forEach((canvasElementChild) => {
             if (
                 canvasElementChild.classList.contains("remove-this-at-export")
             ) {
                 canvasElementChild.remove();
             }
+
+            if (canvasElementChild.classList.contains("whitespace-pre-wrap")) {
+                canvasElementChild.classList.remove("whitespace-pre-wrap");
+            }
         });
     });
 
-    const cssStyles = Array.from(document.head.getElementsByTagName("style"))
-        .map((style) => style.innerHTML)
-        .join("");
+    // const cssStyles = Array.from(document.head.getElementsByTagName("style"))
+    //     .map((style) => style.innerHTML)
+    //     .join("");
 
-    const styleElement = document.createElement("style");
-    styleElement.innerHTML = cssStyles;
+    // const styleElement = document.createElement("style");
+    // styleElement.innerHTML = cssStyles;
 
-    clonedCanvas.appendChild(styleElement);
+    // clonedCanvas.appendChild(styleElement);
 
     return clonedCanvas.outerHTML;
 }
