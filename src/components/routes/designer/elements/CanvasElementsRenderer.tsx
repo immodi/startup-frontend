@@ -278,12 +278,12 @@ function convertHTMLElementToReactNode(
                             backgroundColor:
                                 selectMode === "selected" && getRandomColor(),
                         },
-                        className: `${node.customClasses} flex ${node.userStyle.isBold && "font-bold"} ${node.userStyle.isItalic && "italic"} ${node.userStyle.isUnderline && "underline"} min-h-12 h-auto relative ${node.userStyle.textAlignment} ${getFontStyle(node.userStyle.fontFamily)}`,
+                        className: `${node.customClasses} flex min-h-12 h-auto relative `,
 
                         children: [
                             <div
                                 id={`${node.identifier !== null ? node.identifier : ""}`}
-                                className={`w-fit h-fit`}
+                                className={`${node.userStyle.isBold && "font-bold"} ${node.userStyle.isItalic && "italic"} ${node.userStyle.isUnderline && "underline"} ${node.userStyle.textAlignment} ${getFontStyle(node.userStyle.fontFamily)} w-fit h-fit`}
                             >
                                 {node.text}
                             </div>,
@@ -299,11 +299,11 @@ function convertHTMLElementToReactNode(
         const children = [
             <div
                 id={`mainElementText${id}`}
-                className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
+                className={`whitespace-pre-wrap content-center w-full h-auto min-h-12`}
             >
                 <p
                     id={`${identifier !== null ? identifier : ""} `}
-                    className={`w-auto h-auto`}
+                    className={`w-auto h-auto ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
                 >
                     {text}
                 </p>
