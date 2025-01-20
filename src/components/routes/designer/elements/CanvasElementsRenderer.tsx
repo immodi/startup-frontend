@@ -290,7 +290,7 @@ function convertHTMLElementToReactNode(
                             justifyContent: node.userStyle.textAlignment,
                             textAlign: node.userStyle.textAlignment,
                         },
-                        className: `${node.customClasses} w-full flex min-h-12 h-auto relative`,
+                        className: `${node.customClasses} flex min-h-12 h-auto relative`,
 
                         children: [
                             <div
