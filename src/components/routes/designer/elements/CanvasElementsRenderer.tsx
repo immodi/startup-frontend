@@ -379,20 +379,28 @@ function convertHTMLElementToReactNode(
     return React.createElement(tagName, {
         key: id,
         id: id,
-        style: { color: userStyle.textColor, paddingLeft: `${tabWidth}rem` },
-        className: `${className} w-full min-h-12 h-auto relative ${selectMode !== "idle" ? "selected" : ""} ${childrenNodeTexts === undefined ? userStyle.textAlignment : flexAligner.get(userStyle.textAlignment)}`,
+        style: {
+            color: userStyle.textColor,
+            paddingLeft: `${tabWidth}rem`,
+            width: "100%", // Add this to ensure full width
+            textAlign: userStyle.textAlignment, // Add explicit text alignment
+        },
+        className: `${className} w-full min-h-12 h-auto relative flex ${
+            selectMode !== "idle" ? "selected" : ""
+        } ${
+            childrenNodeTexts === undefined
+                ? `${userStyle.textAlignment} ${flexAligner.get(userStyle.textAlignment)}`
+                : flexAligner.get(userStyle.textAlignment)
+        }`,
         onClick: () => {
-            // const node = e.currentTarget as HTMLElement;
             clickManager();
         },
-
         onDoubleClick: (e: React.MouseEvent<HTMLElement>) => {
             const node = e.currentTarget as HTMLElement;
             if (!className.includes("spacer-div")) {
                 handleEditText(node);
             }
         },
-
         children: getChildren(),
     });
 }
