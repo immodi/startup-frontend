@@ -277,7 +277,6 @@ function convertHTMLElementToReactNode(
                             width: `${node.userStyle.width}%`,
                             backgroundColor:
                                 selectMode === "selected" && getRandomColor(),
-
                             textDecoration: node.userStyle.isUnderline
                                 ? "underline"
                                 : "none",
@@ -285,17 +284,31 @@ function convertHTMLElementToReactNode(
                                 ? "underline"
                                 : "none",
                             textDecorationStyle: "solid",
-
+                            display: "flex", // Add this
                             alignItems: "center",
-                            justifyContent: node.userStyle.textAlignment,
+                            justifyContent:
+                                node.userStyle.textAlignment === "right"
+                                    ? "flex-end"
+                                    : node.userStyle.textAlignment === "center"
+                                      ? "center"
+                                      : "flex-start",
                             textAlign: node.userStyle.textAlignment,
                         },
-                        className: `${node.customClasses} flex min-h-12 h-auto relative`,
-
+                        className: `${node.customClasses} flex min-h-12 h-auto relative text-${node.userStyle.textAlignment}`, // Add text alignment class
                         children: [
                             <div
                                 id={`${node.identifier !== null ? node.identifier : ""}`}
-                                className={`${node.userStyle.isBold && "font-bold"} ${node.userStyle.isItalic && "italic"} ${getFontStyle(node.userStyle.fontFamily)} w-fit h-fit`}
+                                className={`
+                              ${node.userStyle.isBold && "font-bold"} 
+                              ${node.userStyle.isItalic && "italic"} 
+                              ${getFontStyle(node.userStyle.fontFamily)} 
+                              w-fit h-fit
+                              text-${node.userStyle.textAlignment}  // Add this
+                            `}
+                                style={{
+                                    width: "100%", // Add this
+                                    textAlign: node.userStyle.textAlignment, // Add this
+                                }}
                             >
                                 {node.text}
                             </div>,
@@ -318,17 +331,29 @@ function convertHTMLElementToReactNode(
                         ? "underline"
                         : "none",
                     textDecorationStyle: "solid",
-
+                    display: "flex", // Add this
                     alignItems: "center",
-                    justifyContent: userStyle.textAlignment,
+                    justifyContent:
+                        userStyle.textAlignment === "right"
+                            ? "flex-end"
+                            : userStyle.textAlignment === "center"
+                              ? "center"
+                              : "flex-start",
                     textAlign: userStyle.textAlignment,
+                    width: "100%", // Add this to ensure full width
                 }}
                 id={`mainElementText${id}`}
-                className={`whitespace-pre-wrap content-center w-full h-auto min-h-12`}
+                className={`whitespace-pre-wrap content-center w-full h-auto min-h-12 text-${userStyle.textAlignment}`}
             >
                 <p
-                    id={`${identifier !== null ? identifier : ""} `}
-                    className={`w-auto h-auto ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${getFontStyle(userStyle.fontFamily)}`}
+                    id={`${identifier !== null ? identifier : ""}`}
+                    className={`w-full h-auto ${userStyle.isBold && "font-bold"} ${
+                        userStyle.isItalic && "italic"
+                    } ${getFontStyle(userStyle.fontFamily)} text-${userStyle.textAlignment}`}
+                    style={{
+                        textAlign: userStyle.textAlignment, // Add this
+                        width: "100%", // Add this
+                    }}
                 >
                     {text}
                 </p>
