@@ -277,13 +277,19 @@ function convertHTMLElementToReactNode(
                             width: `${node.userStyle.width}%`,
                             backgroundColor:
                                 selectMode === "selected" && getRandomColor(),
+                            textDecorationLine: node.userStyle.isUnderline
+                                ? "underline"
+                                : "none",
+                            alignItems: "center",
+                            justifyContent: node.userStyle.textAlignment,
+                            textAlign: node.userStyle.textAlignment,
                         },
-                        className: `${node.customClasses} flex min-h-12 h-auto relative `,
+                        className: `${node.customClasses} flex min-h-12 h-auto relative`,
 
                         children: [
                             <div
                                 id={`${node.identifier !== null ? node.identifier : ""}`}
-                                className={`${node.userStyle.isBold && "font-bold"} ${node.userStyle.isItalic && "italic"} ${node.userStyle.isUnderline && "underline"} ${node.userStyle.textAlignment} ${getFontStyle(node.userStyle.fontFamily)} w-fit h-fit`}
+                                className={`${node.userStyle.isBold && "font-bold"} ${node.userStyle.isItalic && "italic"} ${getFontStyle(node.userStyle.fontFamily)} w-fit h-fit`}
                             >
                                 {node.text}
                             </div>,
@@ -298,12 +304,20 @@ function convertHTMLElementToReactNode(
 
         const children = [
             <div
+                style={{
+                    textDecorationLine: userStyle.isUnderline
+                        ? "underline"
+                        : "none",
+                    alignItems: "center",
+                    justifyContent: userStyle.textAlignment,
+                    textAlign: userStyle.textAlignment,
+                }}
                 id={`mainElementText${id}`}
                 className={`whitespace-pre-wrap content-center w-full h-auto min-h-12`}
             >
                 <p
                     id={`${identifier !== null ? identifier : ""} `}
-                    className={`w-auto h-auto ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${userStyle.isUnderline && "underline"} ${getFontStyle(userStyle.fontFamily)}`}
+                    className={`w-auto h-auto ${userStyle.isBold && "font-bold"} ${userStyle.isItalic && "italic"} ${getFontStyle(userStyle.fontFamily)}`}
                 >
                     {text}
                 </p>
