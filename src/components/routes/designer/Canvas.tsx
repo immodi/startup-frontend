@@ -58,6 +58,8 @@ const Canvas: React.FC = () => {
                 localState.selectedUserTemplate,
             )
         ) {
+            console.log(localState);
+
             setIsEditPanelVisible(true);
         } else {
             setIsEditPanelVisible(false);

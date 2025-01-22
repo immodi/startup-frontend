@@ -8,6 +8,7 @@ export interface UserModel {
     id: string;
     name: string;
     updated: string;
+    user_files: string[]; // Array of strings
     user_templates: string[]; // Array of strings
     username: string;
     verified: boolean;

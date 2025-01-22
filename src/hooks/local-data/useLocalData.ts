@@ -17,6 +17,7 @@ export const INITAL_LOCAL_STATE: LocalState = {
         selectedTemplate: "document",
         userTemplateData: new Map<string, string>(),
     },
+    selectedUserTemplate: undefined,
 } as const;
 
 interface GeneratorLocalState {

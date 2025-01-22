@@ -252,6 +252,7 @@ const MainContent: React.FC = () => {
                                             generator: {
                                                 ...INITAL_LOCAL_STATE.generator,
                                             },
+                                            selectedUserTemplate: undefined,
                                         });
                                     }}
                                     className={`w-fit h-fit  text-gray-600 dark:text-gray-200`}

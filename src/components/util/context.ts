@@ -15,6 +15,7 @@ import {
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
 import { Template } from "@/interfaces/generator/template";
+import { UserFile } from "@/helpers/auth/getUserFiles";
 
 export interface ContextInterface {
     localState: LocalState;
@@ -118,12 +119,17 @@ export interface DesignerElementsContextInterface {
     // componentsArrayDispatch: React.Dispatch<ActionArray>;
 }
 
+export interface ProfileContextInterface {
+    userFiles: UserFile[];
+}
+
 type Option = ContextInterface | null;
 type HomeOption = HomeContextInterface | null;
 type GeneratorOption = GeneratorContextInterface | null;
 type DesignerOption = DesignerContextInterface | null;
 type SidelPanelOption = SidelPanelContextInterface | null;
 type DesignerElementsOption = DesignerElementsContextInterface | null;
+type ProfileOption = ProfileContextInterface | null;
 
 export const Context = createContext<Option>(null);
 export const HomeContext = createContext<HomeOption>(null);
@@ -132,3 +138,4 @@ export const DesignerContext = createContext<DesignerOption>(null);
 export const SidePanelContext = createContext<SidelPanelOption>(null);
 export const DesignerElementsContext =
     createContext<DesignerElementsOption>(null);
+export const ProfileContext = createContext<ProfileOption>(null);

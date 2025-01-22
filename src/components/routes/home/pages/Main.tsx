@@ -14,6 +14,7 @@ import Modal from "./main_components/Modal";
 import MainContent from "./main_components/MainContent";
 // import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 import { Template } from "@/interfaces/generator/template";
+import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 
 const Main: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -159,7 +160,7 @@ const Main: React.FC = () => {
 
                 {isErrorDialogOpen && <ErrorDialog />}
 
-                {/* {!authed && <NotLoggedInErrorDialog />} */}
+                {!authed && <NotLoggedInErrorDialog />}
             </div>
         </GeneratorContext.Provider>
     );

@@ -17,6 +17,7 @@ export default function getLocalUser() {
             name: "",
             updated: "",
             user_templates: [],
+            user_files: [],
             verified: false,
         };
 

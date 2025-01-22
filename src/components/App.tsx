@@ -34,7 +34,6 @@ const App: React.FC = () => {
             ...prev,
             isDarkMode: localState.isDarkMode,
         }));
-        // console.log(localState);
     }, [localState.isDarkMode]);
 
     useEffect(() => {
