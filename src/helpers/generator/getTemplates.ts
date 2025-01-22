@@ -41,6 +41,7 @@ export async function createTemplate(
         html: templateData.html,
         canvas_elements: JSON.stringify(templateData.canvasElements, null),
         identifiers: JSON.stringify(templateData.data, null),
+        source_template: "dg92oyo86lhufpt",
     };
 
     pb.collection("templates")
