@@ -67,10 +67,20 @@ const Billing: React.FC = () => {
                                     )}
 
                                     {/* Plan Title */}
-                                    <h3 className="text-2xl text-[#4A00E0] dark:text-white font-semibold text-center mb-4">
+                                    <h3 className="text-2xl text-[#4A00E0] dark:text-white flex flex-col font-semibold text-center mb-4">
                                         {price > 0 ? `${price}$ ` : ""}
-                                        {planTitle.charAt(0).toUpperCase() +
-                                            planTitle.slice(1)}
+                                        {planTitle !== "monthly"
+                                            ? planTitle
+                                                  .charAt(0)
+                                                  .toUpperCase() +
+                                              planTitle.slice(1)
+                                            : "/Month"}
+                                        {planTitle === "monthly" && (
+                                            <span className="text-xs text-[#4A00E0] dark:text-white">
+                                                {" "}
+                                                (one time payment per month)
+                                            </span>
+                                        )}
                                     </h3>
 
                                     {/* Plan Features */}
