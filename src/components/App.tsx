@@ -78,7 +78,9 @@ const App: React.FC = () => {
     };
 
     const initialOptions: ReactPayPalScriptOptions = {
-        clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+        clientId:
+            import.meta.env.VITE_PAYPAL_CLIENT_ID ??
+            import.meta.env.env.PAYPAL_CLIENT_ID,
         currency: "USD",
         intent: "capture",
     };
