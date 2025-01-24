@@ -23,6 +23,7 @@ import ErrorPage from "./util/Error";
 
 const App: React.FC = () => {
     const [localState, setLocalState] = useLocalStorageState();
+
     const [userData, setUserData] = useState<UserModel | undefined>(
         getLocalUser(),
     );

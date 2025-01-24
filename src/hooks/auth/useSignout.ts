@@ -1,8 +1,7 @@
 import { UserModel } from "@/interfaces/auth/userModel";
-import PocketBase from "pocketbase";
 
+import pb from "@/interfaces/auth/pocketBase";
 import { useDeleteToken } from "./useToken";
-const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
 
 function useSignout(
     setAuthed: (isAuthed: boolean) => void,

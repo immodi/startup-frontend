@@ -1,6 +1,7 @@
 import { UserModel } from "@/interfaces/auth/userModel";
-import PocketBase from "pocketbase";
+
 import useLogin from "./useLogin";
+import pb from "@/interfaces/auth/pocketBase";
 
 function useSignup(
     username: string,
@@ -14,7 +15,6 @@ function useSignup(
 ) {
     setIsLoading?.(true);
 
-    const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
     const data = {
         username: username,
         email: email,
@@ -27,6 +27,9 @@ function useSignup(
             "8gnqdsso46yp6pm",
             "mqcpw4e0qdb0tg6",
         ],
+        user_files: [],
+        tokens: 50,
+        current_plan: "kemt0gtyrxjahfh",
     };
 
     pb.collection("users")

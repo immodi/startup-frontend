@@ -1,10 +1,16 @@
+import { UserModel } from "@/interfaces/auth/userModel";
 import Cookies from "universal-cookie";
 
 export interface UserAuthCookie {
+    id: string;
     username: string;
     email: string;
     joinedAt: string;
     token: string;
+    user_files: string[]; // Array of strings
+    user_templates: string[]; // Array of strings
+    // tokens: number;
+    // current_plan: string;
 }
 
 export function useGetToken(): UserAuthCookie | undefined {
@@ -14,18 +20,18 @@ export function useGetToken(): UserAuthCookie | undefined {
     return token;
 }
 
-export function useSetToken(
-    username: string,
-    email: string,
-    joinedAt: string,
-    token: string,
-): boolean {
+export function useSetToken(user: UserModel): boolean {
     const cookies = new Cookies();
     const userAuthCookie: UserAuthCookie = {
-        username: username,
-        token: token,
-        email: email,
-        joinedAt: joinedAt,
+        id: user.id,
+        username: user.username,
+        token: user.token,
+        email: user.email,
+        joinedAt: user.created,
+        // current_plan: user.current_plan,
+        // tokens: user.tokens,
+        user_files: user.user_files,
+        user_templates: user.user_templates,
     };
 
     cookies.set("userToken", userAuthCookie, {

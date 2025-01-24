@@ -1,6 +1,4 @@
-import PocketBase from "pocketbase";
-
-const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
+import pb from "@/interfaces/auth/pocketBase";
 
 interface FileRecord {
     collectionId: string; // ID of the collection

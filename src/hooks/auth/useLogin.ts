@@ -1,6 +1,7 @@
+import pb from "@/interfaces/auth/pocketBase";
+import registerUserCache from "@/interfaces/auth/registerUserCahce";
 import { UserModel } from "@/interfaces/auth/userModel";
-import PocketBase from "pocketbase";
-import { useGetToken, useSetToken } from "./useToken";
+import { useGetToken } from "./useToken";
 
 function useLogin(
     username: string,
@@ -13,7 +14,6 @@ function useLogin(
 ) {
     setIsLoading?.(true);
 
-    const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
     const userAuthToken = useGetToken();
     if (userAuthToken !== undefined) {
         setAuthed?.(true);
@@ -25,14 +25,24 @@ function useLogin(
                 setAuthed?.(true);
 
                 // auth the user to the application itself
-                const user: UserModel = {
-                    ...res.record,
-                    collectionId: "",
-                    id: "",
-                    collectionName: "",
-                    token: res.token,
-                };
-                setUserData?.(user);
+                // const user: UserModel = {
+                //     ...res.record,
+                //     collectionId: "",
+                //     id: res.record.id,
+                //     collectionName: "",
+                //     token: res.token,
+                // };
+
+                const user = res.record;
+
+                // setUserData?.(user);
+                registerUserCache(
+                    user,
+                    rememberMe,
+                    res.token,
+                    setUserData,
+                    setAuthed,
+                );
 
                 // set the token and other local data for the other sign ins
                 // const userAuthToken: UserAuthCookie = {
@@ -44,13 +54,7 @@ function useLogin(
                 // setToken?.(userAuthToken);
 
                 // save token if the user chooses to me remebered
-                rememberMe &&
-                    useSetToken(
-                        user.username,
-                        user.email,
-                        user.created,
-                        user.token,
-                    );
+                // rememberMe && useSetToken(user);
             })
             .catch((err) => {
                 setAuthed?.(false);

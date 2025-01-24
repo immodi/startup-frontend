@@ -1,3 +1,4 @@
+import { UserFile } from "@/helpers/auth/getUserFiles";
 import { ComponentsIndexInterface } from "@/helpers/designer/scrollBehaviors";
 import {
     AnimatingAction,
@@ -7,6 +8,7 @@ import { Action } from "@/hooks/designer/componentsPagedArrayDispatcher";
 import { LocalState } from "@/hooks/local-data/useLocalData";
 import { UserModel } from "@/interfaces/auth/userModel";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
+import { Template } from "@/interfaces/generator/template";
 import { createContext } from "react";
 import {
     CanvasElement,
@@ -14,8 +16,6 @@ import {
     SelectionNodeModes,
 } from "../routes/designer/elements/CanvasElementsRenderer";
 import { AnimationState } from "../routes/designer/panels/Elements";
-import { Template } from "@/interfaces/generator/template";
-import { UserFile } from "@/helpers/auth/getUserFiles";
 
 export interface ContextInterface {
     localState: LocalState;

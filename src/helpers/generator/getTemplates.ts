@@ -1,13 +1,9 @@
 import { CardProps } from "@/interfaces/designer/cardsProps";
 import { TemplateData } from "@/interfaces/designer/exportTemplateData";
 import axios from "axios";
-import PocketBase, { RecordModel } from "pocketbase";
+import { RecordModel } from "pocketbase";
 
-const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
-
-// type Template = {
-//     templates: Array<string>;
-// };
+import pb from "@/interfaces/auth/pocketBase";
 
 export async function getAllTemplates(
     token: string,

@@ -16,8 +16,10 @@ export default function getLocalUser() {
             id: "",
             name: "",
             updated: "",
-            user_templates: [],
-            user_files: [],
+            user_templates: localUser.user_templates,
+            user_files: localUser.user_files,
+            current_plan: "kemt0gtyrxjahfh",
+            tokens: 50,
             verified: false,
         };
 

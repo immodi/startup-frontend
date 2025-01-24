@@ -1,7 +1,6 @@
-import { useSetToken } from "@/hooks/auth/useToken";
+import pb from "@/interfaces/auth/pocketBase";
+import registerUserCache from "@/interfaces/auth/registerUserCahce";
 import { UserModel } from "@/interfaces/auth/userModel";
-import PocketBase from "pocketbase";
-const pb = new PocketBase(import.meta.env.VITE_BACKEND_URL);
 
 // interface OAuth2Mode {
 //     name: string;
@@ -20,22 +19,28 @@ export default async function oAuth2WithGoogle(
             .authWithOAuth2<UserModel>({ provider: "google" });
 
         const data = {
+            ...authData.record,
             username: authData.record.username,
             emailVisibility: authData.record.emailVisibility,
-            name: "",
-            user_templates: [
+            name: authData.record.username,
+            user_templates: authData.record.user_templates ?? [
                 "8gnqdsso46yp6pm",
                 "waxxopaxrgdpkki",
                 "mqcpw4e0qdb0tg6",
             ],
-            user_files: [],
+            user_files: authData.record.user_files ?? [],
+            current_plan: authData.record.current_plan ?? "kemt0gtyrxjahfh",
+            tokens:
+                authData.record.current_plan === undefined
+                    ? 50
+                    : authData.record.tokens,
         };
 
         pb.collection("users")
             .update(authData.record.id, data)
             .then(() => {
                 registerUserCache(
-                    authData.record,
+                    data,
                     rememberMe,
                     authData.token,
                     setUserData,
@@ -46,30 +51,4 @@ export default async function oAuth2WithGoogle(
         console.error("OAuth Error:", error);
         throw error;
     }
-}
-
-function registerUserCache(
-    userModel: UserModel,
-    rememberMe: boolean,
-    token: string,
-    setUserData?: (userData: UserModel | undefined) => void,
-    setAuthed?: (isAuthed: boolean) => void,
-) {
-    // change the application state to authed
-    setAuthed?.(true);
-
-    // auth the user to the application itself
-    const user: UserModel = {
-        ...userModel,
-        collectionId: "",
-        id: "",
-        collectionName: "",
-        token: token,
-    };
-
-    setUserData?.(user);
-
-    // save token if the user chooses to me remebered
-    rememberMe &&
-        useSetToken(user.username, user.email, user.created, user.token);
 }

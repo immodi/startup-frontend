@@ -10,6 +10,8 @@ export interface UserModel {
     updated: string;
     user_files: string[]; // Array of strings
     user_templates: string[]; // Array of strings
+    tokens: number;
+    current_plan: string;
     username: string;
     verified: boolean;
     token: string;
