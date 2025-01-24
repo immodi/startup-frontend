@@ -77,10 +77,14 @@ const App: React.FC = () => {
         cacheLocalState: cacheLocalState,
     };
 
+    const clientId =
+        import.meta.env.PAYPAL_CLIENT_ID &&
+        import.meta.env.PAYPAL_CLIENT_ID.trim() !== ""
+            ? import.meta.env.PAYPAL_CLIENT_ID
+            : import.meta.env.VITE_PAYPAL_CLIENT_ID;
+
     const initialOptions: ReactPayPalScriptOptions = {
-        clientId:
-            import.meta.env.VITE_PAYPAL_CLIENT_ID ??
-            import.meta.env.PAYPAL_CLIENT_ID,
+        clientId: clientId,
         currency: "USD",
         intent: "capture",
     };
