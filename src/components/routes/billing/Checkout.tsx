@@ -15,7 +15,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onSuccess, price }) => {
                 onSuccess();
                 return onApprove(data, actions);
             }}
-            onError={(err) => console.log(err)}
+            onError={() => {}}
             style={{
                 color: "silver",
                 borderRadius: 10,
@@ -96,11 +96,11 @@ async function onApprove(data: any, actions: any) {
         } else if (!orderData.purchase_units) {
             throw new Error(JSON.stringify(orderData));
         } else {
-            console.log(
-                "Capture result",
-                orderData,
-                JSON.stringify(orderData, null, 2),
-            );
+            // console.log(
+            //     "Capture result",
+            //     orderData,
+            //     JSON.stringify(orderData, null, 2),
+            // );
         }
     } catch (error) {
         console.error(error);
