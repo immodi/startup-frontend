@@ -4,18 +4,18 @@ interface PlanData {
 }
 
 const freePlan = [
-    "50 free PDF generations",
-    "Download up to 3 of your last generated PDFs",
+    "50 free Tokens",
+    "Download up to 10 of your last generated PDFs",
 ];
 
 const monthlyPlan = [
-    "Unlimited PDF generations",
-    "Download up to 10 of your last generated PDFs",
+    "Unlimited Tokens",
+    "Download up to 50 of your last generated PDFs",
 ];
 
 const lifeTimePlan = [
-    "Unlimited PDF generations",
-    "Download up to 10 of your last generated PDFs",
+    "Unlimited Tokens",
+    "Download All of your generated PDFs",
     "Lifetime access",
 ];
 

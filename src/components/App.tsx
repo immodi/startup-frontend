@@ -4,6 +4,10 @@ import {
     useLocalStorageState,
 } from "@/hooks/local-data/useLocalData";
 import { UserModel } from "@/interfaces/auth/userModel";
+import {
+    PayPalScriptProvider,
+    ReactPayPalScriptOptions,
+} from "@paypal/react-paypal-js";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthPage } from "./routes/auth/Auth";
@@ -73,31 +77,39 @@ const App: React.FC = () => {
         cacheLocalState: cacheLocalState,
     };
 
+    const initialOptions: ReactPayPalScriptOptions = {
+        clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
+        currency: "USD",
+        intent: "capture",
+    };
+
     return (
-        <Context.Provider value={context}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
+        <PayPalScriptProvider options={initialOptions}>
+            <Context.Provider value={context}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
 
-                    <Route path="/" element={<Home />}>
-                        <Route path="home" element={<Main />} />
-                        <Route path="designer" element={<Designer />} />
-                        <Route path="profile" element={<AuthPage />} />
-                        <Route path="billing" element={<Billing />} />
-                        <Route
-                            path="privacy-policy"
-                            element={<PrivacyPolicy />}
-                        />
-                        <Route
-                            path="terms-of-service"
-                            element={<TermsOfService />}
-                        />
-                    </Route>
+                        <Route path="/" element={<Home />}>
+                            <Route path="home" element={<Main />} />
+                            <Route path="designer" element={<Designer />} />
+                            <Route path="profile" element={<AuthPage />} />
+                            <Route path="billing" element={<Billing />} />
+                            <Route
+                                path="privacy-policy"
+                                element={<PrivacyPolicy />}
+                            />
+                            <Route
+                                path="terms-of-service"
+                                element={<TermsOfService />}
+                            />
+                        </Route>
 
-                    <Route path="*" element={<ErrorPage />} />
-                </Routes>
-            </BrowserRouter>
-        </Context.Provider>
+                        <Route path="*" element={<ErrorPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </Context.Provider>
+        </PayPalScriptProvider>
     );
 };
 

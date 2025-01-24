@@ -1,0 +1,8 @@
+[build]
+command = "npm install"
+[[edge_functions]]
+path = "/api/orders"
+function = "create-order"
+[[edge_functions]]
+path = "/api/orders/:orderID/capture"
+function = "capture-order"
