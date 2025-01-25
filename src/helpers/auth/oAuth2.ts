@@ -7,7 +7,6 @@ import { UserModel } from "@/interfaces/auth/userModel";
 //     id: string;
 //     token: string;
 // }
-
 export default async function oAuth2WithGoogle(
     rememberMe: boolean,
     setUserData?: (userData: UserModel | undefined) => void,
@@ -30,17 +29,17 @@ export default async function oAuth2WithGoogle(
             current_plan: "kemt0gtyrxjahfh",
         };
 
-        pb.collection("users")
-            .update(authData.record.id, data)
-            .then(() => {
-                registerUserCache(
-                    data,
-                    rememberMe,
-                    authData.token,
-                    setUserData,
-                    setAuthed,
-                );
-            });
+        console.log(authData.record.id);
+
+        await pb.collection("users").update(authData.record.id, data);
+
+        registerUserCache(
+            data,
+            rememberMe,
+            authData.token,
+            setUserData,
+            setAuthed,
+        );
     } catch (error) {
         console.error("OAuth Error:", error);
         throw error;
