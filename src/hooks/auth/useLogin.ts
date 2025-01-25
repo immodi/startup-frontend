@@ -24,15 +24,6 @@ function useLogin(
                 // change the application state to authed
                 setAuthed?.(true);
 
-                // auth the user to the application itself
-                // const user: UserModel = {
-                //     ...res.record,
-                //     collectionId: "",
-                //     id: res.record.id,
-                //     collectionName: "",
-                //     token: res.token,
-                // };
-
                 const user = res.record;
 
                 // setUserData?.(user);
@@ -43,18 +34,6 @@ function useLogin(
                     setUserData,
                     setAuthed,
                 );
-
-                // set the token and other local data for the other sign ins
-                // const userAuthToken: UserAuthCookie = {
-                //     username: user.username,
-                //     email: user.email,
-                //     joinedAt: user.created,
-                //     token: user.token,
-                // };
-                // setToken?.(userAuthToken);
-
-                // save token if the user chooses to me remebered
-                // rememberMe && useSetToken(user);
             })
             .catch((err) => {
                 setAuthed?.(false);

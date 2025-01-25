@@ -18,22 +18,42 @@ export default async function oAuth2WithGoogle(
             .collection("users")
             .authWithOAuth2<UserModel>({ provider: "google" });
 
+        // const data = {
+        //     ...authData.record,
+        //     username: authData.record.username,
+        //     emailVisibility: authData.record.emailVisibility,
+        //     name: authData.record.username,
+        //     user_templates: authData.record.user_templates ?? [
+        //         "8gnqdsso46yp6pm",
+        //         "waxxopaxrgdpkki",
+        //         "mqcpw4e0qdb0tg6",
+        //     ],
+        //     user_files: authData.record.user_files ?? [],
+        //     current_plan: authData.record.current_plan ?? "kemt0gtyrxjahfh",
+        //     tokens:
+        //         authData.record.current_plan === undefined
+        //             ? 50
+        //             : authData.record.tokens,
+        // };
+
         const data = {
             ...authData.record,
-            username: authData.record.username,
-            emailVisibility: authData.record.emailVisibility,
-            name: authData.record.username,
-            user_templates: authData.record.user_templates ?? [
-                "8gnqdsso46yp6pm",
-                "waxxopaxrgdpkki",
-                "mqcpw4e0qdb0tg6",
-            ],
-            user_files: authData.record.user_files ?? [],
-            current_plan: authData.record.current_plan ?? "kemt0gtyrxjahfh",
+            user_templates:
+                pb.authStore.model?.user_templates !== undefined
+                    ? pb.authStore.model?.user_templates
+                    : ["waxxopaxrgdpkki", "8gnqdsso46yp6pm", "mqcpw4e0qdb0tg6"],
+            user_files:
+                pb.authStore.model?.user_files !== undefined
+                    ? pb.authStore.model?.user_files
+                    : [],
             tokens:
-                authData.record.current_plan === undefined
-                    ? 50
-                    : authData.record.tokens,
+                pb.authStore.model?.tokens !== undefined
+                    ? pb.authStore.model?.tokens
+                    : 50,
+            current_plan:
+                pb.authStore.model?.current_plan !== undefined
+                    ? pb.authStore.model?.current_plan
+                    : "kemt0gtyrxjahfh",
         };
 
         pb.collection("users")
