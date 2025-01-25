@@ -17,19 +17,33 @@ export default async function oAuth2WithGoogle(
             .collection("users")
             .authWithOAuth2<UserModel>({ provider: "google" });
 
+        const user_templates =
+            pb.authStore.model?.user_templates.length > 3
+                ? pb.authStore.model?.user_templates
+                : ["waxxopaxrgdpkki", "8gnqdsso46yp6pm", "mqcpw4e0qdb0tg6"];
+
+        const user_files =
+            pb.authStore.model?.user_files.length > 0
+                ? pb.authStore.model?.user_files
+                : [];
+
+        const tokens =
+            pb.authStore.model?.user_files.length > 0
+                ? pb.authStore.model?.tokens
+                : 50;
+
+        const current_plan =
+            pb.authStore.model?.current_plan !== ""
+                ? pb.authStore.model?.current_plan
+                : "kemt0gtyrxjahfh";
+
         const data = {
             ...authData.record,
-            user_templates: [
-                "waxxopaxrgdpkki",
-                "8gnqdsso46yp6pm",
-                "mqcpw4e0qdb0tg6",
-            ],
-            user_files: [],
-            tokens: 50,
-            current_plan: "kemt0gtyrxjahfh",
+            user_templates: user_templates,
+            user_files: user_files,
+            tokens: tokens,
+            current_plan: current_plan,
         };
-
-        console.log(authData.record.id);
 
         await pb.collection("users").update(authData.record.id, data);
 
