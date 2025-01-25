@@ -88,6 +88,7 @@ const App: React.FC = () => {
         clientId: clientId,
         currency: "USD",
         intent: "capture",
+        environment: "production",
     };
 
     return (

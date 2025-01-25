@@ -11,7 +11,7 @@ const client = new Client({
         oAuthClientId: process.env.PAYPAL_CLIENT_ID!,
         oAuthClientSecret: process.env.PAYPAL_CLIENT_SECRET!,
     },
-    environment: Environment.Sandbox,
+    environment: Environment.Production,
 });
 
 export default async (request: Request, context: Context) => {
