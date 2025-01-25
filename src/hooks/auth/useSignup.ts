@@ -22,14 +22,6 @@ function useSignup(
         password: password,
         passwordConfirm: confirmPassword,
         name: username,
-        user_templates: [
-            "waxxopaxrgdpkki",
-            "8gnqdsso46yp6pm",
-            "mqcpw4e0qdb0tg6",
-        ],
-        user_files: [],
-        tokens: 50,
-        current_plan: "kemt0gtyrxjahfh",
     };
 
     pb.collection("users")
