@@ -181,9 +181,8 @@ const MenuItem: React.FC<{
     onClick: () => void;
 }> = ({ isActive, element, label, onClick }) => {
     return (
-        <li className="relative">
+        <li className="relative" onClick={onClick}>
             <button
-                onClick={onClick}
                 className={`flex flex-col items-center p-2 rounded-md transition-colors duration-200 hover:bg-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#4A00E0] ${isActive ? "bg-gray-300 dark:bg-gray-700" : ""}`}
                 aria-label={label}
             >
