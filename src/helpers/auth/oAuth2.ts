@@ -39,15 +39,15 @@ export default async function oAuth2WithGoogle(
         const data = {
             ...authData.record,
             user_templates:
-                pb.authStore.model?.user_templates !== undefined
+                pb.authStore.model?.user_templates.length > 3
                     ? pb.authStore.model?.user_templates
                     : ["waxxopaxrgdpkki", "8gnqdsso46yp6pm", "mqcpw4e0qdb0tg6"],
             user_files:
-                pb.authStore.model?.user_files !== undefined
+                pb.authStore.model?.user_files.length > 0
                     ? pb.authStore.model?.user_files
                     : [],
             tokens:
-                pb.authStore.model?.tokens !== undefined
+                pb.authStore.model?.user_files.length > 0
                     ? pb.authStore.model?.tokens
                     : 50,
             current_plan:
