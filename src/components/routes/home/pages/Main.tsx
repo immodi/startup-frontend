@@ -1,5 +1,3 @@
-import { getAllTemplates } from "@/helpers/generator/getTemplates";
-import React, { useContext, useEffect, useState } from "react";
 import {
     Context,
     ContextInterface,
@@ -8,13 +6,14 @@ import {
     HomeContext,
     HomeContextInterface,
 } from "@/components/util/context";
+import { getAllTemplates } from "@/helpers/generator/getTemplates";
+import React, { useContext, useEffect, useState } from "react";
 import ErrorDialog from "./main_components/ErrorDialog";
 import KeyValuePopUp from "./main_components/KeyValuePopUp";
-import Modal from "./main_components/Modal";
 import MainContent from "./main_components/MainContent";
+import Modal from "./main_components/Modal";
 // import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 import { Template } from "@/interfaces/generator/template";
-import NotLoggedInErrorDialog from "./main_components/NotLoggedInErrorDialog";
 
 const Main: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -32,40 +31,38 @@ const Main: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        if (authed) {
-            getAllTemplates(token ?? "")
-                .then((res) => {
-                    // setTemplates([
-                    //     res.map((item) => item[1])[0],
-                    //     res.map((item) => item[1])[1],
-                    //     res.map((item) => item[1])[3],
-                    // ]);
-                    setTemplates(
-                        res.map((item) => {
-                            return {
-                                id: item[0],
-                                name: item[1],
-                            };
-                        }),
-                    );
-                })
-                .catch(() => {
-                    setTemplates([
-                        {
-                            id: "",
-                            name: "document",
-                        },
-                        {
-                            id: "",
-                            name: "paragraph",
-                        },
-                        {
-                            id: "",
-                            name: "report",
-                        },
-                    ]);
-                });
-        }
+        getAllTemplates(token ?? "")
+            .then((res) => {
+                // setTemplates([
+                //     res.map((item) => item[1])[0],
+                //     res.map((item) => item[1])[1],
+                //     res.map((item) => item[1])[3],
+                // ]);
+                setTemplates(
+                    res.map((item) => {
+                        return {
+                            id: item[0],
+                            name: item[1],
+                        };
+                    }),
+                );
+            })
+            .catch(() => {
+                setTemplates([
+                    {
+                        id: "",
+                        name: "document",
+                    },
+                    {
+                        id: "",
+                        name: "paragraph",
+                    },
+                    {
+                        id: "",
+                        name: "report",
+                    },
+                ]);
+            });
     }, [authed]);
 
     function setCurrentSelectedTemplate(template: string) {
@@ -160,7 +157,7 @@ const Main: React.FC = () => {
 
                 {isErrorDialogOpen && <ErrorDialog />}
 
-                {!authed && <NotLoggedInErrorDialog />}
+                {/* {!authed && <NotLoggedInErrorDialog />} */}
             </div>
         </GeneratorContext.Provider>
     );
