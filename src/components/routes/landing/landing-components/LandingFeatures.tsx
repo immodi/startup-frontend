@@ -15,7 +15,7 @@ const LandingFeatures: React.FC = () => {
                             Fast Generation
                         </h3>
                         <p className="text-gray-700 dark:text-gray-300">
-                            Create professional PDFs in seconds, not hours.
+                            Create professional PDFs in seconds.
                         </p>
                     </CardContent>
                 </Card>
@@ -35,11 +35,11 @@ const LandingFeatures: React.FC = () => {
                     <CardContent className="p-6">
                         <Check className="w-12 h-12 mb-4 mx-auto text-[#4A00E0] dark:text-[#FFF]" />
                         <h3 className="text-xl font-semibold mb-2 text-[#4A00E0] dark:text-[#FFF]">
-                            AI-Powered Content
+                            AI-Powered Content with a soul.
                         </h3>
                         <p className="text-gray-700 dark:text-gray-300">
                             Generate high-quality content tailored to your
-                            needs.
+                            needs, and edit the content that's not.
                         </p>
                     </CardContent>
                 </Card>
