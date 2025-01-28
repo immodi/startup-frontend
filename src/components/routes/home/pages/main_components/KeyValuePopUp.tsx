@@ -36,9 +36,9 @@ const KeyValuePopUp: React.FC = () => {
     }, []);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-scroll">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div
-                className={`bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 portrait:w-full max-w-lg relative`}
+                className={`bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-1/2 portrait:w-full max-w-lg relative overflow-scroll max-h-[80%]`}
             >
                 <h3 className="text-lg font-semibold mb-4 text-center text-gray-700 dark:text-gray-300">
                     Add Data
