@@ -1,9 +1,10 @@
 import { Context, ContextInterface } from "@/components/util/context";
 import { isFirstTimeUser } from "@/helpers/auth/isFirstTimeUser";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LandingPageHeader from "./landing-components/LandingHeader";
 import LandingTitle from "./landing-components/LandingTitle";
+import { LoadingSpinner } from "@/components/ui/Spinner";
 
 interface StepsInterface {
     title: string;
@@ -148,7 +149,7 @@ const LandingPage: React.FC = () => {
 // Inside your component
 const StepsComponent = (steps: StepsInterface[]) => {
     const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
-
+    const [isLoadingVideos, setIsLoadingVideos] = useState(true);
     const handleFullscreen = (index: number) => {
         const video: HTMLVideoElement | null = videoRefs.current[index];
         if (video) {
@@ -157,6 +158,10 @@ const StepsComponent = (steps: StepsInterface[]) => {
             }
         }
     };
+
+    function toogleLoadingState() {
+        setIsLoadingVideos(!isLoadingVideos);
+    }
 
     return (
         <div className="space-y-24">
@@ -169,8 +174,11 @@ const StepsComponent = (steps: StepsInterface[]) => {
                     <div className="w-full md:w-1/2">
                         <div className="relative pt-[56.25%]">
                             <video
+                                onLoadedData={() => {
+                                    toogleLoadingState();
+                                }}
                                 ref={(el) => (videoRefs.current[index] = el)}
-                                className="absolute top-0 left-0 w-full h-full object-contain"
+                                className={`absolute ${isLoadingVideos && "hidden"} top-0 left-0 w-full h-full object-contain`}
                                 muted
                                 loop
                                 autoPlay
@@ -179,10 +187,16 @@ const StepsComponent = (steps: StepsInterface[]) => {
                                 <source src={step.videoSrc} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
+                            <div
+                                className={`w-full h-full flex justify-center items-center ${!isLoadingVideos && "hidden"}`}
+                            >
+                                <LoadingSpinner className="w-20 h-20" />
+                            </div>
+
                             {/* Fullscreen Button */}
                             <button
                                 onClick={() => handleFullscreen(index)}
-                                className="absolute bottom-2 right-2 z-10 bg-black/50 text-white rounded-lg px-3 py-1 hover:bg-black/80 transition-colors cursor-pointer"
+                                className={`absolute bottom-2 right-2 z-10 bg-black/50 text-white rounded-lg px-3 py-1 hover:bg-black/80 transition-colors cursor-pointer  ${isLoadingVideos && "hidden"}`}
                                 aria-label="Fullscreen"
                             >
                                 <svg
