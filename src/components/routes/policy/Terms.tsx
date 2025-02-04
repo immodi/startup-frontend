@@ -86,6 +86,7 @@ const TermsOfService: React.FC = () => {
 
             {/* Section 5: Consumer Right to Cancel */}
             <section className="mb-8">
+                <a id="cancel"></a>
                 <h2 className="text-2xl font-semibold text-[#4A00E0] dark:text-[#7A1CAC] mb-4">
                     5. Consumer Right to Cancel
                 </h2>
