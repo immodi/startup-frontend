@@ -159,9 +159,9 @@ const StepsComponent = (steps: StepsInterface[]) => {
         }
     };
 
-    function toogleLoadingState() {
-        setIsLoadingVideos(!isLoadingVideos);
-    }
+    //function toogleLoadingState() {
+        //setIsLoadingVideos(!isLoadingVideos);
+  //  }
 
     useEffect(() => {setIsLoadingVideos(false)},[])
 
