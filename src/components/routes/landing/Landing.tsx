@@ -163,6 +163,8 @@ const StepsComponent = (steps: StepsInterface[]) => {
         setIsLoadingVideos(!isLoadingVideos);
     }
 
+    useEffect(() => {setIsLoadingVideos(false)},[])
+
     return (
         <div className="space-y-24">
             {steps.map((step, index) => (
@@ -174,9 +176,7 @@ const StepsComponent = (steps: StepsInterface[]) => {
                     <div className="w-full md:w-1/2">
                         <div className="relative pt-[56.25%]">
                             <video
-                                onLoadedData={() => {
-                                    toogleLoadingState();
-                                }}
+                                onLoadedData={() => {}}
                                 ref={(el) => (videoRefs.current[index] = el)}
                                 className={`absolute ${isLoadingVideos && "hidden"} top-0 left-0 w-full h-full object-contain`}
                                 muted
