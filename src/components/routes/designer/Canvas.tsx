@@ -40,14 +40,15 @@ const Canvas: React.FC = () => {
     useEffect(() => {
         if (templateData.length > 0) {
             const html = computeHTML(canvasRef);
-
-            updateTemplateById({
+            const data = {
                 id: templateData[0],
                 name: templateData[1],
                 data: getAllIdentifiersCanvasElements(),
                 html: html,
                 canvasElements: canvasElements,
-            });
+            };
+
+            updateTemplateById(data);
         }
     }, [templateData.length]);
 

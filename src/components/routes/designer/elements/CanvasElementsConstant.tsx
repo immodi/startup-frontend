@@ -4,10 +4,10 @@ import H2 from "@/assets/h2.svg";
 import H3 from "@/assets/h3.svg";
 import H4 from "@/assets/h4.svg";
 import H5 from "@/assets/h5.svg";
-import OL from "@/assets/ol.svg";
+// import OL from "@/assets/ol.svg";
 import Spacer from "@/assets/spacer.svg";
 import Text from "@/assets/text.svg";
-import UL from "@/assets/ul.svg";
+// import UL from "@/assets/ul.svg";
 import { getDefaultDesignerComponent } from "@/helpers/designer/manageElements";
 import { DesignerComponent } from "@/interfaces/designer/designerComponent";
 import { CanvasElement, Headers } from "./CanvasElementsRenderer";
@@ -142,58 +142,58 @@ export const CanvasElements: DesignerComponent[] = [
     }),
 
     // <ol>
-    getDefaultDesignerComponent({
-        index: 7,
-        text: "Orderd List",
-        description: "Numbered List",
-        icon: OL,
-        element: {
-            identifier: null,
-            element: "ol",
-            id: 7,
-            text: "",
-            customClasses: "spacer-div list-decimal list flex flex-col",
-            selectMode: "idle",
-            userStyle: {
-                fontFamily: "Sans",
-                textColor: "black",
-                textAlignment: "left",
-                isBold: false,
-                isItalic: false,
-                isUnderline: false,
-                // textContent: "Default Text",
-            },
-            childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
-            tabWidth: 1,
-        },
-    }),
+    // getDefaultDesignerComponent({
+    //     index: 7,
+    //     text: "Orderd List",
+    //     description: "Numbered List",
+    //     icon: OL,
+    //     element: {
+    //         identifier: null,
+    //         element: "ol",
+    //         id: 7,
+    //         text: "",
+    //         customClasses: "spacer-div list-decimal list flex flex-col",
+    //         selectMode: "idle",
+    //         userStyle: {
+    //             fontFamily: "Sans",
+    //             textColor: "black",
+    //             textAlignment: "left",
+    //             isBold: false,
+    //             isItalic: false,
+    //             isUnderline: false,
+    //             // textContent: "Default Text",
+    //         },
+    //         childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
+    //         tabWidth: 1,
+    //     },
+    // }),
 
-    // <ul>
-    getDefaultDesignerComponent({
-        index: 8,
-        text: "Unorderd List",
-        description: "Not a Numbered List",
-        icon: UL,
-        element: {
-            identifier: null,
-            element: "ul",
-            id: 8,
-            text: "",
-            customClasses: "spacer-div list-disc list flex flex-col",
-            selectMode: "idle",
-            userStyle: {
-                fontFamily: "Sans",
-                textColor: "black",
-                textAlignment: "left",
-                isBold: false,
-                isItalic: false,
-                isUnderline: false,
-                // textContent: "Default Text",
-            },
-            childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
-            tabWidth: 1,
-        },
-    }),
+    // // <ul>
+    // getDefaultDesignerComponent({
+    //     index: 8,
+    //     text: "Unorderd List",
+    //     description: "Not a Numbered List",
+    //     icon: UL,
+    //     element: {
+    //         identifier: null,
+    //         element: "ul",
+    //         id: 8,
+    //         text: "",
+    //         customClasses: "spacer-div list-disc list flex flex-col",
+    //         selectMode: "idle",
+    //         userStyle: {
+    //             fontFamily: "Sans",
+    //             textColor: "black",
+    //             textAlignment: "left",
+    //             isBold: false,
+    //             isItalic: false,
+    //             isUnderline: false,
+    //             // textContent: "Default Text",
+    //         },
+    //         childrenNodeTexts: ["list item 1", "list item 2", "list item 3"],
+    //         tabWidth: 1,
+    //     },
+    // }),
 
     // <br>
     getDefaultDesignerComponent({
