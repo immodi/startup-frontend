@@ -6,14 +6,14 @@ import {
     HomeContext,
     HomeContextInterface,
 } from "@/components/util/context";
-import React, { useContext, useEffect, useState } from "react";
-import AnimatedSaveControls from "./elements/EditPanel";
+import computeHTML from "@/helpers/designer/computeHtml";
 import {
     deleteTemplate,
     getAllTemplates,
     updateTemplateById,
 } from "@/helpers/generator/getTemplates";
-import computeHTML from "@/helpers/designer/computeHtml";
+import React, { useContext, useEffect, useState } from "react";
+import AnimatedSaveControls from "./elements/EditPanel";
 
 const Canvas: React.FC = () => {
     const context = useContext(Context) as ContextInterface;
@@ -21,7 +21,7 @@ const Canvas: React.FC = () => {
 
     const homeContext = useContext(HomeContext) as HomeContextInterface;
     const { isMenuOpen } = homeContext;
-    const [templateData, setTemplateData] = useState<Array<string>>([]);
+    // const [templateData, setTemplateData] = useState<Array<string>>([]);
 
     const designerContext = useContext(
         DesignerContext,
@@ -31,26 +31,50 @@ const Canvas: React.FC = () => {
         isSidePanelOpen,
         getAllIdentifiersCanvasElements,
         changeAllCanvasElements,
-        triggerIdleToAllCanvasElements,
+        // triggerIdleToAllCanvasElements,
         canvasElements,
     } = designerContext;
 
     const [isEditPanelVisible, setIsEditPanelVisible] = useState(false);
 
-    useEffect(() => {
-        if (templateData.length > 0) {
-            const html = computeHTML(canvasRef);
-            const data = {
-                id: templateData[0],
-                name: templateData[1],
-                data: getAllIdentifiersCanvasElements(),
-                html: html,
-                canvasElements: canvasElements,
-            };
+    // useEffect(() => {
+    //     if (templateData.length > 0) {
+    //         const html = computeHTML(canvasRef);
+    //         const data = {
+    //             id: templateData[0],
+    //             name: templateData[1],
+    //             data: getAllIdentifiersCanvasElements(),
+    //             html: html,
+    //             canvasElements: canvasElements,
+    //         };
+    //         cacheLocalState({
+    //             ...localState,
+    //             selectedUserTemplateCanvasElements: canvasElements,
+    //         });
 
-            updateTemplateById(data);
-        }
-    }, [templateData.length]);
+    //         updateTemplateById(data);
+    //     }
+    // }, [JSON.stringify(templateData)]);
+
+    function saveCurrentTemplate(templateData: string[]) {
+        const html = computeHTML(canvasRef);
+        const data = {
+            id: templateData[0],
+            name: templateData[1],
+            data: getAllIdentifiersCanvasElements(),
+            html: html,
+            canvasElements: canvasElements,
+        };
+
+        cacheLocalState({
+            ...localState,
+            selectedUserTemplateCanvasElements: canvasElements,
+        });
+
+        console.log("saving...");
+
+        updateTemplateById(data);
+    }
 
     useEffect(() => {
         if (
@@ -59,13 +83,44 @@ const Canvas: React.FC = () => {
                 localState.selectedUserTemplate,
             )
         ) {
-            console.log(localState);
-
             setIsEditPanelVisible(true);
         } else {
             setIsEditPanelVisible(false);
         }
     }, [localState.selectedUserTemplate]);
+
+    useEffect(() => {
+        if (
+            localState.selectedUserTemplate !== undefined &&
+            !["document", "paragraph", "report"].includes(
+                localState.selectedUserTemplate,
+            )
+        ) {
+            cacheLocalState({
+                ...localState,
+                selectedUserTemplateCanvasElements: canvasElements,
+            });
+        }
+    }, [JSON.stringify(canvasElements)]);
+
+    // useEffect(() => {
+    //     return () => {
+    //         // run on unmount
+    //         getAllTemplates(userData?.token!).then((templates) => {
+    //             const template = templates.find(
+    //                 (template) =>
+    //                     template[1] === localState.selectedUserTemplate,
+    //             );
+    //             if (template !== undefined) {
+    //                 // triggerIdleToAllCanvasElements();
+    //                 const templateId = template[0];
+    //                 const templateName = template[1];
+    //                 setTemplateData([templateId, templateName]);
+    //             }
+    //         });
+
+    //     };
+    // }, []);
 
     function setSelectedTemplate(template: string) {
         cacheLocalState({
@@ -81,7 +136,7 @@ const Canvas: React.FC = () => {
     return (
         <div
             // key={JSON.stringify(canvasElements)}
-            className={`transition-all ease-in-out duration-300 h-full min-h-fit w-full md:w-screen lg:w-screen overflow-y-scroll flex flex-col select-none ${isMenuOpen ? "translate-x-24" : ""}`}
+            className={`transition-all ease-in-out duration-300 h-full w-full md:w-screen lg:w-screen overflow-y-scroll flex flex-col select-none ${isMenuOpen ? "translate-x-24" : ""}`}
         >
             {isEditPanelVisible && (
                 <AnimatedSaveControls
@@ -108,10 +163,11 @@ const Canvas: React.FC = () => {
                                     localState.selectedUserTemplate,
                             );
                             if (template !== undefined) {
-                                triggerIdleToAllCanvasElements();
+                                // triggerIdleToAllCanvasElements();
                                 const templateId = template[0];
                                 const templateName = template[1];
-                                setTemplateData([templateId, templateName]);
+                                // setTemplateData([templateId, templateName]);
+                                saveCurrentTemplate([templateId, templateName]);
                             }
                         });
                     }}

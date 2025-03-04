@@ -11,6 +11,8 @@ export default function computeHTML(
         "shadow-lg",
         "border-[#4A00E0]",
         "dark:border-[#7A1CAC]",
+        "idle",
+        "selected",
     ];
     borderClasses.forEach((borderClass) => {
         if (clonedCanvas.classList.contains(borderClass)) {

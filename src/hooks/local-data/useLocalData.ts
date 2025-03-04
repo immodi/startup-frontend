@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useGetToken } from "../auth/useToken";
+import { CanvasElement } from "@/components/routes/designer/elements/CanvasElementsRenderer";
 
 export interface LocalState {
     isDarkMode: boolean;
     authed: boolean;
     generator: GeneratorLocalState;
     selectedUserTemplate?: string;
+    selectedUserTemplateCanvasElements?: CanvasElement[];
 }
 
 export const INITAL_LOCAL_STATE: LocalState = {

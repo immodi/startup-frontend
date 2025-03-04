@@ -26,7 +26,7 @@ const Export: React.FC = () => {
         canvasRef,
         saveModelName,
         openSaveModal,
-        triggerIdleToAllCanvasElements,
+        // triggerIdleToAllCanvasElements,
         getAllIdentifiersCanvasElements,
         canvasElements,
 
@@ -173,7 +173,7 @@ const Export: React.FC = () => {
             <div
                 onClick={() => {
                     setExporting(true);
-                    triggerIdleToAllCanvasElements();
+                    // triggerIdleToAllCanvasElements();
                     openSaveModal();
                 }}
                 className={`w-full h-36 my-2 text-gray-700 dark:text-gray-300 bg-gray-300 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 select-none transition-all duration-150 rounded-md flex justify-center items-center text-7xl font-bold cursor-pointer relative`}
